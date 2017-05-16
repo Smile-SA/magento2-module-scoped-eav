@@ -20,8 +20,6 @@ use Magento\Framework\Setup\SchemaSetupInterface;
 /**
  * Scoped EAV schema setup tools.
  *
- * @api
- *
  * @category Smile
  * @package  Smile\ScopedEav
  * @author   Aurelien FOUCRET <aurelien.foucret@smile.fr>
