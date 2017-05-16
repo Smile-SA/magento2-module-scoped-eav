@@ -1,0 +1,38 @@
+{
+    "name": "smile/module-scoped-eav",
+    "type": "magento2-module",
+    "description": "Smile Elastic Suite - Scoped EAV utils.",
+    "keywords": ["magento2", "elasticsuite"],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://repo.magento.com/"
+        }
+    ],
+    "require": {
+        "php": "~5.5.0|~5.6.0|~7.0.0",
+        "magento/framework": "*",
+        "magento/magento-composer-installer": "*",
+        "magento/module-catalog": "100.1.*"
+    },
+    "require-dev": {
+        "smile/magento2-smilelab-quality-suite": "1.0.0"
+    },
+    "license": "OSL-3.0",
+    "authors": [
+        {
+            "name": "Aurélien FOUCRET",
+            "email": "aurelien.foucret@smile.fr"
+        }
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Smile\\ScopedEav\\" : ""
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
