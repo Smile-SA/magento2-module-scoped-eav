@@ -1,6 +1,6 @@
 {
     "name": "smile/module-scoped-eav",
-    "type": "magento2-module",
+    "type": "magento2-library",
     "description": "Smile - Scoped EAV utils.",
     "keywords": ["magento2", "elasticsuite"],
     "repositories": [
