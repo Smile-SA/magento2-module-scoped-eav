@@ -14,7 +14,6 @@
 
 namespace Smile\ScopedEav\Model\Entity\Attribute;
 
-use Magento\CustomerSegment\Observer\EnterpiseCustomerAttributeEditPrepareFormObserver;
 use Magento\Eav\Model\ResourceModel\Attribute\DefaultEntityAttributes\ProviderInterface;
 use Smile\ScopedEav\Api\Data\EntityInterface;
 
