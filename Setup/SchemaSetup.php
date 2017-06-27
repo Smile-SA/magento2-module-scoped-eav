@@ -218,4 +218,26 @@ class SchemaSetup
 
         return $table;
     }
+
+    public function getAttributeAdditionalTable($entityTableName)
+    {
+        $additionalTableName = sprintf('%s_eav_attribute', $entityTableName);
+
+        $table = $this->setup->getConnection()->newTable($this->setup->getTable($additionalTableName))
+            ->addColumn(
+                'attribute_id',
+                \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
+                null,
+                ['unsigned' => true, 'nullable' => false, 'primary' => true],
+                'Attribute ID'
+            )
+            ->addForeignKey(
+                $this->setup->getFkName($additionalTableName, 'attribute_id', 'eav_attribute', 'attribute_id'),
+                'attribute_id',
+                $this->setup->getTable('eav_attribute'),
+                'attribute_id', \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
+            );
+
+        return $table;
+    }
 }
