@@ -151,6 +151,16 @@ class AbstractEntity extends \Magento\Catalog\Model\AbstractModel implements Ent
     }
 
     /**
+     * Retrieve default entity static attributes
+     *
+     * @return string[]
+     */
+    public function getDefaultAttributes()
+    {
+        return array_unique(array_merge($this->_getDefaultAttributes(), [$this->getEntityIdField(), $this->getLinkField()]));
+    }
+
+    /**
      * Re-declare attribute model
      *
      * @SuppressWarnings(PHPMD.CamelCaseMethodName)
@@ -160,6 +170,16 @@ class AbstractEntity extends \Magento\Catalog\Model\AbstractModel implements Ent
     protected function _getDefaultAttributeModel()
     {
         return \Smile\ScopedEav\Model\Entity\Attribute::class;
+    }
+
+    /**
+     * Retrieve default entity attributes
+     *
+     * @return string[]
+     */
+    protected function _getDefaultAttributes()
+    {
+        return ['entity_type_id', 'attribute_set_id', 'created_at', 'updated_at'];
     }
 }
 
