@@ -219,6 +219,13 @@ class SchemaSetup
         return $table;
     }
 
+    /**
+     * Prepare an additional attribute config table for an entity.
+     *
+     * @param string $entityTableName Entity table name.
+     *
+     * @return \Magento\Framework\DB\Ddl\Table
+     */
     public function getAttributeAdditionalTable($entityTableName)
     {
         $additionalTableName = sprintf('%s_eav_attribute', $entityTableName);
@@ -235,7 +242,8 @@ class SchemaSetup
                 $this->setup->getFkName($additionalTableName, 'attribute_id', 'eav_attribute', 'attribute_id'),
                 'attribute_id',
                 $this->setup->getTable('eav_attribute'),
-                'attribute_id', \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
+                'attribute_id',
+                \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
             );
 
         return $table;

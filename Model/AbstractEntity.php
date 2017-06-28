@@ -151,7 +151,7 @@ class AbstractEntity extends \Magento\Catalog\Model\AbstractModel implements Ent
     }
 
     /**
-     * Retrieve default entity static attributes
+     * Retrieve default entity static attributes.
      *
      * @return string[]
      */
@@ -182,4 +182,3 @@ class AbstractEntity extends \Magento\Catalog\Model\AbstractModel implements Ent
         return ['entity_type_id', 'attribute_set_id', 'created_at', 'updated_at'];
     }
 }
-

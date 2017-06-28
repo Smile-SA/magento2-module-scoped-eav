@@ -19,7 +19,6 @@ use Magento\Framework\Model\Entity\ScopeInterface;
 use Magento\Eav\Model\Entity\Attribute\AbstractAttribute;
 use Smile\ScopedEav\Api\Data\AttributeInterface as ScopedEavAttribute;
 
-
 /**
  * Scoped EAV entity attribute persistor.
  *
