@@ -191,7 +191,7 @@ class SchemaSetup
                 \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
                 null,
                 ['unsigned' => true, 'nullable' => false, 'primary' => true],
-                'Custom Entity ID'
+                'Entity ID'
             )
             ->addColumn(
                 'website_id',
