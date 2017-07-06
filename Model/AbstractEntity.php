@@ -175,6 +175,8 @@ class AbstractEntity extends \Magento\Catalog\Model\AbstractModel implements Ent
     /**
      * Retrieve default entity attributes
      *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     *
      * @return string[]
      */
     protected function _getDefaultAttributes()

@@ -57,6 +57,8 @@ interface EntityInterface extends \Magento\Framework\Api\CustomAttributesDataInt
     /**
      * Returns is active.
      *
+     * @SuppressWarnings(PHPMD.BooleanGetMethodName)
+     *
      * @return boolean
      */
     public function getIsActive();
