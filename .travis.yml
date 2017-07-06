@@ -8,8 +8,7 @@ install: [
   "mkdir -p app/etc var",
   "echo \"{\\\"http-basic\\\":{\\\"repo.magento.com\\\":{\\\"username\\\":\\\"${MAGENTO_USERNAME}\\\",\\\"password\\\":\\\"${MAGENTO_PASSWORD}\\\"}}}\" > auth.json",
   "composer require magento/magento2-base --no-update",
-  "composer install --prefer-dist",
-  "vendor/bin/phpcs --config-set installed_paths vendor/magento/marketplace-eqp/"
+  "composer install --prefer-dist"
 ]
 
 cache:
@@ -17,6 +16,7 @@ cache:
     - $HOME/.composer/cache
 
 script:
+    - "vendor/bin/phpcs --config-set installed_paths vendor/magento/marketplace-eqp/"
     - vendor/bin/phpcs --standard=vendor/magento/marketplace-eqp/MEQP2 --severity=9 .
     - vendor/bin/phpcs --standard=vendor/smile/magento2-smilelab-phpcs/phpcs-standards/SmileLab --extensions=php .
     - vendor/bin/phpmd . text vendor/smile/magento2-smilelab-phpmd/phpmd-rulesets/rulset.xml
