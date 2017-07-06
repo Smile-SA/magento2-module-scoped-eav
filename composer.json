@@ -16,7 +16,7 @@
         "magento/module-catalog": "101.*.*"
     },
     "require-dev": {
-        "smile/magento2-smilelab-quality-suite": "^1.0.4"
+        "smile/magento2-smilelab-quality-suite": "^1.0.5"
     },
     "license": "OSL-3.0",
     "authors": [
