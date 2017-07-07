@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Smile Elastic Suite to newer
+ * versions in the future.
+ *
+ *
+ * @category  Smile
+ * @package   Smile\ScopedEav
+ * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
+ * @copyright 2017 Smile
+ * @license   Open Software License ("OSL") v. 3.0
+ */
+ -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+
+    <update handle="styles"/>
+    <update handle="editor"/>
+
+    <body>
+        <referenceContainer name="left">
+            <block class="Smile\ScopedEav\Block\Adminhtml\Attribute\Edit\Tabs" name="attribute_edit_tabs">
+                <container label="Main" name="main">
+                    <block class="Smile\ScopedEav\Block\Adminhtml\Attribute\Edit\Tab\Main" as="base" />
+                    <block class="Magento\Eav\Block\Adminhtml\Attribute\Edit\Options\Options" as="options" />
+                </container>
+                <container label="Labels" name="labels">
+                    <block class="Magento\Eav\Block\Adminhtml\Attribute\Edit\Options\Labels" as="labels" />
+                </container>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block class="Smile\ScopedEav\Block\Adminhtml\Attribute\Edit" name="attribute_edit_content" />
+        </referenceContainer>
+        <referenceContainer name="js">
+            <block class="Magento\Backend\Block\Template" name="attribute_edit_js" template="Smile_ScopedEav::attribute/edit/js.phtml" />
+        </referenceContainer>
+    </body>
+
+</page>
