@@ -15,6 +15,6 @@
 
 \Magento\Framework\Component\ComponentRegistrar::register(
     \Magento\Framework\Component\ComponentRegistrar::MODULE,
-    'smile/scoped-eav',
+    'Smile_ScopedEav',
     __DIR__
 );
