@@ -71,21 +71,21 @@ interface EntityInterface extends \Magento\Framework\Api\CustomAttributesDataInt
     public function getName();
 
     /**
-     * Returns custom entity store id.
+     * Returns entity store id.
      *
      * @return int
      */
     public function getStoreId();
 
     /**
-     * Returns custom entity creation date.
+     * Returns entity creation date.
      *
      * @return string
      */
     public function getCreatedAt();
 
     /**
-     * Returns custom entity update date.
+     * Returns entity update date.
      *
      * @return string
      */
