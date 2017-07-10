@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Smile Elastic Suite to newer
+ * versions in the future.
+ *
+ *
+ * @category  Smile
+ * @package   Smile\ScopedEav
+ * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
+ * @copyright 2017 Smile
+ * @license   Open Software License ("OSL") v. 3.0
+ */
+ -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+
+    <update handle="formkey" />
+
+    <body>
+        <referenceContainer name="content">
+            <block class="Smile\ScopedEav\Block\Adminhtml\Set\Toolbar\Main" 
+                   name="adminhtml.entity.set.container" 
+                   template="set/toolbar/main.phtml">
+                <block class="Magento\Backend\Block\Widget\Grid" 
+                       name="adminhtml.catalog.product.set.grid" 
+                       as="grid">
+                    <arguments>
+                        <argument name="id" xsi:type="string">setGrid</argument>
+                        <argument name="dataSource" xsi:type="object">Magento\Eav\Model\ResourceModel\Entity\Attribute\Grid\Collection</argument>
+                        <argument name="default_sort" xsi:type="string">set_name</argument>
+                        <argument name="default_dir" xsi:type="string">ASC</argument>
+                        <argument name="save_parameters_in_session" xsi:type="string">1</argument>
+                    </arguments>
+                    <block class="Magento\Backend\Block\Widget\Grid\ColumnSet" 
+                           name="adminhtml.catalog.product.set.grid.columnSet" 
+                           as="grid.columnSet">
+                        <arguments>
+                            <argument name="id" xsi:type="string">setGrid</argument>
+                            <argument name="rowUrl" xsi:type="array">
+                                <item name="path" xsi:type="string">*/*/edit</item>
+                                <item name="extraParamsTemplate" xsi:type="array">
+                                    <item name="id" xsi:type="string">getAttributeSetId</item>
+                                </item>
+                            </argument>
+                        </arguments>
+                        <block class="Magento\Backend\Block\Widget\Grid\Column" as="set_name">
+                            <arguments>
+                                <argument name="header" xsi:type="string" translate="true">Set</argument>
+                                <argument name="align" xsi:type="string">left</argument>
+                                <argument name="sortable" xsi:type="string">1</argument>
+                                <argument name="index" xsi:type="string">attribute_set_name</argument>
+                            </arguments>
+                        </block>
+                    </block>
+                </block>
+            </block>
+        </referenceContainer>
+    </body>
+</page>
