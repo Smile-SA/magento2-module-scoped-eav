@@ -14,6 +14,9 @@
 
 namespace Smile\ScopedEav\Controller\Adminhtml\Entity;
 
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Exception\LocalizedException;
+
 /**
  * Scoped EAV entity delete controller.
  *
