@@ -85,7 +85,7 @@ class AbstractEntity extends \Magento\Catalog\Model\AbstractModel implements Ent
      */
     public function getStoreId()
     {
-        if (!$this->hasData(self::STORE_ID)) {
+        if ($this->hasData(self::STORE_ID)) {
             return $this->getData(self::STORE_ID);
         }
 
