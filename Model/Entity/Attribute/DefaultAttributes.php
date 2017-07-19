@@ -34,8 +34,9 @@ class DefaultAttributes implements ProviderInterface
     public function getDefaultAttributes()
     {
         return [
-            EntityInterface::IS_ACTIVE,
-            EntityInterface::NAME,
+            EntityInterface::CREATED_AT,
+            EntityInterface::UPDATED_AT,
+            EntityInterface::ATTRIBUTE_SET_ID,
         ];
     }
 }
