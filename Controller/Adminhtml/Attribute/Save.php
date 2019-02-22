@@ -125,7 +125,6 @@ class Save extends \Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute
             $attributeCode = $this->generateCode($this->getRequest()->getParam('frontend_label')[0]);
         }
 
-        dump($attributeCode);die;
         if (trim($attributeCode) == '') {
             /** @var Regex $validatorAttrCode */
             $validatorAttrCode = $this->regexFactory->create(['pattern' => '/^[a-z][a-z_0-9]{0,30}$/']);
