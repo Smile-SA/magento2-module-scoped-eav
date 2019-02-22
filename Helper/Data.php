@@ -17,6 +17,8 @@ namespace Smile\ScopedEav\Helper;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Smile\ScopedEav\Api\Data\EntityInterface;
 use Smile\ScopedEav\Api\Data\AttributeInterface;
+use Zend\Validator\Regex;
+use Zend\Validator\RegexFactory;
 
 /**
  * Scoped EAV helper.
@@ -25,7 +27,7 @@ use Smile\ScopedEav\Api\Data\AttributeInterface;
  * @package  Smile\ScopedEav
  * @author   Aurelien FOUCRET <aurelien.foucret@smile.fr>
  */
-class Data extends \Magento\Framework\App\Helper\AbstractHelper
+class Data extends AbstractHelper
 {
     /**
      * @var \Magento\Catalog\Model\Product\UrlFactory
@@ -53,6 +55,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     private $metadataPool;
 
     /**
+     * @var RegexFactory
+     */
+    private $regexFactory;
+
+    /**
      * Constructor.
      *
      * @param \Magento\Framework\App\Helper\Context         $context           Context.
@@ -61,6 +68,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      * @param \Magento\Store\Model\StoreManagerInterface    $storeManager      Store manager.
      * @param \Magento\Ui\DataProvider\Mapper\FormElement   $formElementMapper Form element mapper.
      * @param \Magento\Framework\EntityManager\MetadataPool $metadataPool      Entity manager metadata pool.
+     * @param RegexFactory                                  $regexFactory      Regexp validator factory.
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
@@ -68,7 +76,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Catalog\Helper\Product $productHelper,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Ui\DataProvider\Mapper\FormElement $formElementMapper,
-        \Magento\Framework\EntityManager\MetadataPool $metadataPool
+        \Magento\Framework\EntityManager\MetadataPool $metadataPool,
+        RegexFactory $regexFactory
     ) {
         parent::__construct($context);
 
@@ -77,6 +86,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $this->productHelper        = $productHelper;
         $this->formElementMapper    = $formElementMapper;
         $this->metadataPool         = $metadataPool;
+        $this->regexFactory         = $regexFactory;
     }
 
     /**
@@ -90,10 +100,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $code = substr(preg_replace('/[^a-z_0-9]/', '_', $this->urlFactory->create()->formatUrlKey($label)), 0, 30);
 
-        $validatorAttrCode = new \Zend_Validate_Regex(['pattern' => '/^[a-z][a-z_0-9]{0,29}[a-z0-9]$/']);
+        /** @var Regex $validatorAttrCode */
+        $validatorAttrCode = $this->regexFactory->create(['pattern' => '/^[a-z][a-z_0-9]{0,29}[a-z0-9]$/']);
 
         if (!$validatorAttrCode->isValid($code)) {
-            $code = 'attr_' . ($code ?: substr(md5(time()), 0, 8));
+            $code = 'attr_' . ($code ?: substr(md5(time()), 0, 8)); // @codingStandardsIgnoreLine
         }
 
         return $code;

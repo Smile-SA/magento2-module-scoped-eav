@@ -14,6 +14,7 @@
 namespace Smile\ScopedEav\Controller\Adminhtml\Attribute;
 
 use Magento\Framework\DataObject;
+use Magento\Framework\DataObjectFactory;
 use Magento\Framework\Exception\AlreadyExistsException;
 
 /**
@@ -36,21 +37,29 @@ class Validate extends \Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute
     private $resultJsonFactory;
 
     /**
+     * @var DataObjectFactory
+     */
+    private $dataObjectFactory;
+
+    /**
      * Constructor.
      *
      * @param \Magento\Backend\App\Action\Context              $context           Context.
      * @param \Smile\ScopedEav\Helper\Data                     $entityHelper      Entity helper.
      * @param BuilderInterface                                 $attributeBuilder  Attribute builder.
      * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory JSON response factory.
+     * @param DataObjectFactory                                $dataObjectFactory Data object factory.
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         \Smile\ScopedEav\Helper\Data $entityHelper,
         BuilderInterface $attributeBuilder,
-        \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+        \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
+        DataObjectFactory $dataObjectFactory
     ) {
         parent::__construct($context, $entityHelper, $attributeBuilder);
         $this->resultJsonFactory = $resultJsonFactory;
+        $this->dataObjectFactory = $dataObjectFactory;
     }
 
     /**
@@ -58,7 +67,7 @@ class Validate extends \Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute
      */
     public function execute()
     {
-        $response = new DataObject();
+        $response = $this->dataObjectFactory->create();
         $response->setError(false);
 
         $response = $this->checkAttributeCode($response);
@@ -67,13 +76,13 @@ class Validate extends \Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute
     }
 
     /**
-      * Set message to response object.
-      *
-      * @param DataObject $response Original response object.
-      * @param string[]   $messages Messages.
-      *
-      * @return DataObject
-      */
+     * Set message to response object.
+     *
+     * @param DataObject $response Original response object.
+     * @param string[]   $messages Messages.
+     *
+     * @return DataObject
+     */
     private function setMessageToResponse($response, $messages)
     {
         $messageKey = $this->getRequest()->getParam('message_key', static::DEFAULT_MESSAGE_KEY);
