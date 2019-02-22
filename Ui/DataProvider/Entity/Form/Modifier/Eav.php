@@ -9,6 +9,7 @@
  * @category  Smile
  * @package   Smile\ScopedEav
  * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
+ * @author    Maxime LECLERCQ <maxime.leclercq@smile.fr>
  * @copyright 2016 Smile
  * @license   Open Software License ("OSL") v. 3.0
  */
@@ -19,6 +20,8 @@ use Magento\Ui\Component\Form\Fieldset;
 use Magento\Ui\Component\Form\Field;
 use Magento\Ui\Component\Container;
 use Smile\ScopedEav\Api\Data\AttributeInterface;
+use Magento\Ui\Component\Form\Element\Wysiwyg as WysiwygElement;
+use \Smile\ScopedEav\Model\Entity\FileInfo;
 
 /**
  * Scoped EAV attribute form modifier.
@@ -26,6 +29,10 @@ use Smile\ScopedEav\Api\Data\AttributeInterface;
  * @category Smile
  * @package  Smile\ScopedEav
  * @author   Aurelien FOUCRET <aurelien.foucret@smile.fr>
+ * @author    Maxime LECLERCQ <maxime.leclercq@smile.fr>
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Eav extends AbstractModifier
 {
@@ -70,6 +77,11 @@ class Eav extends AbstractModifier
     private $attributesToDisable;
 
     /**
+     * @var FileInfo
+     */
+    private $fileInfo;
+
+    /**
      * Constructor.
      *
      * @param Helper\Eav                                                      $eavHelper             EAV helper.
@@ -77,6 +89,7 @@ class Eav extends AbstractModifier
      * @param \Magento\Framework\Stdlib\ArrayManager                          $arrayManager          Array manager.
      * @param \Smile\ScopedEav\Ui\DataProvider\Entity\Form\EavValidationRules $validationRules       EAV validation rules
      * @param \Magento\Framework\App\Request\DataPersistorInterface           $dataPersistor         Data persistor.
+     * @param FileInfo                                                        $fileInfo              File information.
      * @param array                                                           $bannedInputTypes      Input types removed from the form.
      * @param array                                                           $attributesToEliminate Attribute codes removed from the form.
      * @param array                                                           $attributesToDisable   Attribute codes to be disabled.
@@ -87,6 +100,7 @@ class Eav extends AbstractModifier
         \Magento\Framework\Stdlib\ArrayManager $arrayManager,
         \Smile\ScopedEav\Ui\DataProvider\Entity\Form\EavValidationRules $validationRules,
         \Magento\Framework\App\Request\DataPersistorInterface $dataPersistor,
+        FileInfo $fileInfo,
         array $bannedInputTypes = [],
         array $attributesToEliminate = [],
         array $attributesToDisable = []
@@ -99,6 +113,7 @@ class Eav extends AbstractModifier
         $this->dataPersistor         = $dataPersistor;
         $this->attributesToEliminate = $attributesToEliminate;
         $this->attributesToDisable   = $attributesToDisable;
+        $this->fileInfo = $fileInfo;
     }
 
     /**
@@ -117,6 +132,7 @@ class Eav extends AbstractModifier
 
             foreach ($attributes as $attribute) {
                 if (null !== ($attributeValue = $this->setupAttributeData($attribute))) {
+                    $attributeValue = $this->overrideImageUploaderData($attribute, $attributeValue);
                     $data[$entityId][self::DATA_SOURCE_DEFAULT][$attribute->getAttributeCode()] = $attributeValue;
                 }
             }
@@ -282,6 +298,9 @@ class Eav extends AbstractModifier
                 break;
             case 'textarea':
                 $meta = $this->customizeWysiwyg($attribute, $meta);
+                break;
+            case 'image':
+                $meta = $this->customizeImage($attribute, $meta);
                 break;
         }
 
@@ -486,5 +505,110 @@ class Eav extends AbstractModifier
         $data[$entityId] = array_replace_recursive($data[$entityId][self::DATA_SOURCE_DEFAULT], $persistentData);
 
         return $data;
+    }
+
+    /**
+     * Add wysiwyg properties.
+     *
+     * @param AttributeInterface $attribute Attribute.
+     * @param array              $meta      Meta data of data provider.
+     *
+     * @return array
+     */
+    private function customizeWysiwyg(AttributeInterface $attribute, array $meta)
+    {
+        if (!$attribute->getIsWysiwygEnabled()) {
+            return $meta;
+        }
+
+        $meta['arguments']['data']['config']['formElement'] = WysiwygElement::NAME;
+        $meta['arguments']['data']['config']['wysiwyg'] = true;
+        $meta['arguments']['data']['config']['wysiwygConfigData'] = [
+            'add_variables' => false,
+            'add_widgets' => false,
+            'add_directives' => true,
+            'use_container' => true,
+            'container_class' => 'hor-scroll',
+        ];
+
+        return $meta;
+    }
+
+    /**
+     * Customize checkboxes.
+     *
+     * @param AttributeInterface $attribute Attribute.
+     * @param array              $meta      Metadata of data provider.
+     *
+     * @return array
+     */
+    private function customizeCheckbox(AttributeInterface $attribute, array $meta)
+    {
+        if ($attribute->getFrontendInput() === 'boolean') {
+            $meta['arguments']['data']['config']['prefer'] = 'toggle';
+            $meta['arguments']['data']['config']['valueMap'] = [
+                'true' => '1',
+                'false' => '0',
+            ];
+        }
+
+        return $meta;
+    }
+
+    /**
+     * Customize image field.
+     *
+     * @param AttributeInterface $attribute Attribute.
+     * @param array              $meta      Current metadata of data provider.
+     *
+     * @return array
+     */
+    private function customizeImage(AttributeInterface $attribute, array $meta)
+    {
+        if ($attribute->getFrontendInput() !== 'image') {
+            return $meta;
+        }
+        $meta['arguments']['data']['config']['formElement'] = 'fileUploader';
+        $meta['arguments']['data']['config']['allowedExtensions'] = 'jpg jpeg gif png';
+        $meta['arguments']['data']['config']['elementTmpl'] = 'ui/form/element/uploader/image';
+        $meta['arguments']['data']['config']['uploaderConfig'] = [
+            'url' => 'scoped_eav/entity/image_upload',
+        ];
+
+        return $meta;
+    }
+
+    /**
+     * Return image data.
+     *
+     * @param AttributeInterface $attribute Attribute.
+     * @param string             $value     Attribute value.
+     *
+     * @return array
+     * @throws \Magento\Framework\Exception\FileSystemException
+     */
+    private function overrideImageUploaderData(AttributeInterface $attribute, $value)
+    {
+        if ($attribute->getFrontendInput() !== 'image') {
+            return $value;
+        }
+
+        $return = [];
+        if ($this->fileInfo->isExist($value)) {
+            $stat = $this->fileInfo->getStat($value);
+            $mime = $this->fileInfo->getMimeType($value);
+
+            $viewUrl = $this->locator->getEntity()->getImageUrl($attribute->getAttributeCode());
+
+            $return[] = [
+                'file' => $value,
+                'size' => isset($stat) ? $stat['size'] : 0,
+                'url' => isset($viewUrl) ? $viewUrl : '',
+                'name' => basename($value), // @codingStandardsIgnoreLine (MEQP1.Security.DiscouragedFunction.Found)
+                'type' => $mime,
+            ];
+        }
+
+        return $return;
     }
 }
