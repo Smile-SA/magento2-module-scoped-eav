@@ -104,6 +104,6 @@ class System extends AbstractModifier
      */
     private function getEntityUrl(string $urlType) : string
     {
-        return (string) $this->entityUrls[$urlType] ?? $this->defaultEntityUrls[$urlType];
+        return (string) ($this->entityUrls[$urlType] ?? $this->defaultEntityUrls[$urlType]);
     }
 }
