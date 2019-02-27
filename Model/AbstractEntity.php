@@ -151,6 +151,41 @@ class AbstractEntity extends \Magento\Catalog\Model\AbstractModel implements Ent
     }
 
     /**
+     * Return image url.
+     *
+     * @param string $attributeCode Attribute code.
+     *
+     * @return bool|string
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function getImageUrl($attributeCode)
+    {
+        $url = false;
+        $image = $this->getData($attributeCode);
+        if ($image) {
+            if (!is_string($image)) {
+                throw new \Magento\Framework\Exception\LocalizedException(
+                    __('Something went wrong while getting the image url.')
+                );
+            }
+
+            $url = $image;
+            $isRelativeUrl = substr($image, 0, 1) === '/';
+            if (!$isRelativeUrl) {
+                $mediaBaseUrl = $this->_storeManager->getStore()->getBaseUrl(
+                    \Magento\Framework\UrlInterface::URL_TYPE_MEDIA
+                );
+                $url = $mediaBaseUrl
+                    . ltrim(\Smile\ScopedEav\Model\Entity\FileInfo::ENTITY_MEDIA_PATH, '/')
+                    . '/'
+                    . $image;
+            }
+        }
+
+        return $url;
+    }
+
+    /**
      * Retrieve default entity static attributes.
      *
      * @return string[]

@@ -32,22 +32,30 @@ class Save extends \Smile\ScopedEav\Controller\Adminhtml\AbstractEntity
     private $dataPersistor;
 
     /**
+     * @var \Magento\Eav\Model\Config
+     */
+    private $eavConfig;
+
+    /**
      * Constructor.
      *
      * @param \Magento\Backend\App\Action\Context                   $context       Context.
-     * @param Entity\BuilderInterface                               $entityBuilder Entity builder.
+     * @param BuilderInterface                                      $entityBuilder Entity builder.
      * @param \Magento\Store\Model\StoreManagerInterface            $storeManager  Store manager.
      * @param \Magento\Framework\App\Request\DataPersistorInterface $dataPersistor Data Persistor
+     * @param \Magento\Eav\Model\Config                             $eavConfig     Eav config.
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         BuilderInterface $entityBuilder,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Framework\App\Request\DataPersistorInterface $dataPersistor
+        \Magento\Framework\App\Request\DataPersistorInterface $dataPersistor,
+        \Magento\Eav\Model\Config $eavConfig
     ) {
         parent::__construct($context, $entityBuilder, $storeManager);
 
         $this->dataPersistor = $dataPersistor;
+        $this->eavConfig = $eavConfig;
     }
 
     /**
@@ -100,7 +108,7 @@ class Save extends \Smile\ScopedEav\Controller\Adminhtml\AbstractEntity
         $entity = parent::getEntity();
 
         $data = $this->getRequest()->getPostValue();
-
+        $data = $this->imagePreprocessing($entity, $data);
         $entity->addData($data['entity']);
 
         $useDefaults = (array) $this->getRequest()->getPost('use_default', []);
@@ -112,5 +120,31 @@ class Save extends \Smile\ScopedEav\Controller\Adminhtml\AbstractEntity
         }
 
         return $entity;
+    }
+
+    /**
+     * Sets image attribute data to false if image was removed.
+     *
+     * @param \Smile\ScopedEav\Api\Data\EntityInterface $entity Current entity.
+     * @param array                                     $data   Data.
+     *
+     * @return array
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    private function imagePreprocessing(\Smile\ScopedEav\Api\Data\EntityInterface $entity, $data)
+    {
+        $entityType = $this->eavConfig->getEntityType($entity->getResource()->getEntityType()->getEntityTypeCode());
+
+        foreach ($entityType->getAttributeCollection() as $attributeModel) {
+            $attributeCode = $attributeModel->getAttributeCode();
+            $backendModel = $attributeModel->getBackend();
+            if (isset($data['entity'][$attributeCode]) || !$backendModel instanceof \Smile\ScopedEav\Model\Entity\Attribute\Backend\Image) {
+                continue;
+            }
+
+            $data['entity'][$attributeCode] = '';
+        }
+
+        return $data;
     }
 }
