@@ -62,7 +62,7 @@ abstract class AbstractActions extends Column
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as &$item) {
                 $this->getEditUrl($item);
-                if (isset($item['attribute_id'])) {
+                if (isset($item[$this->getIndexField()])) {
                     $item[$this->getData('name')] = ['edit' => ['href'  => $this->getEditUrl($item), 'label' => __('Edit')]];
                 }
             }
@@ -82,7 +82,7 @@ abstract class AbstractActions extends Column
     {
         $editUrlPath = $this->getDataByPath('config/editUrlPath');
 
-        return $this->urlBuilder->getUrl($editUrlPath, [$this->getRequestFieldName() => $item['attribute_id']]);
+        return $this->urlBuilder->getUrl($editUrlPath, [$this->getRequestFieldName() => $item[$this->getIndexField()]]);
     }
 
     /**
