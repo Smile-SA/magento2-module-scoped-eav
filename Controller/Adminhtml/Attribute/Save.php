@@ -14,6 +14,10 @@
 
 namespace Smile\ScopedEav\Controller\Adminhtml\Attribute;
 
+use Magento\Framework\Exception\LocalizedException;
+use Zend\Validator\Regex;
+use Zend\Validator\RegexFactory;
+
 /**
  * Scoped EAV entity attribute save controller.
  *
@@ -29,19 +33,27 @@ class Save extends \Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute
     private $entityHelper;
 
     /**
+     * @var RegexFactory
+     */
+    private $regexFactory;
+
+    /**
      * Constructor.
      *
      * @param \Magento\Backend\App\Action\Context $context          Context.
      * @param \Smile\ScopedEav\Helper\Data        $entityHelper     Entity helper.
      * @param BuilderInterface                    $attributeBuilder Attribute builder.
+     * @param RegexFactory                        $regexFactory     Regexp validator factory.
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         \Smile\ScopedEav\Helper\Data $entityHelper,
-        BuilderInterface $attributeBuilder
+        BuilderInterface $attributeBuilder,
+        RegexFactory $regexFactory
     ) {
         parent::__construct($context, $entityHelper, $attributeBuilder);
         $this->entityHelper = $entityHelper;
+        $this->regexFactory = $regexFactory;
     }
 
     /**
@@ -63,7 +75,6 @@ class Save extends \Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute
         } catch (\Exception $e) {
             $response = $this->getRedirectError($e->getMessage());
         }
-
 
         return $response;
     }
@@ -114,8 +125,9 @@ class Save extends \Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute
             $attributeCode = $this->generateCode($this->getRequest()->getParam('frontend_label')[0]);
         }
 
-        if (strlen($attributeCode) > 0) {
-            $validatorAttrCode = new \Zend_Validate_Regex(['pattern' => '/^[a-z][a-z_0-9]{0,30}$/']);
+        if (trim($attributeCode) == '') {
+            /** @var Regex $validatorAttrCode */
+            $validatorAttrCode = $this->regexFactory->create(['pattern' => '/^[a-z][a-z_0-9]{0,30}$/']);
 
             if (!$validatorAttrCode->isValid($attributeCode)) {
                 $errorMessageParts = [
@@ -123,7 +135,7 @@ class Save extends \Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute
                     __('Please use only letters (a-z), numbers (0-9) or underscore(_) in this field.'),
                     __('First character should be a letter.'),
                 ];
-                throw new \LocalizedException(__(implode(' ', $errorMessageParts), $attributeCode));
+                throw new LocalizedException(__(implode(' ', $errorMessageParts), $attributeCode));
             }
         }
 
