@@ -96,6 +96,20 @@ interface EntityInterface extends \Magento\Framework\Api\CustomAttributesDataInt
     public function getUpdatedAt();
 
     /**
+     * Return entity description.
+     *
+     * @return string
+     */
+    public function getDescription();
+
+    /**
+     * Return entity image.
+     *
+     * @return string
+     */
+    public function getImage();
+
+    /**
      * Set entity id
      *
      * @param int $entityId Entity id.
@@ -157,4 +171,22 @@ interface EntityInterface extends \Magento\Framework\Api\CustomAttributesDataInt
      * @return $this
      */
     public function setStoreId($storeId);
+
+    /**
+     * Set entity description.
+     *
+     * @param string $description Description.
+     *
+     * @return $this
+     */
+    public function setDescription($description);
+
+    /**
+     * Set entity image.
+     *
+     * @param string $image Image.
+     *
+     * @return $this
+     */
+    public function setImage($image);
 }

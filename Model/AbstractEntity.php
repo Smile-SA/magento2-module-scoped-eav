@@ -93,6 +93,22 @@ class AbstractEntity extends \Magento\Catalog\Model\AbstractModel implements Ent
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return $this->_getData(self::DESCRIPTION);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getImage()
+    {
+        return $this->_getData(self::IMAGE);
+    }
+
+    /**
      * Retrieve default attribute set id
      *
      * @return int
@@ -148,6 +164,22 @@ class AbstractEntity extends \Magento\Catalog\Model\AbstractModel implements Ent
     public function setStoreId($storeId)
     {
         $this->setData(self::STORE_ID, $storeId);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDescription($description)
+    {
+        $this->setData(self::DESCRIPTION, $description);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setImage($image)
+    {
+        $this->setData(self::IMAGE, $image);
     }
 
     /**
