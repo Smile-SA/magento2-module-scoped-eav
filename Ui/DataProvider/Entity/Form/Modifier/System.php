@@ -41,10 +41,15 @@ class System extends AbstractModifier
     /**
      * @var array
      */
-    private $entityUrls = [
+    private $defaultEntityUrls = [
         self::KEY_SUBMIT_URL => '*/*/save',
         self::KEY_RELOAD_URL => '*/*/reload',
     ];
+
+    /**
+     * @var array
+     */
+    private $entityUrls;
 
     /**
      * Constructor.
@@ -60,7 +65,7 @@ class System extends AbstractModifier
     ) {
         $this->locator     = $locator;
         $this->urlBuilder  = $urlBuilder;
-        $this->entityUrls  = array_replace_recursive($this->entityUrls, $entityUrls);
+        $this->entityUrls  = $entityUrls;
     }
 
     /**
@@ -76,8 +81,8 @@ class System extends AbstractModifier
         $actionParameters = array_merge($parameters, ['set' => $attributeSetId]);
         $reloadParameters = array_merge($parameters, ['popup' => 1, 'componentJson' => 1, 'prev_set_id' => $attributeSetId]);
 
-        $submitUrl = $this->urlBuilder->getUrl($this->entityUrls[self::KEY_SUBMIT_URL], $actionParameters);
-        $reloadUrl = $this->urlBuilder->getUrl($this->entityUrls[self::KEY_RELOAD_URL], $reloadParameters);
+        $submitUrl = $this->urlBuilder->getUrl($this->getEntityUrl(self::KEY_SUBMIT_URL), $actionParameters);
+        $reloadUrl = $this->urlBuilder->getUrl($this->getEntityUrl(self::KEY_RELOAD_URL), $reloadParameters);
 
         return array_replace_recursive($data, ['config' => [self::KEY_SUBMIT_URL => $submitUrl, self::KEY_RELOAD_URL => $reloadUrl]]);
     }
@@ -88,5 +93,17 @@ class System extends AbstractModifier
     public function modifyMeta(array $meta)
     {
         return $meta;
+    }
+
+    /**
+     * Return entity url by url type.
+     *
+     * @param string $urlType Url type.
+     *
+     * @return string
+     */
+    private function getEntityUrl(string $urlType) : string
+    {
+        return (string) ($this->entityUrls[$urlType] ?? $this->defaultEntityUrls[$urlType]);
     }
 }

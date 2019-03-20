@@ -86,7 +86,6 @@ class RegistryLocator implements LocatorInterface
              throw new NotFoundException(__('Store was not registered'));
         }
 
-
         return $this->store;
     }
 }

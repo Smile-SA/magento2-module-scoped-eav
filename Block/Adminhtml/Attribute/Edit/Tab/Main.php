@@ -69,6 +69,12 @@ class Main extends \Magento\Eav\Block\Adminhtml\Attribute\Edit\Main\AbstractMain
         $attributeObject = $this->getAttributeObject();
 
         $form     = $this->getForm();
+
+        // Change Frontend input field name.
+        /** @var \Magento\Framework\Data\Form\Element\Select $element */
+        $element = $form->getElement('frontend_input');
+        $element->setLabel(__('Input Type'));
+
         $fieldset = $form->getElement('base_fieldset');
 
         $fieldset->addField(

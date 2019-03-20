@@ -38,7 +38,6 @@ class Save extends \Smile\ScopedEav\Controller\Adminhtml\AbstractSet
      */
     private $resultJsonFactory;
 
-
     /**
      * Constructor.
      *
@@ -119,7 +118,7 @@ class Save extends \Smile\ScopedEav\Controller\Adminhtml\AbstractSet
      *
      * @param \Magento\Eav\Api\Data\AttributeSetInterface $attributeSet Attribute set.
      *
-     * @return \Magento\Framework\Controller\Result\Redirect
+     * @return \Magento\Framework\App\ResponseInterface
      */
     private function getNewAttributeSetResponse($attributeSet)
     {

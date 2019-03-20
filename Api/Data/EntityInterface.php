@@ -38,6 +38,10 @@ interface EntityInterface extends \Magento\Framework\Api\CustomAttributesDataInt
     const CREATED_AT = 'created_at';
 
     const UPDATED_AT = 'updated_at';
+
+    const IMAGE = 'image';
+
+    const DESCRIPTION = 'description';
     /**#@-*/
 
     /**
@@ -90,6 +94,20 @@ interface EntityInterface extends \Magento\Framework\Api\CustomAttributesDataInt
      * @return string
      */
     public function getUpdatedAt();
+
+    /**
+     * Return entity description.
+     *
+     * @return string
+     */
+    public function getDescription();
+
+    /**
+     * Return entity image.
+     *
+     * @return string
+     */
+    public function getImage();
 
     /**
      * Set entity id
@@ -153,4 +171,22 @@ interface EntityInterface extends \Magento\Framework\Api\CustomAttributesDataInt
      * @return $this
      */
     public function setStoreId($storeId);
+
+    /**
+     * Set entity description.
+     *
+     * @param string $description Description.
+     *
+     * @return $this
+     */
+    public function setDescription($description);
+
+    /**
+     * Set entity image.
+     *
+     * @param string $image Image.
+     *
+     * @return $this
+     */
+    public function setImage($image);
 }
