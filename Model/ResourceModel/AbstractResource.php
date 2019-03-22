@@ -15,6 +15,8 @@
 
 namespace Smile\ScopedEav\Model\ResourceModel;
 
+use Magento\Eav\Model\Entity\Context;
+
 /**
  * Scoped EAV entity resource model.
  *
@@ -22,7 +24,7 @@ namespace Smile\ScopedEav\Model\ResourceModel;
  * @package  Smile\ScopedEav
  * @author   Aurelien FOUCRET <aurelien.foucret@smile.fr>
  */
-class AbstractResource extends \Magento\Catalog\Model\ResourceModel\AbstractResource
+class AbstractResource extends \Magento\Eav\Model\Entity\AbstractEntity
 {
     /**
      * @var \Magento\Framework\EntityManager\EntityManager
@@ -48,8 +50,6 @@ class AbstractResource extends \Magento\Catalog\Model\ResourceModel\AbstractReso
      * AbstractResource constructor.
      *
      * @param \Magento\Eav\Model\Entity\Context                         $context           Context.
-     * @param \Magento\Store\Model\StoreManagerInterface                $storeManager      Store manager.
-     * @param \Magento\Catalog\Model\Factory                            $modelFactory      Model factory.
      * @param \Magento\Framework\EntityManager\EntityManager            $entityManager     Entity manager.
      * @param \Magento\Eav\Model\Entity\TypeFactory                     $typeFactory       Entity type factory.
      * @param \Magento\Eav\Model\Entity\Attribute\SetFactory            $setFactory        Attribute set factory.
@@ -57,20 +57,17 @@ class AbstractResource extends \Magento\Catalog\Model\ResourceModel\AbstractReso
      * @param array                                                     $data              Additional data.
      */
     public function __construct(
-        \Magento\Eav\Model\Entity\Context $context,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Catalog\Model\Factory $modelFactory,
+        Context $context,
         \Magento\Framework\EntityManager\EntityManager $entityManager,
         \Magento\Eav\Model\Entity\TypeFactory $typeFactory,
         \Magento\Eav\Model\Entity\Attribute\SetFactory $setFactory,
         \Smile\ScopedEav\Model\Entity\Attribute\DefaultAttributes $defaultAttributes,
         array $data = []
     ) {
-        parent::__construct($context, $storeManager, $modelFactory, $data);
-
-        $this->entityManager     = $entityManager;
-        $this->typeFactory       = $typeFactory;
-        $this->setFactory        = $setFactory;
+        parent::__construct($context, $data);
+        $this->entityManager = $entityManager;
+        $this->typeFactory = $typeFactory;
+        $this->setFactory = $setFactory;
         $this->defaultAttributes = $defaultAttributes;
     }
 
@@ -113,6 +110,7 @@ class AbstractResource extends \Magento\Catalog\Model\ResourceModel\AbstractReso
      */
     public function save(\Magento\Framework\Model\AbstractModel $object)
     {
+        $this->loadAllAttributes();
         $this->entityManager->save($object);
 
         return $this;
