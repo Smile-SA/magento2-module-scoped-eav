@@ -363,11 +363,11 @@ class Eav extends AbstractModifier
     /**
      * Return previous entity attributes.
      *
-     * @return int
+     * @return \Smile\ScopedEav\Api\Data\AttributeInterface[]
      */
     private function getPreviousSetAttributes()
     {
-        return $this->entityAttributes->getAttributes($this->locator->getEntity(), $this->getPreviousSetId());
+        return $this->eavHelper->getAttributes($this->locator->getEntity(), $this->getPreviousSetId());
     }
 
     /**
