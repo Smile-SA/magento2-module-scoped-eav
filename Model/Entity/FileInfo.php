@@ -16,6 +16,7 @@ namespace Smile\ScopedEav\Model\Entity;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\File\Mime;
 use Magento\Framework\Filesystem;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Scoped EAV file information.
@@ -34,15 +35,27 @@ class FileInfo extends \Magento\Catalog\Model\Category\FileInfo
     private $filesystem;
 
     /**
+     * Store manager
+     *
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
+    private $storeManager;
+
+    /**
      * FileInfo constructor.
      *
      * @param Filesystem $filesystem Filesystem.
      * @param Mime       $mime       File mine.
+     * @param StoreManagerInterface $storeManager
      */
-    public function __construct(Filesystem $filesystem, Mime $mime)
+    public function __construct(
+        Filesystem $filesystem,
+        Mime $mime,
+        StoreManagerInterface $storeManager)
     {
-        parent::__construct($filesystem, $mime);
+        parent::__construct($filesystem, $mime, $storeManager);
         $this->filesystem = $filesystem;
+        $this->storeManager = $storeManager;
     }
 
     /**
