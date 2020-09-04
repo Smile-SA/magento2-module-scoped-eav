@@ -21,7 +21,7 @@ use Magento\Ui\Component\Form\Field;
 use Magento\Ui\Component\Container;
 use Smile\ScopedEav\Api\Data\AttributeInterface;
 use Magento\Ui\Component\Form\Element\Wysiwyg as WysiwygElement;
-use \Smile\ScopedEav\Model\Entity\FileInfo;
+use Magento\Catalog\Model\Category\FileInfo;
 
 /**
  * Scoped EAV attribute form modifier.

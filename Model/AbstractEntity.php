@@ -208,8 +208,7 @@ class AbstractEntity extends \Magento\Catalog\Model\AbstractModel implements Ent
                     \Magento\Framework\UrlInterface::URL_TYPE_MEDIA
                 );
                 $url = $mediaBaseUrl
-                    . ltrim(\Smile\ScopedEav\Model\Entity\FileInfo::ENTITY_MEDIA_PATH, '/')
-                    . '/'
+                    . 'scoped_eav/entity/'
                     . $image;
             }
         }
