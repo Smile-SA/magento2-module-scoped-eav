@@ -14,7 +14,9 @@
 
 namespace Smile\ScopedEav\Controller\Adminhtml\Attribute;
 
+use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Serialize\Serializer\FormData;
 use Zend\Validator\Regex;
 use Zend\Validator\RegexFactory;
 
@@ -38,22 +40,31 @@ class Save extends \Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute
     private $regexFactory;
 
     /**
+     * @var FormData|null
+     */
+    private $formDataSerializer;
+
+    /**
      * Constructor.
      *
      * @param \Magento\Backend\App\Action\Context $context          Context.
      * @param \Smile\ScopedEav\Helper\Data        $entityHelper     Entity helper.
      * @param BuilderInterface                    $attributeBuilder Attribute builder.
      * @param RegexFactory                        $regexFactory     Regexp validator factory.
+     * @param FormData|null                       $formDataSerializer
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         \Smile\ScopedEav\Helper\Data $entityHelper,
         BuilderInterface $attributeBuilder,
-        RegexFactory $regexFactory
+        RegexFactory $regexFactory,
+        FormData $formDataSerializer = null
     ) {
         parent::__construct($context, $entityHelper, $attributeBuilder);
         $this->entityHelper = $entityHelper;
         $this->regexFactory = $regexFactory;
+        $this->formDataSerializer = $formDataSerializer
+            ?: ObjectManager::getInstance()->get(FormData::class);
     }
 
     /**
@@ -88,7 +99,21 @@ class Save extends \Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute
      */
     private function addPostData(\Smile\ScopedEav\Api\Data\AttributeInterface $attribute)
     {
-        $data = array_filter($this->getRequest()->getParams());
+        try {
+            $optionData = $this->formDataSerializer
+                ->unserialize($this->getRequest()->getParam('serialized_options', '[]'));
+        } catch (\InvalidArgumentException $e) {
+            $message = __("The attribute couldn't be saved due to an error. Verify your information and try again. "
+                . "If the error persists, please try again later.");
+            $this->messageManager->addErrorMessage($message);
+            return $this->returnResult('catalog/*/edit', ['_current' => true], ['error' => true]);
+        }
+
+        $data = $this->getRequest()->getPostValue();
+        $data = array_replace_recursive(
+            $data,
+            $optionData
+        );
 
         $frontendInput = isset($data['frontend_input']) ? $data['frontend_input'] : $attribute->getFrontendInput();
 
