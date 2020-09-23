@@ -44,9 +44,10 @@ class Image extends \Magento\Catalog\Model\Category\Attribute\Backend\Image
         \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\Filesystem $filesystem,
         \Magento\MediaStorage\Model\File\UploaderFactory $fileUploaderFactory,
+        \Magento\Store\Model\StoreManagerInterface $storeManager = null,
         \Magento\Catalog\Model\ImageUploader $imageUploader = null
     ) {
-        parent::__construct($logger, $filesystem, $fileUploaderFactory);
+        parent::__construct($logger, $filesystem, $fileUploaderFactory, $storeManager, $imageUploader);
         $this->imageUploader = $imageUploader;
     }
 
