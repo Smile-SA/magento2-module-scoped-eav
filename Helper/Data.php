@@ -119,6 +119,7 @@ class Data extends AbstractHelper
      */
     public function getAttributeBackendModelByInputType($inputType)
     {
+        if ($inputType == 'image') return 'Smile\ScopedEav\Model\Entity\Attribute\Backend\Image';
         return $this->productHelper->getAttributeBackendModelByInputType($inputType);
     }
 

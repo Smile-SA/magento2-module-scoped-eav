@@ -120,7 +120,7 @@ class Save extends \Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute
         if (!$attribute->getId()) {
             $data['attribute_code']  = $this->getAttributeCode();
             $data['is_user_defined'] = true;
-            $data['backend_type']    = $attribute->getBackendTypeByInput($data['frontend_input']);
+            $data['backend_type']    = ($data['frontend_input'] == 'image') ? 'varchar' : $attribute->getBackendTypeByInput($data['frontend_input']);
             $data['source_model']    = $this->entityHelper->getAttributeSourceModelByInputType($data['frontend_input']);
             $data['backend_model']   = $this->entityHelper->getAttributeBackendModelByInputType($data['frontend_input']);
         }
