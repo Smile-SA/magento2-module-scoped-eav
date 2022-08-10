@@ -78,11 +78,11 @@ class Save extends \Smile\ScopedEav\Controller\Adminhtml\AbstractSet
         $attributeSet = $this->getAttributeSet();
 
         try {
-            $attributeSet->setAttributeSetName($this->filterManager->stripTags($this->getRequest()->getParam('attribute_set_name')));
+            $attributeSet->setAttributeSetName($this->filterManager->stripTags((string) $this->getRequest()->getParam('attribute_set_name')));
 
             if ($isNewSet === false) {
                 $data = $this->jsonHelper->jsonDecode($this->getRequest()->getPost('data'));
-                $data['attribute_set_name'] = $this->filterManager->stripTags($data['attribute_set_name']);
+                $data['attribute_set_name'] = $this->filterManager->stripTags((string) $data['attribute_set_name']);
                 $attributeSet->organizeData($data);
             }
 

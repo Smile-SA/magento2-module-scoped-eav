@@ -40,7 +40,7 @@ class EavValidationRules
             $rules['required-entry'] = true;
         }
 
-        $validationClasses = explode(' ', $attribute->getFrontendClass());
+        $validationClasses = explode(' ', (string) $attribute->getFrontendClass());
 
         foreach ($validationClasses as $class) {
             if (preg_match('/^maximum-length-(\d+)$/', $class, $matches)) {
