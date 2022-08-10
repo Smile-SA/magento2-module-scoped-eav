@@ -1,30 +1,15 @@
 <?xml version="1.0"?>
-<!--
-/**
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade Smile Elastic Suite to newer
- * versions in the future.
- *
- *
- * @category  Smile
- * @package   Smile\ScopedEav
- * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
- * @copyright 2017 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
- -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
 
     <update handle="formkey" />
 
     <body>
         <referenceContainer name="content">
-            <block class="Smile\ScopedEav\Block\Adminhtml\Set\Toolbar\Main" 
-                   name="adminhtml.entity.set.container" 
+            <block class="Smile\ScopedEav\Block\Adminhtml\Set\Toolbar\Main"
+                   name="adminhtml.entity.set.container"
                    template="set/toolbar/main.phtml">
-                <block class="Magento\Backend\Block\Widget\Grid" 
-                       name="adminhtml.catalog.product.set.grid" 
+                <block class="Magento\Backend\Block\Widget\Grid"
+                       name="adminhtml.catalog.product.set.grid"
                        as="grid">
                     <arguments>
                         <argument name="id" xsi:type="string">setGrid</argument>
@@ -33,8 +18,8 @@
                         <argument name="default_dir" xsi:type="string">ASC</argument>
                         <argument name="save_parameters_in_session" xsi:type="string">1</argument>
                     </arguments>
-                    <block class="Magento\Backend\Block\Widget\Grid\ColumnSet" 
-                           name="adminhtml.catalog.product.set.grid.columnSet" 
+                    <block class="Magento\Backend\Block\Widget\Grid\ColumnSet"
+                           name="adminhtml.catalog.product.set.grid.columnSet"
                            as="grid.columnSet">
                         <arguments>
                             <argument name="id" xsi:type="string">setGrid</argument>
