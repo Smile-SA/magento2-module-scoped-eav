@@ -1,24 +1,11 @@
 <?php
-/**
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\ScopedEav
- * @author    Maxime LECLERCQ <maxime.leclercq@smile.fr>
- * @copyright 2019 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
+
+declare(strict_types=1);
+
 namespace Smile\ScopedEav\Model\Entity\Attribute\Backend;
 
 /**
  * Scoped EAV image backend model.
- *
- * @category Smile
- * @package  Smile\ScopedEav
- * @author   Maxime LECLERCQ <maxime.leclercq@smile.fr>
  */
 class Image extends \Magento\Catalog\Model\Category\Attribute\Backend\Image
 {
