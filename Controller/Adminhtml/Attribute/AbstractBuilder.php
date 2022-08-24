@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Controller\Adminhtml\Attribute;
 
+use Magento\Eav\Model\Config;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Registry;
+use Smile\ScopedEav\Api\Data\AttributeInterface;
 
 /**
  * Scoped entity attribute builder used in controllers.
@@ -13,24 +17,24 @@ use Magento\Framework\Exception\NoSuchEntityException;
 abstract class AbstractBuilder implements BuilderInterface
 {
     /**
-     * @var \Magento\Eav\Model\Config
+     * @var Config
      */
     private $eavConfig;
 
     /**
-     * @var \Magento\Framework\Registry
+     * @var Registry
      */
     private $registry;
 
     /**
      * Constructor.
      *
-     * @param \Magento\Framework\Registry $registry  Registry.
-     * @param \Magento\Eav\Model\Config   $eavConfig EAV configuration.
+     * @param Registry $registry  Registry.
+     * @param Config   $eavConfig EAV configuration.
      */
     public function __construct(
-        \Magento\Framework\Registry $registry,
-        \Magento\Eav\Model\Config $eavConfig
+        Registry $registry,
+        Config $eavConfig
     ) {
         $this->eavConfig = $eavConfig;
         $this->registry  = $registry;
@@ -39,7 +43,7 @@ abstract class AbstractBuilder implements BuilderInterface
     /**
      * {@inheritDoc}
      */
-    public function build(\Magento\Framework\App\RequestInterface $request)
+    public function build(RequestInterface $request): AttributeInterface
     {
         $attribute = $this->registry->registry('entity_attribute');
 
@@ -81,12 +85,12 @@ abstract class AbstractBuilder implements BuilderInterface
      *
      * @return mixed
      */
-    abstract protected function getAttributeRepository();
+    abstract protected function getAttributeRepository(): mixed;
 
     /**
      * Entity type code.
      *
      * @return string
      */
-    abstract protected function getEntityTypeCode();
+    abstract protected function getEntityTypeCode(): string;
 }

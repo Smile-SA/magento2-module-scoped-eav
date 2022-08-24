@@ -4,13 +4,21 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Controller\Adminhtml;
 
+use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
+use Magento\Backend\Model\View\Result\Page;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Phrase;
+use Smile\ScopedEav\Api\Data\AttributeInterface;
+use Smile\ScopedEav\Helper\Data;
+
 /**
  * Scoped EAV attribute admin abstract controller.
  */
-abstract class AbstractAttribute extends \Magento\Backend\App\Action
+abstract class AbstractAttribute extends Action
 {
     /**
-     * @var \Smile\ScopedEav\Helper\Data
+     * @var Data
      */
     private $entityHelper;
 
@@ -22,13 +30,13 @@ abstract class AbstractAttribute extends \Magento\Backend\App\Action
     /**
      * Constructor.
      *
-     * @param \Magento\Backend\App\Action\Context $context          Context.
-     * @param \Smile\ScopedEav\Helper\Data        $entityHelper     Entity helper.
-     * @param Attribute\BuilderInterface          $attributeBuilder Attribute builder.
+     * @param Context $context Context.
+     * @param Data $entityHelper Entity helper.
+     * @param Attribute\BuilderInterface $attributeBuilder Attribute builder.
      */
     public function __construct(
-        \Magento\Backend\App\Action\Context $context,
-        \Smile\ScopedEav\Helper\Data $entityHelper,
+        Context $context,
+        Data $entityHelper,
         Attribute\BuilderInterface $attributeBuilder
     ) {
         parent::__construct($context);
@@ -40,9 +48,9 @@ abstract class AbstractAttribute extends \Magento\Backend\App\Action
     /**
      * Return current attribute.
      *
-     * @return \Smile\ScopedEav\Api\Data\AttributeInterface
+     * @return AttributeInterface
      */
-    protected function getAttribute()
+    protected function getAttribute(): AttributeInterface
     {
         return $this->attributeBuilder->build($this->getRequest());
     }
@@ -54,7 +62,7 @@ abstract class AbstractAttribute extends \Magento\Backend\App\Action
      *
      * @return string
      */
-    protected function generateCode($label)
+    protected function generateCode($label): string
     {
         return $this->entityHelper->generateAttributeCodeFromLabel($label);
     }
@@ -62,12 +70,13 @@ abstract class AbstractAttribute extends \Magento\Backend\App\Action
     /**
      * Create the page.
      *
-     * @param \Magento\Framework\Phrase|null $title Page title.
+     * @param Phrase|string $title Page title.
      *
-     * @return \Magento\Backend\Model\View\Result\Page
+     * @return Page
      */
-    protected function createActionPage($title = null)
+    protected function createActionPage($title = null): Page
     {
+        /** @var Page $resultPage */
         $resultPage = $this->_view->getPage();
 
         $resultPage->initLayout();
@@ -85,9 +94,9 @@ abstract class AbstractAttribute extends \Magento\Backend\App\Action
      *
      * @param string $message Error message.
      *
-     * @return \Magento\Framework\App\ResponseInterface
+     * @return ResponseInterface
      */
-    protected function getRedirectError($message)
+    protected function getRedirectError(string $message): ResponseInterface
     {
         $this->messageManager->addErrorMessage($message);
 

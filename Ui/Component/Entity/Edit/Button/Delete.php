@@ -4,26 +4,30 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Ui\Component\Entity\Edit\Button;
 
+use Magento\Framework\Escaper;
+use Magento\Framework\Registry;
+use Magento\Framework\View\Element\UiComponent\Context;
+
 /**
  * Entity edit delete button.
  */
 class Delete extends Generic
 {
     /**
-     * @var \Magento\Framework\Escaper
+     * @var Escaper
      */
     private $jsEscape;
 
     /**
      *
-     * @param \Magento\Framework\View\Element\UiComponent\Context $context  Context.
-     * @param \Magento\Framework\Registry                         $registry Registry.
-     * @param \Magento\Framework\Escaper                          $jsEscape JS Escape.
+     * @param Context $context  Context.
+     * @param Registry $registry Registry.
+     * @param Escaper $jsEscape JS Escape.
      */
     public function __construct(
-        \Magento\Framework\View\Element\UiComponent\Context $context,
-        \Magento\Framework\Registry $registry,
-        \Magento\Framework\Escaper $jsEscape
+        Context $context,
+        Registry $registry,
+        Escaper $jsEscape
     ) {
         parent::__construct($context, $registry);
         $this->jsEscape = $jsEscape;
@@ -53,7 +57,7 @@ class Delete extends Generic
      *
      * @return string
      */
-    private function getDeleteUrl()
+    private function getDeleteUrl(): string
     {
         return $this->getUrl('*/*/delete', ['id' => $this->getEntity()->getId()]);
     }

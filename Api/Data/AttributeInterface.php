@@ -30,12 +30,12 @@ interface AttributeInterface extends \Magento\Eav\Api\Data\AttributeInterface
      *
      * @return string|null
      */
-    public function getScope();
+    public function getScope(): ?string;
 
     /**
      * Return is attribute global as int.
      *
-     * @return integer
+     * @return int|string
      */
     public function getIsGlobal();
 
@@ -46,35 +46,35 @@ interface AttributeInterface extends \Magento\Eav\Api\Data\AttributeInterface
      *
      * @return $this
      */
-    public function setScope($scope);
+    public function setScope(string $scope): self;
 
     /**
      * Set is_global value.
      *
-     * @param integer $isGlobal Attribute scope as int.
+     * @param int $isGlobal Attribute scope as int.
      *
      * @return $this
      */
-    public function setIsGlobal($isGlobal);
+    public function setIsGlobal(int $isGlobal): self;
 
     /**
      * Retrieve attribute is global scope flag
      *
      * @return bool
      */
-    public function isScopeGlobal();
+    public function isScopeGlobal(): bool;
 
     /**
      * Retrieve attribute is website scope website
      *
      * @return bool
      */
-    public function isScopeWebsite();
+    public function isScopeWebsite(): bool;
 
     /**
      * Retrieve attribute is store scope flag
      *
      * @return bool
      */
-    public function isScopeStore();
+    public function isScopeStore(): bool;
 }

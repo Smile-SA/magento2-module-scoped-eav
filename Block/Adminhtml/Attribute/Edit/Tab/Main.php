@@ -4,10 +4,20 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Block\Adminhtml\Attribute\Edit\Tab;
 
+use Magento\Backend\Block\Template\Context;
+use Magento\Config\Model\Config\Source\YesnoFactory;
+use Magento\Eav\Block\Adminhtml\Attribute\Edit\Main\AbstractMain;
+use Magento\Eav\Block\Adminhtml\Attribute\PropertyLocker;
+use Magento\Eav\Helper\Data;
+use Magento\Eav\Model\Adminhtml\System\Config\Source\InputtypeFactory;
+use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
+use Magento\Framework\Data\FormFactory;
+use Magento\Framework\Registry;
+
 /**
  * Scoped entity attribute general properties form.
  */
-class Main extends \Magento\Eav\Block\Adminhtml\Attribute\Edit\Main\AbstractMain
+class Main extends AbstractMain
 {
     /**
      * @var string[]
@@ -17,25 +27,24 @@ class Main extends \Magento\Eav\Block\Adminhtml\Attribute\Edit\Main\AbstractMain
     /**
      * Constructor.
      *
-     * @param \Magento\Backend\Block\Template\Context                            $context                Context.
-     * @param \Magento\Framework\Registry                                        $registry               Registry.
-     * @param \Magento\Framework\Data\FormFactory                                $formFactory            Form factory
-     * @param \Magento\Eav\Helper\Data                                           $eavData                EAV helper.
-     * @param \Magento\Config\Model\Config\Source\YesnoFactory                   $yesnoFactory           Yes/No source factory.
-     * @param \Magento\Eav\Model\Adminhtml\System\Config\Source\InputtypeFactory $inputTypeFactory       Form input type factory.
-     * @param \Magento\Eav\Block\Adminhtml\Attribute\PropertyLocker              $propertyLocker         Form property locker.
-     * @param array                                                              $disableScopeChangeList List of attribute scope can
-     *                                                                                                   not be changed.
-     * @param array                                                              $data                   Additional data.
+     * @param Context $context Context.
+     * @param Registry $registry Registry.
+     * @param FormFactory $formFactory Form factory
+     * @param Data $eavData EAV helper.
+     * @param YesnoFactory $yesnoFactory Yes/No source factory.
+     * @param InputtypeFactory $inputTypeFactory Form input type factory.
+     * @param PropertyLocker $propertyLocker Form property locker.
+     * @param array $disableScopeChangeList List of attribute scope can not be changed.
+     * @param array $data Additional data.
      */
     public function __construct(
-        \Magento\Backend\Block\Template\Context $context,
-        \Magento\Framework\Registry $registry,
-        \Magento\Framework\Data\FormFactory $formFactory,
-        \Magento\Eav\Helper\Data $eavData,
-        \Magento\Config\Model\Config\Source\YesnoFactory $yesnoFactory,
-        \Magento\Eav\Model\Adminhtml\System\Config\Source\InputtypeFactory $inputTypeFactory,
-        \Magento\Eav\Block\Adminhtml\Attribute\PropertyLocker $propertyLocker,
+        Context $context,
+        Registry $registry,
+        FormFactory $formFactory,
+        Data $eavData,
+        YesnoFactory $yesnoFactory,
+        InputtypeFactory $inputTypeFactory,
+        PropertyLocker $propertyLocker,
         array $disableScopeChangeList = [],
         array $data = []
     ) {
@@ -48,7 +57,7 @@ class Main extends \Magento\Eav\Block\Adminhtml\Attribute\Edit\Main\AbstractMain
      *
      * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
-    protected function _prepareForm()
+    protected function _prepareForm(): self
     {
         parent::_prepareForm();
 
@@ -98,12 +107,12 @@ class Main extends \Magento\Eav\Block\Adminhtml\Attribute\Edit\Main\AbstractMain
      *
      * @return \Magento\Framework\Phrase[]
      */
-    private function getAttributeScopes()
+    private function getAttributeScopes(): array
     {
         $scopes = [
-            \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_STORE => __('Store View'),
-            \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_WEBSITE => __('Website'),
-            \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_GLOBAL => __('Global'),
+            ScopedAttributeInterface::SCOPE_STORE => __('Store View'),
+            ScopedAttributeInterface::SCOPE_WEBSITE => __('Website'),
+            ScopedAttributeInterface::SCOPE_GLOBAL => __('Global'),
         ];
 
         return $scopes;

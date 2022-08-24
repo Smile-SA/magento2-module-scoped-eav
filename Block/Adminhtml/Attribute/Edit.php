@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Block\Adminhtml\Attribute;
 
+use Magento\Backend\Block\Widget\Context;
+use Magento\Backend\Block\Widget\Form\Container;
+use Magento\Framework\Registry;
+
 /**
  * Entity attribute edit block.
  *
  * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  */
-class Edit extends \Magento\Backend\Block\Widget\Form\Container
+class Edit extends Container
 {
     /**
      * @var string
@@ -29,20 +33,20 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
     /**
      * Core registry
      *
-     * @var \Magento\Framework\Registry
+     * @var Registry
      */
     private $coreRegistry = null;
 
     /**
      * Constructor.
      *
-     * @param \Magento\Backend\Block\Widget\Context $context  Block context.
-     * @param \Magento\Framework\Registry           $registry Registry.
-     * @param array                                 $data     Additional data.
+     * @param Context $context  Block context.
+     * @param Registry $registry Registry.
+     * @param array $data Additional data.
      */
     public function __construct(
-        \Magento\Backend\Block\Widget\Context $context,
-        \Magento\Framework\Registry $registry,
+        Context $context,
+        Registry $registry,
         array $data = []
     ) {
         $this->coreRegistry = $registry;
@@ -63,7 +67,7 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
     /**
      * {@inheritDoc}
      */
-    public function getHeaderText()
+    public function getHeaderText(): string
     {
         $headerText = __('New Attribute');
 
@@ -83,7 +87,7 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
      *
      * @return string
      */
-    public function getValidationUrl()
+    public function getValidationUrl(): string
     {
         return $this->getUrl('*/*/validate', ['_current' => true]);
     }
@@ -93,7 +97,7 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
      *
      * @return string
      */
-    public function getSaveUrl()
+    public function getSaveUrl(): string
     {
         return $this->getUrl('*/*/save', ['_current' => true, 'back' => null]);
     }

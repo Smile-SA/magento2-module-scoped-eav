@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Smile\ScopedEav\Model\Locator;
 
 use Magento\Framework\Exception\NotFoundException;
+use Magento\Framework\Registry;
+use Magento\Store\Api\Data\StoreInterface;
+use Smile\ScopedEav\Api\Data\EntityInterface;
 
 /**
  * Adminhtml entity locator implementation.
@@ -13,28 +16,28 @@ class RegistryLocator implements LocatorInterface
 {
 
     /**
-     * @var \Magento\Framework\Registry
+     * @var Registry
      */
     private $registry;
 
     /**
      *
-     * @var \Smile\ScopedEav\Api\Data\EntityInterface
+     * @var EntityInterface
      */
     private $entity;
 
     /**
      *
-     * @var \Magento\Store\Api\Data\StoreInterface
+     * @var StoreInterface
      */
     private $store;
 
     /**
      * Constructor.
      *
-     * @param \Magento\Framework\Registry $registry Registry.
+     * @param Registry $registry Registry.
      */
-    public function __construct(\Magento\Framework\Registry $registry)
+    public function __construct(Registry $registry)
     {
         $this->registry = $registry;
     }
@@ -44,7 +47,7 @@ class RegistryLocator implements LocatorInterface
      *
      * @throws NotFoundException
      */
-    public function getEntity()
+    public function getEntity(): EntityInterface
     {
         if (null === $this->entity) {
             $this->entity = $this->registry->registry('current_entity');
@@ -62,7 +65,7 @@ class RegistryLocator implements LocatorInterface
      *
      * @throws NotFoundException
      */
-    public function getStore()
+    public function getStore(): StoreInterface
     {
         if (null === $this->store) {
             $this->store = $this->registry->registry('current_store');

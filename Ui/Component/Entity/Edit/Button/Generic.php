@@ -4,32 +4,37 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Ui\Component\Entity\Edit\Button;
 
+use Magento\Framework\Registry;
+use Magento\Framework\View\Element\UiComponent\Context;
+use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
+use Smile\ScopedEav\Api\Data\EntityInterface;
+
 /**
  * Entity edit generic button.
  */
-class Generic implements \Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface
+class Generic implements ButtonProviderInterface
 {
     /**
-     * @var \Magento\Framework\View\Element\UiComponent\Context
+     * @var Context
      */
     private $context;
 
     /**
      * Registry
      *
-     * @var \Magento\Framework\Registry
+     * @var Registry
      */
     private $registry;
 
     /**
      * Constructor.
      *
-     * @param \Magento\Framework\View\Element\UiComponent\Context $context  Context.
-     * @param \Magento\Framework\Registry                         $registry Registry.
+     * @param Context $context  Context.
+     * @param Registry                         $registry Registry.
      */
     public function __construct(
-        \Magento\Framework\View\Element\UiComponent\Context $context,
-        \Magento\Framework\Registry $registry
+        Context $context,
+        Registry $registry
     ) {
         $this->context = $context;
         $this->registry = $registry;
@@ -43,7 +48,7 @@ class Generic implements \Magento\Framework\View\Element\UiComponent\Control\But
      *
      * @return string
      */
-    public function getUrl($route = '', $params = [])
+    public function getUrl(string $route = '', array $params = []): string
     {
         return $this->context->getUrl($route, $params);
     }
@@ -51,9 +56,9 @@ class Generic implements \Magento\Framework\View\Element\UiComponent\Control\But
     /**
      * Get current entity.
      *
-     * @return \Smile\ScopedEav\Api\Data\EntityInterface
+     * @return EntityInterface
      */
-    public function getEntity()
+    public function getEntity(): EntityInterface
     {
         return $this->registry->registry('current_entity');
     }

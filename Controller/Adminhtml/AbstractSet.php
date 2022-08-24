@@ -4,30 +4,39 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Controller\Adminhtml;
 
+use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
+use Magento\Backend\Model\View\Result\Page;
+use Magento\Eav\Api\AttributeSetRepositoryInterface;
+use Magento\Eav\Api\Data\AttributeSetInterface;
+use Magento\Eav\Api\Data\AttributeSetInterfaceFactory;
+use Magento\Eav\Model\Config;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Phrase;
+use Magento\Framework\Registry;
 
 /**
  * Scoped EAV entity attribute set admin abstract controller.
  */
-abstract class AbstractSet extends \Magento\Backend\App\Action
+abstract class AbstractSet extends Action
 {
     /**
-     * @var \Magento\Framework\Registry
+     * @var Registry
      */
     private $registry;
 
     /**
-     * @var \Magento\Eav\Api\AttributeSetRepositoryInterface
+     * @var AttributeSetRepositoryInterface
      */
     private $attributeSetRepository;
 
     /**
-     * @var \Magento\Eav\Api\Data\AttributeSetInterfaceFactory
+     * @var AttributeSetInterfaceFactory
      */
     private $attributeSetFactory;
 
     /**
-     * @var \Magento\Eav\Model\Config
+     * @var Config
      */
     private $eavConfig;
 
@@ -39,18 +48,18 @@ abstract class AbstractSet extends \Magento\Backend\App\Action
     /**
      * Constructor.
      *
-     * @param \Magento\Backend\App\Action\Context                $context                Context.
-     * @param \Magento\Framework\Registry                        $registry               Registry.
-     * @param \Magento\Eav\Model\Config                          $eavConfig              EAV config.
-     * @param \Magento\Eav\Api\AttributeSetRepositoryInterface   $attributeSetRepository Attribute set repository.
-     * @param \Magento\Eav\Api\Data\AttributeSetInterfaceFactory $attributeSetFactory    Attribute set factory.
+     * @param Context $context Context.
+     * @param Registry $registry Registry.
+     * @param Config $eavConfig EAV config.
+     * @param AttributeSetRepositoryInterface $attributeSetRepository Attribute set repository.
+     * @param AttributeSetInterfaceFactory $attributeSetFactory Attribute set factory.
      */
     public function __construct(
-        \Magento\Backend\App\Action\Context $context,
-        \Magento\Framework\Registry $registry,
-        \Magento\Eav\Model\Config $eavConfig,
-        \Magento\Eav\Api\AttributeSetRepositoryInterface $attributeSetRepository,
-        \Magento\Eav\Api\Data\AttributeSetInterfaceFactory $attributeSetFactory
+        Context $context,
+        Registry $registry,
+        Config $eavConfig,
+        AttributeSetRepositoryInterface $attributeSetRepository,
+        AttributeSetInterfaceFactory $attributeSetFactory
     ) {
         parent::__construct($context);
         $this->registry               = $registry;
@@ -62,9 +71,9 @@ abstract class AbstractSet extends \Magento\Backend\App\Action
     /**
      * Define in register entity type code as entityType
      *
-     * @return void
+     * @return $this
      */
-    protected function setTypeId()
+    protected function setTypeId(): self
     {
         if ($this->registry->registry('entityType') == null) {
             $entityType = $this->eavConfig->getEntityType($this->entityTypeCode);
@@ -79,7 +88,7 @@ abstract class AbstractSet extends \Magento\Backend\App\Action
      *
      * @return string
      */
-    protected function getTypeId()
+    protected function getTypeId(): string
     {
         if ($this->registry->registry('entityType') == null) {
             $this->setTypeId();
@@ -91,13 +100,13 @@ abstract class AbstractSet extends \Magento\Backend\App\Action
     /**
      * Create the page.
      *
-     * @param \Magento\Framework\Phrase|null $title Page title.
+     * @param Phrase|string $title Page title.
      *
-     * @return \Magento\Backend\Model\View\Result\Page
+     * @return Page
      */
-    protected function createActionPage($title = null)
+    protected function createActionPage($title = null): Page
     {
-        /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
+        /** @var Page $resultPage */
         $resultPage = $this->_view->getPage()->initLayout();
 
         if (!empty($title)) {
@@ -111,9 +120,9 @@ abstract class AbstractSet extends \Magento\Backend\App\Action
     /**
      * Get current attribute set.
      *
-     * @return \Magento\Eav\Api\Data\AttributeSetInterface
+     * @return AttributeSetInterface
      */
-    protected function getAttributeSet()
+    protected function getAttributeSet(): AttributeSetInterface
     {
         $attributeSet = $this->registry->registry('current_attribute_set');
 

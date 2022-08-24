@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Smile\ScopedEav\Controller\Adminhtml\Attribute;
 
 use Magento\Framework\Exception\NoSuchEntityException;
+use Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute;
 
 /**
  * Scoped EAV entity attribute deletion controller.
  */
-class Delete extends \Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute
+class Delete extends AbstractAttribute
 {
     /**
      * {@inheritdoc}

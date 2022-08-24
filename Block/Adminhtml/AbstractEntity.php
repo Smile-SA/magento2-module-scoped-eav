@@ -4,28 +4,31 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Block\Adminhtml;
 
+use Magento\Backend\Block\Widget\Container;
+use Magento\Backend\Block\Widget\Context;
+use Magento\Eav\Model\Config;
 use Magento\Framework\Api\SortOrder;
 
 /**
  * Scoped EAV entity listing main container.
  */
-abstract class AbstractEntity extends \Magento\Backend\Block\Widget\Container
+abstract class AbstractEntity extends Container
 {
     /**
-     * @var \Magento\Eav\Model\Config
+     * @var Config
      */
     private $eavConfig;
 
     /**
      * Constructor.
      *
-     * @param \Magento\Backend\Block\Widget\Context $context   Context
-     * @param \Magento\Eav\Model\Config             $eavConfig EAV config.
-     * @param array                                 $data      Additional data.
+     * @param Context $context Context
+     * @param Config $eavConfig EAV config.
+     * @param array $data Additional data.
      */
     public function __construct(
-        \Magento\Backend\Block\Widget\Context $context,
-        \Magento\Eav\Model\Config $eavConfig,
+        Context $context,
+        Config $eavConfig,
         array $data = []
     ) {
         parent::__construct($context, $data);
@@ -37,7 +40,7 @@ abstract class AbstractEntity extends \Magento\Backend\Block\Widget\Container
      *
      * @return bool
      */
-    public function isSingleStoreMode()
+    public function isSingleStoreMode(): bool
     {
         return $this->_storeManager->isSingleStoreMode();
     }
@@ -68,7 +71,7 @@ abstract class AbstractEntity extends \Magento\Backend\Block\Widget\Container
      *
      * @return array
      */
-    protected function getAddEntityButtonOptions()
+    protected function getAddEntityButtonOptions(): array
     {
         $entityType    = $this->eavConfig->getEntityType($this->getEntityTypeCode());
         $attributeSets = $entityType->getAttributeSetCollection()->addOrder("attribute_set_name", SortOrder::SORT_ASC);
@@ -90,11 +93,11 @@ abstract class AbstractEntity extends \Magento\Backend\Block\Widget\Container
     /**
      * Retrieve entity create url by specified attribute set id.
      *
-     * @param int $attributeSetId Attribute set id.
+     * @param string|int $attributeSetId Attribute set id.
      *
      * @return string
      */
-    protected function getEntityCreateUrl($attributeSetId)
+    protected function getEntityCreateUrl($attributeSetId): string
     {
         return $this->getUrl('*/*/new', ['set' => $attributeSetId]);
     }
@@ -104,5 +107,5 @@ abstract class AbstractEntity extends \Magento\Backend\Block\Widget\Container
      *
      * @return string
      */
-    abstract protected function getEntityTypeCode();
+    abstract protected function getEntityTypeCode(): string;
 }

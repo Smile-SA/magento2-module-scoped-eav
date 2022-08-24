@@ -4,13 +4,20 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Model\Entity\Attribute\Backend;
 
+use Magento\Catalog\Model\ImageUploader;
+use Magento\Framework\DataObject;
+use Magento\Framework\Filesystem;
+use Magento\MediaStorage\Model\File\UploaderFactory;
+use Magento\Store\Model\StoreManagerInterface;
+use Psr\Log\LoggerInterface;
+
 /**
  * Scoped EAV image backend model.
  */
 class Image extends \Magento\Catalog\Model\Category\Attribute\Backend\Image
 {
     /**
-     * @var \Magento\Catalog\Model\ImageUploader
+     * @var ImageUploader
      */
     private $imageUploader;
 
@@ -22,17 +29,17 @@ class Image extends \Magento\Catalog\Model\Category\Attribute\Backend\Image
     /**
      * Image constructor.
      *
-     * @param \Psr\Log\LoggerInterface                         $logger              Logger.
-     * @param \Magento\Framework\Filesystem                    $filesystem          Filesystem.
-     * @param \Magento\MediaStorage\Model\File\UploaderFactory $fileUploaderFactory File uploader factory.
-     * @param \Magento\Catalog\Model\ImageUploader|null        $imageUploader       Image uploader.
+     * @param LoggerInterface $logger Logger.
+     * @param Filesystem $filesystem Filesystem.
+     * @param UploaderFactory $fileUploaderFactory File uploader factory.
+     * @param ImageUploader|null $imageUploader Image uploader.
      */
     public function __construct(
-        \Psr\Log\LoggerInterface $logger,
-        \Magento\Framework\Filesystem $filesystem,
-        \Magento\MediaStorage\Model\File\UploaderFactory $fileUploaderFactory,
-        \Magento\Store\Model\StoreManagerInterface $storeManager = null,
-        \Magento\Catalog\Model\ImageUploader $imageUploader = null
+        LoggerInterface $logger,
+        Filesystem $filesystem,
+        UploaderFactory $fileUploaderFactory,
+        StoreManagerInterface $storeManager = null,
+        ImageUploader $imageUploader = null
     ) {
         parent::__construct($logger, $filesystem, $fileUploaderFactory, $storeManager, $imageUploader);
         $this->imageUploader = $imageUploader;
@@ -41,7 +48,7 @@ class Image extends \Magento\Catalog\Model\Category\Attribute\Backend\Image
     /**
      * Save uploaded file and set its name to category
      *
-     * @param \Magento\Framework\DataObject $object Object model.
+     * @param DataObject $object Object model.
      *
      * @return \Magento\Catalog\Model\Category\Attribute\Backend\Image
      */
@@ -61,7 +68,7 @@ class Image extends \Magento\Catalog\Model\Category\Attribute\Backend\Image
     }
 
     /**
-     * @return \Magento\Catalog\Model\ImageUploader
+     * @return ImageUploader
      */
     private function getImageUploader()
     {
@@ -76,7 +83,7 @@ class Image extends \Magento\Catalog\Model\Category\Attribute\Backend\Image
      *
      * @return string
      */
-    private function getUploadedImageName($value)
+    private function getUploadedImageName(array $value): string
     {
         if (is_array($value) && isset($value[0]['name'])) {
             return $value[0]['name'];
@@ -88,11 +95,11 @@ class Image extends \Magento\Catalog\Model\Category\Attribute\Backend\Image
     /**
      * Check if temporary file is available for new image upload.
      *
-     * @param array $value Attribute value.
+     * @param array|null $value Attribute value.
      *
      * @return bool
      */
-    private function isTmpFileAvailable($value)
+    private function isTmpFileAvailable(?array $value): bool
     {
         return is_array($value) && isset($value[0]['tmp_name']);
     }

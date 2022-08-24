@@ -4,12 +4,19 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Ui\DataProvider\Entity\Form\Modifier;
 
+use Magento\Eav\Api\Data\AttributeGroupInterface;
+use Magento\Framework\App\Request\DataPersistorInterface;
+use Magento\Framework\Exception\FileSystemException;
+use Magento\Framework\Phrase;
+use Magento\Framework\Stdlib\ArrayManager;
 use Magento\Ui\Component\Form\Fieldset;
 use Magento\Ui\Component\Form\Field;
 use Magento\Ui\Component\Container;
 use Smile\ScopedEav\Api\Data\AttributeInterface;
 use Magento\Ui\Component\Form\Element\Wysiwyg as WysiwygElement;
 use Magento\Catalog\Model\Category\FileInfo;
+use Smile\ScopedEav\Model\Locator\LocatorInterface;
+use Smile\ScopedEav\Ui\DataProvider\Entity\Form\EavValidationRules;
 
 /**
  * Scoped EAV attribute form modifier.
@@ -25,22 +32,22 @@ class Eav extends AbstractModifier
     private $eavHelper;
 
     /**
-     * @var \Smile\ScopedEav\Model\Locator\LocatorInterface
+     * @var LocatorInterface
      */
     private $locator;
 
     /**
-     * @var \Magento\Framework\Stdlib\ArrayManager
+     * @var ArrayManager
      */
     private $arrayManager;
 
     /**
-     * @var \Smile\ScopedEav\Ui\DataProvider\Entity\Form\EavValidationRules
+     * @var EavValidationRules
      */
     private $validationRules;
 
     /**
-     * @var \Magento\Framework\App\Request\DataPersistorInterface
+     * @var DataPersistorInterface
      */
     private $dataPersistor;
 
@@ -67,22 +74,22 @@ class Eav extends AbstractModifier
     /**
      * Constructor.
      *
-     * @param Helper\Eav                                                      $eavHelper             EAV helper.
-     * @param \Smile\ScopedEav\Model\Locator\LocatorInterface                 $locator               Entity locator.
-     * @param \Magento\Framework\Stdlib\ArrayManager                          $arrayManager          Array manager.
-     * @param \Smile\ScopedEav\Ui\DataProvider\Entity\Form\EavValidationRules $validationRules       EAV validation rules
-     * @param \Magento\Framework\App\Request\DataPersistorInterface           $dataPersistor         Data persistor.
-     * @param FileInfo                                                        $fileInfo              File information.
-     * @param array                                                           $bannedInputTypes      Input types removed from the form.
-     * @param array                                                           $attributesToEliminate Attribute codes removed from the form.
-     * @param array                                                           $attributesToDisable   Attribute codes to be disabled.
+     * @param Helper\Eav $eavHelper EAV helper.
+     * @param LocatorInterface $locator Entity locator.
+     * @param ArrayManager $arrayManager Array manager.
+     * @param EavValidationRules $validationRules EAV validation rules
+     * @param DataPersistorInterface $dataPersistor Data persistor.
+     * @param FileInfo $fileInfo File information.
+     * @param array $bannedInputTypes Input types removed from the form.
+     * @param array $attributesToEliminate Attribute codes removed from the form.
+     * @param array $attributesToDisable Attribute codes to be disabled.
      */
     public function __construct(
         Helper\Eav $eavHelper,
-        \Smile\ScopedEav\Model\Locator\LocatorInterface $locator,
-        \Magento\Framework\Stdlib\ArrayManager $arrayManager,
-        \Smile\ScopedEav\Ui\DataProvider\Entity\Form\EavValidationRules $validationRules,
-        \Magento\Framework\App\Request\DataPersistorInterface $dataPersistor,
+        LocatorInterface $locator,
+        ArrayManager $arrayManager,
+        EavValidationRules $validationRules,
+        DataPersistorInterface $dataPersistor,
         FileInfo $fileInfo,
         array $bannedInputTypes = [],
         array $attributesToEliminate = [],
@@ -156,7 +163,7 @@ class Eav extends AbstractModifier
      *
      * @return array
      */
-    public function setupAttributeContainerMeta(AttributeInterface $attribute)
+    public function setupAttributeContainerMeta(AttributeInterface $attribute): array
     {
         $containerMeta = $this->arrayManager->set(
             self::META_CONFIG_PATH,
@@ -191,7 +198,7 @@ class Eav extends AbstractModifier
      *
      * @return array
      */
-    public function addContainerChildren(array $attributeContainer, AttributeInterface $attribute, $groupCode, $sortOrder)
+    public function addContainerChildren(array $attributeContainer, AttributeInterface $attribute, string $groupCode, int $sortOrder): array
     {
         foreach ($this->getContainerChildren($attribute, $groupCode, $sortOrder) as $childCode => $child) {
             $attributeContainer['children'][$childCode] = $child;
@@ -215,7 +222,7 @@ class Eav extends AbstractModifier
      *
      * @return array
      */
-    public function getContainerChildren(AttributeInterface $attribute, $groupCode, $sortOrder)
+    public function getContainerChildren(AttributeInterface $attribute, string $groupCode, int $sortOrder): array
     {
         if (!($child = $this->setupAttributeMeta($attribute, $groupCode, $sortOrder))) {
             return [];
@@ -233,7 +240,7 @@ class Eav extends AbstractModifier
      *
      * @return array
      */
-    public function setupAttributeMeta(AttributeInterface $attribute, $groupCode, $sortOrder)
+    public function setupAttributeMeta(AttributeInterface $attribute, string $groupCode, int $sortOrder): array
     {
         $configPath = static::META_CONFIG_PATH;
 
@@ -316,7 +323,7 @@ class Eav extends AbstractModifier
     /**
      * Return current attribute set id
      *
-     * @return int|null
+     * @return int|string
      */
     private function getAttributeSetId()
     {
@@ -326,9 +333,9 @@ class Eav extends AbstractModifier
     /**
      * List of attributes of the form.
      *
-     * @return \Smile\ScopedEav\Api\Data\AttributeInterface[]
+     * @return AttributeInterface[]
      */
-    private function getAttributes()
+    private function getAttributes(): array
     {
         return $this->eavHelper->getAttributes($this->locator->getEntity(), $this->getAttributeSetId());
     }
@@ -338,7 +345,7 @@ class Eav extends AbstractModifier
      *
      * @return int
      */
-    private function getPreviousSetId()
+    private function getPreviousSetId(): int
     {
         return (int) $this->locator->getEntity()->getPrevAttributeSetId();
     }
@@ -346,9 +353,9 @@ class Eav extends AbstractModifier
     /**
      * Return previous entity attributes.
      *
-     * @return \Smile\ScopedEav\Api\Data\AttributeInterface[]
+     * @return AttributeInterface[]
      */
-    private function getPreviousSetAttributes()
+    private function getPreviousSetAttributes(): array
     {
         return $this->eavHelper->getAttributes($this->locator->getEntity(), $this->getPreviousSetId());
     }
@@ -356,9 +363,9 @@ class Eav extends AbstractModifier
     /**
      * List of attribute groups of the form.
      *
-     * @return \Magento\Eav\Api\Data\AttributeGroupInterface[]
+     * @return AttributeGroupInterface[]
      */
-    private function getGroups()
+    private function getGroups(): array
     {
         return $this->eavHelper->getGroups($this->getAttributeSetId());
     }
@@ -371,7 +378,7 @@ class Eav extends AbstractModifier
      *
      * @return array
      */
-    private function getAttributesMeta(array $attributes, $groupCode)
+    private function getAttributesMeta(array $attributes, string $groupCode): array
     {
         $meta = [];
 
@@ -401,7 +408,7 @@ class Eav extends AbstractModifier
      *
      * @param AttributeInterface $attribute Attribute.
      *
-     * @return \Magento\Framework\Phrase|string
+     * @return Phrase|string
      */
     private function getScopeLabel(AttributeInterface $attribute)
     {
@@ -415,7 +422,7 @@ class Eav extends AbstractModifier
      *
      * @return bool
      */
-    private function isScopeGlobal(AttributeInterface $attribute)
+    private function isScopeGlobal(AttributeInterface $attribute): bool
     {
         return $this->eavHelper->isScopeGlobal($attribute);
     }
@@ -427,7 +434,7 @@ class Eav extends AbstractModifier
      *
      * @return bool
      */
-    private function canDisplayUseDefault(AttributeInterface $attribute)
+    private function canDisplayUseDefault(AttributeInterface $attribute): bool
     {
         return $this->eavHelper->canDisplayUseDefault($attribute, $this->locator->getEntity());
     }
@@ -440,7 +447,7 @@ class Eav extends AbstractModifier
      *
      * @return array
      */
-    private function addUseDefaultValueCheckbox(AttributeInterface $attribute, array $meta)
+    private function addUseDefaultValueCheckbox(AttributeInterface $attribute, array $meta): array
     {
         $canDisplayService = $this->canDisplayUseDefault($attribute);
 
@@ -475,7 +482,7 @@ class Eav extends AbstractModifier
      *
      * @return array
      */
-    private function resolvePersistentData(array $data)
+    private function resolvePersistentData(array $data): array
     {
         $persistentData = (array) $this->dataPersistor->get('entity');
         $this->dataPersistor->clear('entity');
@@ -498,7 +505,7 @@ class Eav extends AbstractModifier
      *
      * @return array
      */
-    private function customizeWysiwyg(AttributeInterface $attribute, array $meta)
+    private function customizeWysiwyg(AttributeInterface $attribute, array $meta): array
     {
         if (!$attribute->getIsWysiwygEnabled()) {
             return $meta;
@@ -525,7 +532,7 @@ class Eav extends AbstractModifier
      *
      * @return array
      */
-    private function customizeCheckbox(AttributeInterface $attribute, array $meta)
+    private function customizeCheckbox(AttributeInterface $attribute, array $meta): array
     {
         if ($attribute->getFrontendInput() === 'boolean') {
             $meta['arguments']['data']['config']['prefer'] = 'toggle';
@@ -546,7 +553,7 @@ class Eav extends AbstractModifier
      *
      * @return array
      */
-    private function customizeImage(AttributeInterface $attribute, array $meta)
+    private function customizeImage(AttributeInterface $attribute, array $meta): array
     {
         if ($attribute->getFrontendInput() !== 'image') {
             return $meta;
@@ -567,10 +574,10 @@ class Eav extends AbstractModifier
      * @param AttributeInterface $attribute Attribute.
      * @param string             $value     Attribute value.
      *
-     * @return array
-     * @throws \Magento\Framework\Exception\FileSystemException
+     * @return string|array
+     * @throws FileSystemException
      */
-    private function overrideImageUploaderData(AttributeInterface $attribute, $value)
+    private function overrideImageUploaderData(AttributeInterface $attribute, string $value)
     {
         if ($attribute->getFrontendInput() !== 'image') {
             return $value;

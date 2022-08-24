@@ -4,10 +4,17 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Controller\Adminhtml;
 
+use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
+use Magento\Backend\Model\View\Result\Page;
+use Magento\Framework\Phrase;
+use Magento\Store\Model\StoreManagerInterface;
+use Smile\ScopedEav\Api\Data\EntityInterface;
+
 /**
  * Scoped EAV entity attribute set admin abstract controller.
  */
-abstract class AbstractEntity extends \Magento\Backend\App\Action
+abstract class AbstractEntity extends Action
 {
     /**
      * @var Entity\BuilderInterface
@@ -15,21 +22,21 @@ abstract class AbstractEntity extends \Magento\Backend\App\Action
     protected $entityBuilder;
 
     /**
-     * @var \Magento\Store\Model\StoreManagerInterface
+     * @var StoreManagerInterface
      */
     protected $storeManager;
 
     /**
      * Constructor.
      *
-     * @param \Magento\Backend\App\Action\Context        $context       Context.
-     * @param Entity\BuilderInterface                    $entityBuilder Entity builder.
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager  Store manager.
+     * @param Context $context Context.
+     * @param Entity\BuilderInterface $entityBuilder Entity builder.
+     * @param StoreManagerInterface $storeManager Store manager.
      */
     public function __construct(
-        \Magento\Backend\App\Action\Context $context,
+        Context $context,
         Entity\BuilderInterface $entityBuilder,
-        \Magento\Store\Model\StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager
     ) {
         parent::__construct($context);
 
@@ -40,13 +47,13 @@ abstract class AbstractEntity extends \Magento\Backend\App\Action
     /**
      * Create the page.
      *
-     * @param \Magento\Framework\Phrase|null $title Page title.
+     * @param Phrase|string $title Page title.
      *
-     * @return \Magento\Backend\Model\View\Result\Page
+     * @return Page
      */
-    protected function createActionPage($title = null)
+    protected function createActionPage($title = null): Page
     {
-        /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
+        /** @var Page $resultPage */
         $resultPage = $this->_view->getPage()->initLayout();
 
         if (!empty($title)) {
@@ -60,9 +67,9 @@ abstract class AbstractEntity extends \Magento\Backend\App\Action
     /**
      * Return current entity.
      *
-     * @return \Smile\ScopedEav\Api\Data\EntityInterface
+     * @return EntityInterface
      */
-    protected function getEntity()
+    protected function getEntity(): EntityInterface
     {
         return $this->entityBuilder->build($this->getRequest());
     }
@@ -72,7 +79,7 @@ abstract class AbstractEntity extends \Magento\Backend\App\Action
      *
      * @return int
      */
-    protected function getStoreId()
+    protected function getStoreId(): int
     {
         $storeId = $this->getRequest()->getParam('store', 0);
         $store   = $this->storeManager->getStore($storeId);

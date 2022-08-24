@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.2] - 2022-09-06
+[1.3.2]: https://github.com/Smile-SA/magento2-module-scoped-eav/compare/1.3.1...1.3.2
+
+- Add use for classes and use type hints on functions
+
 ## [1.3.1] - 2022-09-01
 [1.3.1]: https://github.com/Smile-SA/magento2-module-scoped-eav/compare/1.3.0...1.3.1
 

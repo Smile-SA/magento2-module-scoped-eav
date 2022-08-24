@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Model;
 
+use Magento\Catalog\Model\AbstractModel;
+use Magento\Framework\Exception\LocalizedException;
 use Smile\ScopedEav\Api\Data\EntityInterface;
+use Smile\ScopedEav\Model\Entity\Attribute;
 
 /**
  * Scoped EAV entity abstract model.
  *
  * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  */
-class AbstractEntity extends \Magento\Catalog\Model\AbstractModel implements EntityInterface
+class AbstractEntity extends AbstractModel implements EntityInterface
 {
     /**
      * Entity Store Id
@@ -36,7 +39,7 @@ class AbstractEntity extends \Magento\Catalog\Model\AbstractModel implements Ent
     /**
      * {@inheritdoc}
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): string
     {
         return $this->_getData(self::CREATED_AT);
     }
@@ -44,7 +47,7 @@ class AbstractEntity extends \Magento\Catalog\Model\AbstractModel implements Ent
     /**
      * {@inheritdoc}
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): string
     {
         return $this->_getData(self::UPDATED_AT);
     }
@@ -52,7 +55,7 @@ class AbstractEntity extends \Magento\Catalog\Model\AbstractModel implements Ent
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->_getData(self::NAME);
     }
@@ -80,7 +83,7 @@ class AbstractEntity extends \Magento\Catalog\Model\AbstractModel implements Ent
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->_getData(self::DESCRIPTION);
     }
@@ -88,7 +91,7 @@ class AbstractEntity extends \Magento\Catalog\Model\AbstractModel implements Ent
     /**
      * {@inheritdoc}
      */
-    public function getImage()
+    public function getImage(): string
     {
         return $this->_getData(self::IMAGE);
     }
@@ -106,7 +109,7 @@ class AbstractEntity extends \Magento\Catalog\Model\AbstractModel implements Ent
     /**
      * {@inheritdoc}
      */
-    public function setAttributeSetId($attributeSetId)
+    public function setAttributeSetId(int $attributeSetId): self
     {
         return $this->setData(self::ATTRIBUTE_SET_ID, $attributeSetId);
     }
@@ -114,7 +117,7 @@ class AbstractEntity extends \Magento\Catalog\Model\AbstractModel implements Ent
     /**
      * {@inheritdoc}
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(string $createdAt): self
     {
         return $this->setData(self::CREATED_AT, $createdAt);
     }
@@ -122,7 +125,7 @@ class AbstractEntity extends \Magento\Catalog\Model\AbstractModel implements Ent
     /**
      * {@inheritdoc}
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(string $updatedAt): self
     {
         return $this->setData(self::UPDATED_AT, $updatedAt);
     }
@@ -130,7 +133,7 @@ class AbstractEntity extends \Magento\Catalog\Model\AbstractModel implements Ent
     /**
      * {@inheritdoc}
      */
-    public function setName($name)
+    public function setName(string $name): self
     {
         return $this->setData(self::NAME, $name);
     }
@@ -138,7 +141,7 @@ class AbstractEntity extends \Magento\Catalog\Model\AbstractModel implements Ent
     /**
      * {@inheritdoc}
      */
-    public function setIsActive($isActive)
+    public function setIsActive(bool $isActive): self
     {
         return $this->setData(self::IS_ACTIVE, $isActive);
     }
@@ -154,7 +157,7 @@ class AbstractEntity extends \Magento\Catalog\Model\AbstractModel implements Ent
     /**
      * {@inheritdoc}
      */
-    public function setDescription($description)
+    public function setDescription(string $description)
     {
         $this->setData(self::DESCRIPTION, $description);
     }
@@ -162,7 +165,7 @@ class AbstractEntity extends \Magento\Catalog\Model\AbstractModel implements Ent
     /**
      * {@inheritdoc}
      */
-    public function setImage($image)
+    public function setImage(string $image)
     {
         $this->setData(self::IMAGE, $image);
     }
@@ -173,15 +176,15 @@ class AbstractEntity extends \Magento\Catalog\Model\AbstractModel implements Ent
      * @param string $attributeCode Attribute code.
      *
      * @return bool|string
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
-    public function getImageUrl($attributeCode)
+    public function getImageUrl(string $attributeCode)
     {
         $url = false;
         $image = $this->getData($attributeCode);
         if ($image) {
             if (!is_string($image)) {
-                throw new \Magento\Framework\Exception\LocalizedException(
+                throw new LocalizedException(
                     __('Something went wrong while getting the image url.')
                 );
             }
@@ -206,7 +209,7 @@ class AbstractEntity extends \Magento\Catalog\Model\AbstractModel implements Ent
      *
      * @return string[]
      */
-    public function getDefaultAttributes()
+    public function getDefaultAttributes(): array
     {
         return array_unique(array_merge($this->_getDefaultAttributes(), [$this->getEntityIdField(), $this->getLinkField()]));
     }
@@ -218,9 +221,9 @@ class AbstractEntity extends \Magento\Catalog\Model\AbstractModel implements Ent
      *
      * @return string
      */
-    protected function _getDefaultAttributeModel()
+    protected function _getDefaultAttributeModel(): string
     {
-        return \Smile\ScopedEav\Model\Entity\Attribute::class;
+        return Attribute::class;
     }
 
     /**
@@ -230,7 +233,7 @@ class AbstractEntity extends \Magento\Catalog\Model\AbstractModel implements Ent
      *
      * @return string[]
      */
-    protected function _getDefaultAttributes()
+    protected function _getDefaultAttributes(): array
     {
         return ['entity_type_id', 'attribute_set_id', 'created_at', 'updated_at'];
     }

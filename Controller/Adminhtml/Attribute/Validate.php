@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Controller\Adminhtml\Attribute;
 
+use Magento\Backend\App\Action\Context;
+use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\DataObject;
 use Magento\Framework\DataObjectFactory;
 use Magento\Framework\Exception\AlreadyExistsException;
+use Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute;
+use Smile\ScopedEav\Helper\Data;
 
 /**
  * Scoped EAV entity attribute validation controller.
  */
-class Validate extends \Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute
+class Validate extends AbstractAttribute
 {
     /**
      * @var string
@@ -19,7 +23,7 @@ class Validate extends \Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute
     const DEFAULT_MESSAGE_KEY = 'message';
 
     /**
-     * @var \Magento\Framework\Controller\Result\JsonFactory
+     * @var JsonFactory
      */
     private $resultJsonFactory;
 
@@ -31,17 +35,17 @@ class Validate extends \Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute
     /**
      * Constructor.
      *
-     * @param \Magento\Backend\App\Action\Context              $context           Context.
-     * @param \Smile\ScopedEav\Helper\Data                     $entityHelper      Entity helper.
-     * @param BuilderInterface                                 $attributeBuilder  Attribute builder.
-     * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory JSON response factory.
-     * @param DataObjectFactory                                $dataObjectFactory Data object factory.
+     * @param Context $context Context.
+     * @param Data $entityHelper Entity helper.
+     * @param BuilderInterface $attributeBuilder Attribute builder.
+     * @param JsonFactory $resultJsonFactory JSON response factory.
+     * @param DataObjectFactory $dataObjectFactory Data object factory.
      */
     public function __construct(
-        \Magento\Backend\App\Action\Context $context,
-        \Smile\ScopedEav\Helper\Data $entityHelper,
+        Context $context,
+        Data $entityHelper,
         BuilderInterface $attributeBuilder,
-        \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
+        JsonFactory $resultJsonFactory,
         DataObjectFactory $dataObjectFactory
     ) {
         parent::__construct($context, $entityHelper, $attributeBuilder);
@@ -70,7 +74,7 @@ class Validate extends \Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute
      *
      * @return DataObject
      */
-    private function setMessageToResponse($response, $messages)
+    private function setMessageToResponse(DataObject $response, array $messages): DataObject
     {
         $messageKey = $this->getRequest()->getParam('message_key', static::DEFAULT_MESSAGE_KEY);
         if ($messageKey === static::DEFAULT_MESSAGE_KEY) {
@@ -87,7 +91,7 @@ class Validate extends \Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute
      *
      * @return DataObject
      */
-    private function checkAttributeCode($response)
+    private function checkAttributeCode(DataObject $response): DataObject
     {
         $attributeCode = $this->getRequest()->getParam('attribute_code');
         $frontendLabel = $this->getRequest()->getParam('frontend_label');

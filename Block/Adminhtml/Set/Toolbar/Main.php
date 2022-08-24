@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Block\Adminhtml\Set\Toolbar;
 
+use Magento\Backend\Block\Template;
+
 /**
  * Attribute set listing main container.
  */
-class Main extends \Magento\Backend\Block\Template
+class Main extends Template
 {
     /**
      * {@inheritdoc}

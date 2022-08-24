@@ -4,7 +4,15 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Helper;
 
+use Magento\Catalog\Helper\Product;
+use Magento\Catalog\Model\Product\UrlFactory;
 use Magento\Framework\App\Helper\AbstractHelper;
+use Magento\Framework\App\Helper\Context;
+use Magento\Framework\EntityManager\EntityMetadataInterface;
+use Magento\Framework\EntityManager\MetadataPool;
+use Magento\Framework\Phrase;
+use Magento\Store\Model\StoreManagerInterface;
+use Magento\Ui\DataProvider\Mapper\FormElement;
 use Smile\ScopedEav\Api\Data\EntityInterface;
 use Smile\ScopedEav\Api\Data\AttributeInterface;
 use Zend\Validator\Regex;
@@ -16,27 +24,27 @@ use Zend\Validator\RegexFactory;
 class Data extends AbstractHelper
 {
     /**
-     * @var \Magento\Catalog\Model\Product\UrlFactory
+     * @var UrlFactory
      */
     private $urlFactory;
 
     /**
-     * @var \Magento\Catalog\Helper\Product
+     * @var Product
      */
     private $productHelper;
 
     /**
-     * @var \Magento\Ui\DataProvider\Mapper\FormElement
+     * @var FormElement
      */
     private $formElementMapper;
 
     /**
-     * @var \Magento\Store\Model\StoreManagerInterface
+     * @var StoreManagerInterface
      */
     private $storeManager;
 
     /**
-     * @var \Magento\Framework\EntityManager\MetadataPool
+     * @var MetadataPool
      */
     private $metadataPool;
 
@@ -48,21 +56,21 @@ class Data extends AbstractHelper
     /**
      * Constructor.
      *
-     * @param \Magento\Framework\App\Helper\Context         $context           Context.
-     * @param \Magento\Catalog\Model\Product\UrlFactory     $urlFactory        Url factory.
-     * @param \Magento\Catalog\Helper\Product               $productHelper     Product helper.
-     * @param \Magento\Store\Model\StoreManagerInterface    $storeManager      Store manager.
-     * @param \Magento\Ui\DataProvider\Mapper\FormElement   $formElementMapper Form element mapper.
-     * @param \Magento\Framework\EntityManager\MetadataPool $metadataPool      Entity manager metadata pool.
-     * @param RegexFactory                                  $regexFactory      Regexp validator factory.
+     * @param Context $context Context.
+     * @param UrlFactory $urlFactory Url factory.
+     * @param Product $productHelper Product helper.
+     * @param StoreManagerInterface $storeManager Store manager.
+     * @param FormElement $formElementMapper Form element mapper.
+     * @param MetadataPool $metadataPool Entity manager metadata pool.
+     * @param RegexFactory $regexFactory Regexp validator factory.
      */
     public function __construct(
-        \Magento\Framework\App\Helper\Context $context,
-        \Magento\Catalog\Model\Product\UrlFactory $urlFactory,
-        \Magento\Catalog\Helper\Product $productHelper,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Ui\DataProvider\Mapper\FormElement $formElementMapper,
-        \Magento\Framework\EntityManager\MetadataPool $metadataPool,
+        Context $context,
+        UrlFactory $urlFactory,
+        Product $productHelper,
+        StoreManagerInterface $storeManager,
+        FormElement $formElementMapper,
+        MetadataPool $metadataPool,
         RegexFactory $regexFactory
     ) {
         parent::__construct($context);
@@ -82,7 +90,7 @@ class Data extends AbstractHelper
      *
      * @return string
      */
-    public function generateAttributeCodeFromLabel($label)
+    public function generateAttributeCodeFromLabel(string $label): string
     {
         $code = substr(preg_replace('/[^a-z_0-9]/', '_', $this->urlFactory->create()->formatUrlKey($label)), 0, 30);
 
@@ -103,7 +111,7 @@ class Data extends AbstractHelper
      *
      * @return string|NULL
      */
-    public function getAttributeBackendModelByInputType($inputType)
+    public function getAttributeBackendModelByInputType(string $inputType): ?string
     {
         if ($inputType == 'image') return 'Smile\ScopedEav\Model\Entity\Attribute\Backend\Image';
         return $this->productHelper->getAttributeBackendModelByInputType($inputType);
@@ -116,7 +124,7 @@ class Data extends AbstractHelper
      *
      * @return string|NULL
      */
-    public function getAttributeSourceModelByInputType($inputType)
+    public function getAttributeSourceModelByInputType(string $inputType): ?string
     {
         return $this->productHelper->getAttributeSourceModelByInputType($inputType);
     }
@@ -128,7 +136,7 @@ class Data extends AbstractHelper
      *
      * @return string|NULL
      */
-    public function getFormElement($frontendInput)
+    public function getFormElement(string $frontendInput): ?string
     {
         $valueMap = $this->formElementMapper->getMappings();
 
@@ -140,7 +148,7 @@ class Data extends AbstractHelper
      *
      * @param AttributeInterface $attribute Attribute.
      *
-     * @return string|\Magento\Framework\Phrase
+     * @return string|Phrase
      */
     public function getScopeLabel(AttributeInterface $attribute)
     {
@@ -167,7 +175,7 @@ class Data extends AbstractHelper
      *
      * @return boolean
      */
-    public function isScopeGlobal(AttributeInterface $attribute)
+    public function isScopeGlobal(AttributeInterface $attribute): bool
     {
         return $attribute->getScope() === AttributeInterface::SCOPE_GLOBAL_TEXT;
     }
@@ -177,9 +185,9 @@ class Data extends AbstractHelper
      *
      * @param EntityInterface $entity Entity.
      *
-     * @return \Magento\Framework\EntityManager\EntityMetadataInterface
+     * @return EntityMetadataInterface
      */
-    public function getEntityMetadata(EntityInterface $entity)
+    public function getEntityMetadata(EntityInterface $entity): EntityMetadataInterface
     {
         $interface = $this->getEntityInterface($entity);
 
@@ -193,7 +201,7 @@ class Data extends AbstractHelper
      *
      * @return NULL|string
      */
-    public function getEntityInterface(EntityInterface $entity)
+    public function getEntityInterface(EntityInterface $entity): ?string
     {
         $interface = null;
 

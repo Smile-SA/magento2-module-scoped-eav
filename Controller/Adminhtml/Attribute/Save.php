@@ -4,19 +4,23 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Controller\Adminhtml\Attribute;
 
+use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Serialize\Serializer\FormData;
+use Smile\ScopedEav\Api\Data\AttributeInterface;
+use Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute;
+use Smile\ScopedEav\Helper\Data;
 use Zend\Validator\Regex;
 use Zend\Validator\RegexFactory;
 
 /**
  * Scoped EAV entity attribute save controller.
  */
-class Save extends \Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute
+class Save extends AbstractAttribute
 {
     /**
-     * @var \Smile\ScopedEav\Helper\Data
+     * @var Data
      */
     private $entityHelper;
 
@@ -33,15 +37,15 @@ class Save extends \Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute
     /**
      * Constructor.
      *
-     * @param \Magento\Backend\App\Action\Context $context          Context.
-     * @param \Smile\ScopedEav\Helper\Data        $entityHelper     Entity helper.
-     * @param BuilderInterface                    $attributeBuilder Attribute builder.
-     * @param RegexFactory                        $regexFactory     Regexp validator factory.
-     * @param FormData|null                       $formDataSerializer
+     * @param Context $context Context.
+     * @param Data $entityHelper Entity helper.
+     * @param BuilderInterface $attributeBuilder Attribute builder.
+     * @param RegexFactory $regexFactory Regexp validator factory.
+     * @param FormData|null $formDataSerializer
      */
     public function __construct(
-        \Magento\Backend\App\Action\Context $context,
-        \Smile\ScopedEav\Helper\Data $entityHelper,
+        Context $context,
+        Data $entityHelper,
         BuilderInterface $attributeBuilder,
         RegexFactory $regexFactory,
         FormData $formDataSerializer = null
@@ -79,11 +83,11 @@ class Save extends \Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute
     /**
      * Add request post data to the attribute.
      *
-     * @param \Smile\ScopedEav\Api\Data\AttributeInterface $attribute Attribute.
+     * @param AttributeInterface $attribute Attribute.
      *
-     * @return \Smile\ScopedEav\Api\Data\AttributeInterface
+     * @return AttributeInterface
      */
-    private function addPostData(\Smile\ScopedEav\Api\Data\AttributeInterface $attribute)
+    private function addPostData(AttributeInterface $attribute): AttributeInterface
     {
         try {
             $optionData = $this->formDataSerializer
@@ -128,7 +132,7 @@ class Save extends \Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute
      *
      * @return string
      */
-    private function getAttributeCode()
+    private function getAttributeCode(): string
     {
         $attributeCode = $this->getRequest()->getParam('attribute_code');
 
