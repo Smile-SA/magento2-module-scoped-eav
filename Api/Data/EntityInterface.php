@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Api\Data;
 
+use Magento\Framework\Api\CustomAttributesDataInterface;
+
 /**
  * Scoped entity interface.
  *
  * @api
  */
-interface EntityInterface extends \Magento\Framework\Api\CustomAttributesDataInterface
+interface EntityInterface extends CustomAttributesDataInterface
 {
     /**#@+
      * Constants defined for keys of data array
@@ -32,14 +34,14 @@ interface EntityInterface extends \Magento\Framework\Api\CustomAttributesDataInt
     /**
      * Returns entity id.
      *
-     * @return int|null
+     * @return mixed
      */
     public function getId();
 
     /**
      * Returns entity attribute set id.
      *
-     * @return int
+     * @return mixed
      */
     public function getAttributeSetId();
 
@@ -48,51 +50,51 @@ interface EntityInterface extends \Magento\Framework\Api\CustomAttributesDataInt
      *
      * @SuppressWarnings(PHPMD.BooleanGetMethodName)
      *
-     * @return boolean
+     * @return mixed
      */
     public function getIsActive();
 
     /**
      * Returns entity name.
      *
-     * @return string
+     * @return string|null
      */
-    public function getName();
+    public function getName(): ?string;
 
     /**
      * Returns entity store id.
      *
-     * @return int
+     * @return mixed
      */
     public function getStoreId();
 
     /**
      * Returns entity creation date.
      *
-     * @return string
+     * @return string|null
      */
-    public function getCreatedAt();
+    public function getCreatedAt(): ?string;
 
     /**
      * Returns entity update date.
      *
-     * @return string
+     * @return string|null
      */
-    public function getUpdatedAt();
+    public function getUpdatedAt(): ?string;
 
     /**
      * Return entity description.
      *
-     * @return string
+     * @return string|null
      */
-    public function getDescription();
+    public function getDescription(): ?string;
 
     /**
      * Return entity image.
      *
-     * @return string
+     * @return string|null
      */
-    public function getImage();
+    public function getImage(): ?string;
 
     /**
      * Set entity id
@@ -110,16 +112,16 @@ interface EntityInterface extends \Magento\Framework\Api\CustomAttributesDataInt
      *
      * @return $this
      */
-    public function setAttributeSetId($attributeSetId);
+    public function setAttributeSetId(int $attributeSetId): self;
 
     /**
      * Set is active.
      *
-     * @param boolean $isActive Status.
+     * @param Boolean $isActive Status.
      *
      * @return $this
      */
-    public function setIsActive($isActive);
+    public function setIsActive(bool $isActive): self;
 
     /**
      * Set name.
@@ -128,7 +130,7 @@ interface EntityInterface extends \Magento\Framework\Api\CustomAttributesDataInt
      *
      * @return $this
      */
-    public function setName($name);
+    public function setName(string $name): self;
 
     /**
      * Set creation date.
@@ -137,7 +139,7 @@ interface EntityInterface extends \Magento\Framework\Api\CustomAttributesDataInt
      *
      * @return $this
      */
-    public function setCreatedAt($createdAt);
+    public function setCreatedAt(string $createdAt): self;
 
     /**
      * Set update date.
@@ -146,12 +148,12 @@ interface EntityInterface extends \Magento\Framework\Api\CustomAttributesDataInt
      *
      * @return $this
      */
-    public function setUpdatedAt($updatedAt);
+    public function setUpdatedAt(string $updatedAt): self;
 
     /**
      * Set entity store id.
      *
-     * @param int $storeId Store Id
+     * @param mixed $storeId Store Id
      *
      * @return $this
      */
@@ -164,7 +166,7 @@ interface EntityInterface extends \Magento\Framework\Api\CustomAttributesDataInt
      *
      * @return $this
      */
-    public function setDescription($description);
+    public function setDescription(string $description);
 
     /**
      * Set entity image.
@@ -173,5 +175,5 @@ interface EntityInterface extends \Magento\Framework\Api\CustomAttributesDataInt
      *
      * @return $this
      */
-    public function setImage($image);
+    public function setImage(string $image);
 }

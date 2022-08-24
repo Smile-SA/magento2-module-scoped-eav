@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Model\Locator;
 
+use Magento\Store\Api\Data\StoreInterface;
+use Smile\ScopedEav\Api\Data\EntityInterface;
+
 /**
  * Adminhtml entity locator.
  */
@@ -12,13 +15,13 @@ interface LocatorInterface
     /**
      * Returns current entity.
      *
-     * @return \Smile\ScopedEav\Api\Data\EntityInterface
+     * @return EntityInterface
      */
-    public function getEntity();
+    public function getEntity(): EntityInterface;
 
     /**
      *
-     * @return \Magento\Store\Api\Data\StoreInterface
+     * @return StoreInterface
      */
-    public function getStore();
+    public function getStore(): StoreInterface;
 }

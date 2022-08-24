@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Controller\Adminhtml\Set;
 
+use Smile\ScopedEav\Controller\Adminhtml\AbstractSet;
+
 /**
  * Scoped EAV entity attribute set admin edit controller.
  */
-class Edit extends \Smile\ScopedEav\Controller\Adminhtml\AbstractSet
+class Edit extends AbstractSet
 {
     /**
      * {@inheritdoc}

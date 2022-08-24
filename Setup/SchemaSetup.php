@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Setup;
 
+use Magento\Framework\DB\Ddl\Table;
 use Magento\Framework\Setup\SchemaSetupInterface;
 
 /**
@@ -31,36 +32,36 @@ class SchemaSetup
      *
      * @param string $entityTableName Entity table name.
      *
-     * @return \Magento\Framework\DB\Ddl\Table
+     * @return Table|null
      */
-    public function getEntityTable($entityTableName)
+    public function getEntityTable(string $entityTableName): ?Table
     {
         $table = $this->setup->getConnection()->newTable($this->setup->getTable($entityTableName));
 
         $table->addColumn(
             'entity_id',
-            \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+            Table::TYPE_INTEGER,
             null,
             ['identity' => true, 'unsigned' => true, 'nullable' => false, 'primary' => true],
             'Entity ID'
         )->addColumn(
             'attribute_set_id',
-            \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
+            Table::TYPE_SMALLINT,
             null,
             ['unsigned' => true, 'nullable' => false, 'default' => '0'],
             'Attribute Set ID'
         )->addColumn(
             'created_at',
-            \Magento\Framework\DB\Ddl\Table::TYPE_TIMESTAMP,
+            Table::TYPE_TIMESTAMP,
             null,
-            ['nullable' => false, 'default' => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT],
+            ['nullable' => false, 'default' => Table::TIMESTAMP_INIT],
             'Creation Time'
         )
         ->addColumn(
             'updated_at',
-            \Magento\Framework\DB\Ddl\Table::TYPE_TIMESTAMP,
+            Table::TYPE_TIMESTAMP,
             null,
-            ['nullable' => false, 'default' => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT_UPDATE],
+            ['nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE],
             'Update Time'
         )
         ->addIndex($this->setup->getIdxName($entityTableName, ['attribute_set_id']), ['attribute_set_id'])
@@ -69,7 +70,7 @@ class SchemaSetup
             'attribute_set_id',
             $this->setup->getTable('eav_attribute_set'),
             'attribute_set_id',
-            \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
+            Table::ACTION_CASCADE
         );
 
         return $table;
@@ -78,42 +79,46 @@ class SchemaSetup
     /**
      * Prepare an entity attribute table with mandatory columns.
      *
-     * @param string          $entityTableName Entity table.
-     * @param string          $valueType       Value type.
-     * @param null|int|string $size            Value max size (null if unbounded).
-     * @param null|string     $tableSuffix     Table suffix (if null $valueType is used).
+     * @param string $entityTableName Entity table.
+     * @param string $valueType Value type.
+     * @param null|int|string $size Value max size (null if unbounded).
+     * @param null|string $tableSuffix Table suffix (if null $valueType is used).
      *
-     * @return \Magento\Framework\DB\Ddl\Table
+     * @return Table|null
      */
-    public function getEntityAttributeValueTable($entityTableName, $valueType, $size = null, $tableSuffix = null)
-    {
+    public function getEntityAttributeValueTable(
+        string $entityTableName,
+        string $valueType,
+        $size = null,
+        string $tableSuffix = null
+    ): ?Table {
         $tableName = sprintf("%s_%s", $entityTableName, $tableSuffix !== null ? $tableSuffix : $valueType);
 
         $table = $this->setup->getConnection()->newTable($this->setup->getTable($tableName))
             ->addColumn(
                 'value_id',
-                \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                Table::TYPE_INTEGER,
                 null,
                 ['identity' => true, 'nullable' => false, 'primary' => true],
                 'Value ID'
             )
             ->addColumn(
                 'attribute_id',
-                \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
+                Table::TYPE_SMALLINT,
                 null,
                 ['unsigned' => true, 'nullable' => false, 'default' => '0'],
                 'Attribute ID'
             )
             ->addColumn(
                 'store_id',
-                \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
+                Table::TYPE_SMALLINT,
                 null,
                 ['unsigned' => true, 'nullable' => false, 'default' => '0'],
                 'Store ID'
             )
             ->addColumn(
                 'entity_id',
-                \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                Table::TYPE_INTEGER,
                 null,
                 ['unsigned' => true, 'nullable' => false, 'default' => '0'],
                 'Entity ID'
@@ -141,19 +146,19 @@ class SchemaSetup
                 'attribute_id',
                 $this->setup->getTable('eav_attribute'),
                 'attribute_id',
-                \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
+                Table::ACTION_CASCADE
             )->addForeignKey(
                 $this->setup->getFkName($tableName, 'entity_id', $entityTableName, 'entity_id'),
                 'entity_id',
                 $this->setup->getTable($entityTableName),
                 'entity_id',
-                \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
+                Table::ACTION_CASCADE
             )->addForeignKey(
                 $this->setup->getFkName($tableName, 'store_id', 'store', 'store_id'),
                 'store_id',
                 $this->setup->getTable('store'),
                 'store_id',
-                \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
+                Table::ACTION_CASCADE
             );
 
         return $table;
@@ -166,21 +171,21 @@ class SchemaSetup
      *
      * @return $this
      */
-    public function getEntityWebsiteTable($entityTableName)
+    public function getEntityWebsiteTable(string $entityTableName): self
     {
         $websiteTableName = sprintf('%s_website', $entityTableName);
 
         $table = $this->setup->getConnection()->newTable($this->setup->getTable($websiteTableName))
             ->addColumn(
                 'entity_id',
-                \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                Table::TYPE_INTEGER,
                 null,
                 ['unsigned' => true, 'nullable' => false, 'primary' => true],
                 'Entity ID'
             )
             ->addColumn(
                 'website_id',
-                \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
+                Table::TYPE_SMALLINT,
                 null,
                 ['unsigned' => true, 'nullable' => false, 'primary' => true],
                 'Website ID'
@@ -191,14 +196,14 @@ class SchemaSetup
                 'website_id',
                 $this->setup->getTable('store_website'),
                 'website_id',
-                \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
+                Table::ACTION_CASCADE
             )
             ->addForeignKey(
                 $this->setup->getFkName($websiteTableName, 'entity_id', $entityTableName, 'entity_id'),
                 'entity_id',
                 $this->setup->getTable($entityTableName),
                 'entity_id',
-                \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
+                Table::ACTION_CASCADE
             );
 
         return $table;
@@ -209,16 +214,16 @@ class SchemaSetup
      *
      * @param string $entityTableName Entity table name.
      *
-     * @return \Magento\Framework\DB\Ddl\Table
+     * @return Table|null
      */
-    public function getAttributeAdditionalTable($entityTableName)
+    public function getAttributeAdditionalTable(string $entityTableName): ?Table
     {
         $additionalTableName = sprintf('%s_eav_attribute', $entityTableName);
 
         $table = $this->setup->getConnection()->newTable($this->setup->getTable($additionalTableName))
             ->addColumn(
                 'attribute_id',
-                \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
+                Table::TYPE_SMALLINT,
                 null,
                 ['unsigned' => true, 'nullable' => false, 'primary' => true],
                 'Attribute ID'
@@ -228,7 +233,7 @@ class SchemaSetup
                 'attribute_id',
                 $this->setup->getTable('eav_attribute'),
                 'attribute_id',
-                \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
+                Table::ACTION_CASCADE
             );
 
         return $table;

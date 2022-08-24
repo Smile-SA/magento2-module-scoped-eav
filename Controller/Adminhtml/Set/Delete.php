@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Controller\Adminhtml\Set;
 
+use Smile\ScopedEav\Controller\Adminhtml\AbstractSet;
+
 /**
  * Scoped EAV entity attribute set admin delete controller.
  */
-class Delete extends \Smile\ScopedEav\Controller\Adminhtml\AbstractSet
+class Delete extends AbstractSet
 {
     /**
      * {@inheritdoc}

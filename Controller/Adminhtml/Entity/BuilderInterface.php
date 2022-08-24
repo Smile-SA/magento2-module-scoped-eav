@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Controller\Adminhtml\Entity;
 
+use Magento\Framework\App\RequestInterface;
+use Smile\ScopedEav\Api\Data\EntityInterface;
+
 /**
  * Scoped EAV entity builder interface.
  */
@@ -12,9 +15,9 @@ interface BuilderInterface
     /**
      * Retrieve and init an entity from the request.
      *
-     * @param \Magento\Framework\App\RequestInterface $request Request.
+     * @param RequestInterface $request Request.
      *
-     * @return \Smile\ScopedEav\Api\Data\EntityInterface
+     * @return EntityInterface|null
      */
-    public function build(\Magento\Framework\App\RequestInterface $request);
+    public function build(RequestInterface $request): ?EntityInterface;
 }

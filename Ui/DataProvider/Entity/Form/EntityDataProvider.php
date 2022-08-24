@@ -4,32 +4,35 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Ui\DataProvider\Entity\Form;
 
+use Magento\Ui\DataProvider\AbstractDataProvider;
+use Magento\Ui\DataProvider\Modifier\PoolInterface;
+
 /**
  * Scoped EAV generic dataprovider for edit form.
  */
-class EntityDataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
+class EntityDataProvider extends AbstractDataProvider
 {
     /**
      *
-     * @var \Magento\Ui\DataProvider\Modifier\PoolInterface
+     * @var PoolInterface
      */
     private $pool;
 
     /**
      * Constructor.
      *
-     * @param string                                          $name             Source name.
-     * @param string                                          $primaryFieldName Primary field name.
-     * @param string                                          $requestFieldName Request field name.
-     * @param \Magento\Ui\DataProvider\Modifier\PoolInterface $pool             Meta & data modifier pool.
-     * @param array                                           $meta             Original meta.
-     * @param array                                           $data             Original data.
+     * @param string $name             Source name.
+     * @param string $primaryFieldName Primary field name.
+     * @param string $requestFieldName Request field name.
+     * @param PoolInterface $pool Meta & data modifier pool.
+     * @param array $meta Original meta.
+     * @param array $data Original data.
      */
     public function __construct(
         $name,
         $primaryFieldName,
         $requestFieldName,
-        \Magento\Ui\DataProvider\Modifier\PoolInterface $pool,
+        PoolInterface $pool,
         array $meta = [],
         array $data = []
     ) {

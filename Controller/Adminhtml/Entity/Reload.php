@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Smile\ScopedEav\Controller\Adminhtml\Entity;
 
 use Magento\Framework\Controller\ResultFactory;
+use Smile\ScopedEav\Controller\Adminhtml\AbstractEntity;
 
 /**
  * Scoped EAV entity reload controller.
  */
-class Reload extends \Smile\ScopedEav\Controller\Adminhtml\AbstractEntity
+class Reload extends AbstractEntity
 {
     /**
      * {@inheritdoc}

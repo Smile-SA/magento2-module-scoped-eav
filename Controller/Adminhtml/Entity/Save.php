@@ -5,38 +5,44 @@ declare(strict_types=1);
 namespace Smile\ScopedEav\Controller\Adminhtml\Entity;
 
 use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
+use Magento\Eav\Model\Config;
+use Magento\Framework\App\Request\DataPersistorInterface;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Store\Model\StoreManagerInterface;
+use Smile\ScopedEav\Api\Data\EntityInterface;
 use Smile\ScopedEav\Controller\Adminhtml\AbstractEntity;
 
 /**
  * Scoped EAV entity save controller.
  */
-class Save extends \Smile\ScopedEav\Controller\Adminhtml\AbstractEntity
+class Save extends AbstractEntity
 {
     /**
-     * @var \Magento\Framework\App\Request\DataPersistorInterface
+     * @var DataPersistorInterface
      */
     private $dataPersistor;
 
     /**
-     * @var \Magento\Eav\Model\Config
+     * @var Config
      */
     private $eavConfig;
 
     /**
      * Constructor.
      *
-     * @param \Magento\Backend\App\Action\Context                   $context       Context.
-     * @param BuilderInterface                                      $entityBuilder Entity builder.
-     * @param \Magento\Store\Model\StoreManagerInterface            $storeManager  Store manager.
-     * @param \Magento\Framework\App\Request\DataPersistorInterface $dataPersistor Data Persistor
-     * @param \Magento\Eav\Model\Config                             $eavConfig     Eav config.
+     * @param Context $context Context.
+     * @param BuilderInterface $entityBuilder Entity builder.
+     * @param StoreManagerInterface $storeManager Store manager.
+     * @param DataPersistorInterface $dataPersistor Data Persistor
+     * @param Config $eavConfig Eav config.
      */
     public function __construct(
-        \Magento\Backend\App\Action\Context $context,
+        Context $context,
         BuilderInterface $entityBuilder,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Framework\App\Request\DataPersistorInterface $dataPersistor,
-        \Magento\Eav\Model\Config $eavConfig
+        StoreManagerInterface $storeManager,
+        DataPersistorInterface $dataPersistor,
+        Config $eavConfig
     ) {
         parent::__construct($context, $entityBuilder, $storeManager);
 
@@ -67,7 +73,7 @@ class Save extends \Smile\ScopedEav\Controller\Adminhtml\AbstractEntity
             $this->dataPersistor->clear('entity');
 
             $resultRedirect->setPath('*/*/index', ['store' => $storeId]);
-        } catch (\Magento\Framework\Exception\LocalizedException $e) {
+        } catch (LocalizedException $e) {
             $this->messageManager->addErrorMessage($e->getMessage());
             $this->dataPersistor->set('entity', $this->getRequest()->getPostValue());
             $redirectBack = $entityId ? true : 'new';
@@ -89,7 +95,7 @@ class Save extends \Smile\ScopedEav\Controller\Adminhtml\AbstractEntity
     /**
      * {@inheritDoc}
      */
-    protected function getEntity()
+    protected function getEntity(): EntityInterface
     {
         $entity = parent::getEntity();
 
@@ -111,13 +117,13 @@ class Save extends \Smile\ScopedEav\Controller\Adminhtml\AbstractEntity
     /**
      * Sets image attribute data to false if image was removed.
      *
-     * @param \Smile\ScopedEav\Api\Data\EntityInterface $entity Current entity.
-     * @param array                                     $data   Data.
+     * @param EntityInterface $entity Current entity.
+     * @param array $data Data.
      *
      * @return array
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
-    private function imagePreprocessing(\Smile\ScopedEav\Api\Data\EntityInterface $entity, $data)
+    private function imagePreprocessing(EntityInterface $entity, array $data): array
     {
         $entityType = $this->eavConfig->getEntityType($entity->getResource()->getEntityType()->getEntityTypeCode());
 

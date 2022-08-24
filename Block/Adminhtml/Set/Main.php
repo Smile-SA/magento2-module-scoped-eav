@@ -21,7 +21,7 @@ class Main extends \Magento\Catalog\Block\Adminhtml\Product\Attribute\Set\Main
      *
      * @return string
      */
-    public function getMoveUrl()
+    public function getMoveUrl(): string
     {
         return $this->getUrl('*/*/save', ['id' => $this->_getSetId()]);
     }
@@ -31,7 +31,7 @@ class Main extends \Magento\Catalog\Block\Adminhtml\Product\Attribute\Set\Main
      *
      * @return string
      */
-    public function getDeleteUrl()
+    public function getDeleteUrl(): string
     {
         return $this->getUrl('*/*/delete', ['id' => $this->_getSetId()]);
     }
@@ -41,7 +41,7 @@ class Main extends \Magento\Catalog\Block\Adminhtml\Product\Attribute\Set\Main
      *
      * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
-    protected function _prepareLayout()
+    protected function _prepareLayout(): self
     {
         $this->addChild('group_tree', 'Magento\Catalog\Block\Adminhtml\Product\Attribute\Set\Main\Tree\Group');
         $this->addChild('edit_set_form', 'Smile\ScopedEav\Block\Adminhtml\Set\Main\Formset');

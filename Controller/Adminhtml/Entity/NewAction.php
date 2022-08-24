@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Controller\Adminhtml\Entity;
 
+use Smile\ScopedEav\Controller\Adminhtml\AbstractEntity;
+
 /**
  * Scoped EAV entity creation controller.
  */
-class NewAction extends \Smile\ScopedEav\Controller\Adminhtml\AbstractEntity
+class NewAction extends AbstractEntity
 {
     /**
      * {@inheritDoc}

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Ui\Component\Entity\Edit\Button;
 
+use Magento\Framework\Registry;
+use Magento\Framework\View\Element\UiComponent\Context;
 use Magento\Ui\Component\Control\Container;
 
 /**
@@ -19,14 +21,14 @@ class Save extends Generic
     /**
      * Constructor.
      *
-     * @param \Magento\Framework\View\Element\UiComponent\Context $context  Context.
-     * @param \Magento\Framework\Registry                         $registry Registry.
-     * @param string                                              $formName Name of the form.
+     * @param Context $context Context.
+     * @param Registry $registry Registry.
+     * @param string $formName Name of the form.
      */
     public function __construct(
-        \Magento\Framework\View\Element\UiComponent\Context $context,
-        \Magento\Framework\Registry $registry,
-        $formName
+        Context $context,
+        Registry $registry,
+        string $formName
     ) {
         parent::__construct($context, $registry);
 
@@ -65,7 +67,7 @@ class Save extends Generic
      *
      * @return array
      */
-    protected function getOptions()
+    protected function getOptions(): array
     {
         $options[] = [
             'id_hard' => 'save_and_new',

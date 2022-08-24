@@ -4,9 +4,16 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Ui\DataProvider\Entity\Form\Modifier\Helper;
 
+use Magento\Catalog\Model\Attribute\ScopeOverriddenValue;
+use Magento\Eav\Api\AttributeGroupRepositoryInterface;
+use Magento\Eav\Api\AttributeRepositoryInterface;
 use Magento\Eav\Api\Data\AttributeGroupInterface;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Api\SortOrderBuilder;
+use Magento\Framework\Phrase;
 use Smile\ScopedEav\Api\Data\AttributeInterface;
 use Smile\ScopedEav\Api\Data\EntityInterface;
+use Smile\ScopedEav\Helper\Data;
 
 /**
  * Scoped EAV form modifier EAV helper.
@@ -14,32 +21,32 @@ use Smile\ScopedEav\Api\Data\EntityInterface;
 class Eav
 {
     /**
-     * @var \Magento\Eav\Api\AttributeGroupRepositoryInterface
+     * @var AttributeGroupRepositoryInterface
      */
     private $attributeGroupRepository;
 
     /**
-     * @var \Magento\Eav\Api\AttributeRepositoryInterface
+     * @var AttributeRepositoryInterface
      */
     private $attributeRepository;
 
     /**
-     * @var \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
+     * @var SearchCriteriaBuilder $searchCriteriaBuilder
      */
     private $searchCriteriaBuilder;
 
     /**
-     * @var \Magento\Framework\Api\SortOrderBuilder $searchCriteriaBuilder
+     * @var SortOrderBuilder $searchCriteriaBuilder
      */
     private $sortOrderBuilder;
 
     /**
-     * @var \Smile\ScopedEav\Helper\Data
+     * @var Data
      */
     private $eavHelper;
 
     /**
-     * @var \Magento\Catalog\Model\Attribute\ScopeOverriddenValue
+     * @var ScopeOverriddenValue
      */
     private $scopeOverriddenValue;
 
@@ -61,20 +68,20 @@ class Eav
     /**
      * Constructor.
      *
-     * @param \Magento\Eav\Api\AttributeGroupRepositoryInterface    $attributeGroupRepository Attribute group repository.
-     * @param \Magento\Eav\Api\AttributeRepositoryInterface         $attributeRepository      Attribute repository.
-     * @param \Magento\Framework\Api\SearchCriteriaBuilder          $searchCriteriaBuilder    Search criteria builder.
-     * @param \Magento\Framework\Api\SortOrderBuilder               $sortOrderBuilder         Sort order builder.
-     * @param \Magento\Catalog\Model\Attribute\ScopeOverriddenValue $scopeOverriddenValue     Scope attribute helper.
-     * @param \Smile\ScopedEav\Helper\Data                          $eavHelper                Scoped EAV helper.
+     * @param AttributeGroupRepositoryInterface    $attributeGroupRepository Attribute group repository.
+     * @param AttributeRepositoryInterface         $attributeRepository      Attribute repository.
+     * @param SearchCriteriaBuilder          $searchCriteriaBuilder    Search criteria builder.
+     * @param SortOrderBuilder               $sortOrderBuilder         Sort order builder.
+     * @param ScopeOverriddenValue $scopeOverriddenValue     Scope attribute helper.
+     * @param Data                          $eavHelper                Scoped EAV helper.
      */
     public function __construct(
-        \Magento\Eav\Api\AttributeGroupRepositoryInterface $attributeGroupRepository,
-        \Magento\Eav\Api\AttributeRepositoryInterface $attributeRepository,
-        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
-        \Magento\Framework\Api\SortOrderBuilder $sortOrderBuilder,
-        \Magento\Catalog\Model\Attribute\ScopeOverriddenValue $scopeOverriddenValue,
-        \Smile\ScopedEav\Helper\Data $eavHelper
+        AttributeGroupRepositoryInterface $attributeGroupRepository,
+        AttributeRepositoryInterface $attributeRepository,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        SortOrderBuilder $sortOrderBuilder,
+        ScopeOverriddenValue $scopeOverriddenValue,
+        Data $eavHelper
     ) {
         $this->attributeGroupRepository = $attributeGroupRepository;
         $this->attributeRepository      = $attributeRepository;
@@ -87,11 +94,11 @@ class Eav
     /**
      * List of attribute group by attribute set id.
      *
-     * @param int $attributeSetId Attribute set id.
+     * @param int|string $attributeSetId Attribute set id.
      *
      * @return AttributeGroupInterface[]
      */
-    public function getGroups($attributeSetId)
+    public function getGroups($attributeSetId): array
     {
         if (!isset($this->attributeGroups[$attributeSetId])) {
             $this->attributeGroups[$attributeSetId] = [];
@@ -111,12 +118,12 @@ class Eav
     /**
      * List of attribute by attribute set id.
      *
-     * @param EntityInterface $entity         Entity.
-     * @param int             $attributeSetId Attribute set id.
+     * @param EntityInterface $entity Entity.
+     * @param int|string $attributeSetId Attribute set id.
      *
      * @return AttributeInterface[]
      */
-    public function getAttributes(EntityInterface $entity, $attributeSetId)
+    public function getAttributes(EntityInterface $entity, $attributeSetId): array
     {
         if (!isset($this->attributes[$attributeSetId])) {
             $this->attributes[$attributeSetId] = [];
@@ -134,7 +141,7 @@ class Eav
      *
      * @param AttributeInterface $attribute Attribute.
      *
-     * @return string|\Magento\Framework\Phrase
+     * @return string|Phrase
      */
     public function getScopeLabel(AttributeInterface $attribute)
     {
@@ -148,7 +155,7 @@ class Eav
      *
      * @return boolean
      */
-    public function isScopeGlobal(AttributeInterface $attribute)
+    public function isScopeGlobal(AttributeInterface $attribute): bool
     {
         return $this->eavHelper->isScopeGlobal($attribute);
     }
@@ -162,7 +169,7 @@ class Eav
      *
      * @return boolean
      */
-    public function hasValueForStore(EntityInterface $entity, AttributeInterface $attribute, $storeId)
+    public function hasValueForStore(EntityInterface $entity, AttributeInterface $attribute, $storeId): bool
     {
         $hasValue       = false;
         $attributeCode  = $attribute->getAttributeCode();
@@ -185,7 +192,7 @@ class Eav
      *
      * @return mixed
      */
-    public function canDisplayUseDefault(AttributeInterface $attribute, EntityInterface $entity)
+    public function canDisplayUseDefault(AttributeInterface $attribute, EntityInterface $entity): mixed
     {
         $attributeCode = $attribute->getAttributeCode();
 
@@ -204,7 +211,7 @@ class Eav
      *
      * @return string|NULL
      */
-    public function getFormElement($frontendInput)
+    public function getFormElement(string $frontendInput): ?string
     {
         return $this->eavHelper->getFormElement($frontendInput);
     }
@@ -212,11 +219,11 @@ class Eav
     /**
      * Prepare a search criteria that filter group by attribute set.
      *
-     * @param int $attributeSetId Attribute set id.
+     * @param int|string $attributeSetId Attribute set id.
      *
-     * @return \Magento\Framework\Api\SearchCriteriaBuilder
+     * @return SearchCriteriaBuilder
      */
-    private function prepareGroupSearchCriteria($attributeSetId)
+    private function prepareGroupSearchCriteria($attributeSetId): SearchCriteriaBuilder
     {
         return $this->searchCriteriaBuilder->addFilter(AttributeGroupInterface::ATTRIBUTE_SET_ID, $attributeSetId);
     }

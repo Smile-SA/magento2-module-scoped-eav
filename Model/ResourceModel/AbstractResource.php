@@ -4,15 +4,23 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Model\ResourceModel;
 
+use Magento\Eav\Model\Entity\AbstractEntity;
+use Magento\Eav\Model\Entity\Attribute\SetFactory;
+use Magento\Eav\Model\Entity\Attribute\Source\Table;
 use Magento\Eav\Model\Entity\Context;
+use Magento\Eav\Model\Entity\TypeFactory;
+use Magento\Framework\EntityManager\EntityManager;
+use Magento\Framework\Model\AbstractModel;
+use Smile\ScopedEav\Model\Entity\Attribute;
+use Smile\ScopedEav\Model\Entity\Attribute\DefaultAttributes;
 
 /**
  * Scoped EAV entity resource model.
  */
-class AbstractResource extends \Magento\Eav\Model\Entity\AbstractEntity
+class AbstractResource extends AbstractEntity
 {
     /**
-     * @var \Magento\Framework\EntityManager\EntityManager
+     * @var EntityManager
      */
     private $entityManager;
 
@@ -27,26 +35,26 @@ class AbstractResource extends \Magento\Eav\Model\Entity\AbstractEntity
     private $setFactory;
 
     /**
-     * @var \Smile\ScopedEav\Model\Entity\Attribute\DefaultAttributes
+     * @var DefaultAttributes
      */
     private $defaultAttributes;
 
     /**
      * AbstractResource constructor.
      *
-     * @param \Magento\Eav\Model\Entity\Context                         $context           Context.
-     * @param \Magento\Framework\EntityManager\EntityManager            $entityManager     Entity manager.
-     * @param \Magento\Eav\Model\Entity\TypeFactory                     $typeFactory       Entity type factory.
-     * @param \Magento\Eav\Model\Entity\Attribute\SetFactory            $setFactory        Attribute set factory.
-     * @param \Smile\ScopedEav\Model\Entity\Attribute\DefaultAttributes $defaultAttributes Default attributes.
+     * @param Context $context Context.
+     * @param EntityManager $entityManager Entity manager.
+     * @param \Magento\Eav\Model\Entity\TypeFactory $typeFactory Entity type factory.
+     * @param \Magento\Eav\Model\Entity\Attribute\SetFactory $setFactory Attribute set factory.
+     * @param DefaultAttributes $defaultAttributes Default attributes.
      * @param array                                                     $data              Additional data.
      */
     public function __construct(
         Context $context,
-        \Magento\Framework\EntityManager\EntityManager $entityManager,
+        EntityManager $entityManager,
         \Magento\Eav\Model\Entity\TypeFactory $typeFactory,
         \Magento\Eav\Model\Entity\Attribute\SetFactory $setFactory,
-        \Smile\ScopedEav\Model\Entity\Attribute\DefaultAttributes $defaultAttributes,
+        DefaultAttributes $defaultAttributes,
         array $data = []
     ) {
         parent::__construct($context, $data);
@@ -61,7 +69,7 @@ class AbstractResource extends \Magento\Eav\Model\Entity\AbstractEntity
      */
     public function getDefaultAttributeSourceModel()
     {
-        return \Magento\Eav\Model\Entity\Attribute\Source\Table::class;
+        return Table::class;
     }
 
     /**
@@ -93,7 +101,7 @@ class AbstractResource extends \Magento\Eav\Model\Entity\AbstractEntity
     /**
      * {@inheritdoc}
      */
-    public function save(\Magento\Framework\Model\AbstractModel $object)
+    public function save(AbstractModel $object)
     {
         $this->loadAllAttributes();
         $this->entityManager->save($object);
@@ -128,6 +136,6 @@ class AbstractResource extends \Magento\Eav\Model\Entity\AbstractEntity
      */
     protected function _getDefaultAttributeModel()
     {
-        return \Smile\ScopedEav\Model\Entity\Attribute::class;
+        return Attribute::class;
     }
 }

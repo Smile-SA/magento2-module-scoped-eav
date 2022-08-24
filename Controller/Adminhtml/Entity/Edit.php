@@ -6,11 +6,12 @@ namespace Smile\ScopedEav\Controller\Adminhtml\Entity;
 
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Smile\ScopedEav\Controller\Adminhtml\AbstractEntity;
 
 /**
  * Scoped EAV entity edit controller.
  */
-class Edit extends \Smile\ScopedEav\Controller\Adminhtml\AbstractEntity
+class Edit extends AbstractEntity
 {
     /**
      * {@inheritDoc}

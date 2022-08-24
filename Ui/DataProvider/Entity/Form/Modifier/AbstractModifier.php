@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Ui\DataProvider\Entity\Form\Modifier;
 
+use Magento\Ui\DataProvider\Modifier\ModifierInterface;
+
 /**
  * Scoped EAV form modifier abstract.
  */
-abstract class AbstractModifier implements \Magento\Ui\DataProvider\Modifier\ModifierInterface
+abstract class AbstractModifier implements ModifierInterface
 {
     /**
      * @var string
@@ -44,7 +46,7 @@ abstract class AbstractModifier implements \Magento\Ui\DataProvider\Modifier\Mod
      *
      * @return int
      */
-    protected function getNextGroupSortOrder(array $meta, $groupCodes, $defaultSortOrder, $iteration = 1)
+    protected function getNextGroupSortOrder(array $meta, $groupCodes, int $defaultSortOrder, int $iteration = 1): int
     {
         $groupCodes = (array) $groupCodes;
 
@@ -67,7 +69,7 @@ abstract class AbstractModifier implements \Magento\Ui\DataProvider\Modifier\Mod
      *
      * @return int
      */
-    protected function getNextAttributeSortOrder(array $meta, $attributeCodes, $defaultSortOrder, $iteration = 1)
+    protected function getNextAttributeSortOrder(array $meta, $attributeCodes, int $defaultSortOrder, int $iteration = 1): int
     {
         $attributeCodes = (array) $attributeCodes;
 
@@ -86,7 +88,7 @@ abstract class AbstractModifier implements \Magento\Ui\DataProvider\Modifier\Mod
      *
      * @return bool
      */
-    protected function startsWith($haystack, $needle)
+    protected function startsWith(string $haystack, string $needle): bool
     {
         return $needle === '' || strrpos($haystack, $needle, - strlen($haystack)) !== false;
     }
@@ -98,7 +100,7 @@ abstract class AbstractModifier implements \Magento\Ui\DataProvider\Modifier\Mod
      *
      * @return string|null
      */
-    protected function getFirstPanelCode(array $meta)
+    protected function getFirstPanelCode(array $meta): ?string
     {
         $min = null;
         $name = null;
@@ -123,7 +125,7 @@ abstract class AbstractModifier implements \Magento\Ui\DataProvider\Modifier\Mod
      *
      * @return string|bool
      */
-    protected function getGroupCodeByField(array $meta, $field)
+    protected function getGroupCodeByField(array $meta, string $field): ?string
     {
         foreach ($meta as $groupCode => $groupData) {
             if (isset($groupData['children'][$field]) || isset($groupData['children'][static::CONTAINER_PREFIX . $field])) {
@@ -144,7 +146,7 @@ abstract class AbstractModifier implements \Magento\Ui\DataProvider\Modifier\Mod
      *
      * @return mixed
      */
-    private function getNextAttributeSortOrderInGroup(array $meta, $attributeCodes, $defaultSortOrder, $iteration = 1)
+    private function getNextAttributeSortOrderInGroup(array $meta, array $attributeCodes, int $defaultSortOrder, int $iteration = 1): mixed
     {
         if (isset($meta['children'])) {
             foreach ($meta['children'] as $attributeCode => $attributeMeta) {

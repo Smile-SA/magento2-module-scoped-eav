@@ -4,47 +4,61 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Controller\Adminhtml\Set;
 
+use Magento\Backend\App\Action\Context;
+use Magento\Eav\Api\AttributeSetRepositoryInterface;
+use Magento\Eav\Api\Data\AttributeSetInterface;
+use Magento\Eav\Api\Data\AttributeSetInterfaceFactory;
+use Magento\Eav\Model\Config;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\Result\Json;
+use Magento\Framework\Controller\Result\JsonFactory;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Filter\FilterManager;
+use Magento\Framework\Json\Helper\Data;
+use Magento\Framework\Registry;
+use Smile\ScopedEav\Controller\Adminhtml\AbstractSet;
+
 /**
  * Scoped EAV entity attribute set admin save controller.
  */
-class Save extends \Smile\ScopedEav\Controller\Adminhtml\AbstractSet
+class Save extends AbstractSet
 {
     /**
-     * @var \Magento\Framework\Filter\FilterManager
+     * @var FilterManager
      */
     private $filterManager;
 
     /**
-     * @var \Magento\Framework\Json\Helper\Data
+     * @var Data
      */
     private $jsonHelper;
 
     /**
-     * @var \Magento\Framework\Controller\Result\JsonFactory
+     * @var JsonFactory
      */
     private $resultJsonFactory;
 
     /**
      * Constructor.
      *
-     * @param \Magento\Backend\App\Action\Context                $context                Context.
-     * @param \Magento\Framework\Registry                        $registry               Registry.
-     * @param \Magento\Eav\Model\Config                          $eavConfig              EAV config.
-     * @param \Magento\Eav\Api\AttributeSetRepositoryInterface   $attributeSetRepository Attribute set repository.
-     * @param \Magento\Eav\Api\Data\AttributeSetInterfaceFactory $attributeSetFactory    Attribute set factory.
-     * @param \Magento\Framework\Filter\FilterManager            $filterManager          Filters.
-     * @param \Magento\Framework\Json\Helper\Data                $jsonHelper             JSON helper.
-     * @param \Magento\Framework\Controller\Result\JsonFactory   $resultJsonFactory      Result JSON factory.
+     * @param Context $context Context.
+     * @param Registry $registry Registry.
+     * @param Config $eavConfig EAV config.
+     * @param AttributeSetRepositoryInterface $attributeSetRepository Attribute set repository.
+     * @param AttributeSetInterfaceFactory $attributeSetFactory Attribute set factory.
+     * @param FilterManager $filterManager Filters.
+     * @param Data $jsonHelper JSON helper.
+     * @param JsonFactory $resultJsonFactory Result JSON factory.
      */
     public function __construct(
-        \Magento\Backend\App\Action\Context $context,
-        \Magento\Framework\Registry $registry,
-        \Magento\Eav\Model\Config $eavConfig,
-        \Magento\Eav\Api\AttributeSetRepositoryInterface $attributeSetRepository,
-        \Magento\Eav\Api\Data\AttributeSetInterfaceFactory $attributeSetFactory,
-        \Magento\Framework\Filter\FilterManager $filterManager,
-        \Magento\Framework\Json\Helper\Data $jsonHelper,
-        \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+        Context $context,
+        Registry $registry,
+        Config $eavConfig,
+        AttributeSetRepositoryInterface $attributeSetRepository,
+        AttributeSetInterfaceFactory $attributeSetFactory,
+        FilterManager $filterManager,
+        Data $jsonHelper,
+        JsonFactory $resultJsonFactory
     ) {
         parent::__construct($context, $registry, $eavConfig, $attributeSetRepository, $attributeSetFactory);
 
@@ -81,7 +95,7 @@ class Save extends \Smile\ScopedEav\Controller\Adminhtml\AbstractSet
 
             $attributeSet->save();
             $this->messageManager->addSuccessMessage(__('You saved the attribute set.'));
-        } catch (\Magento\Framework\Exception\LocalizedException $e) {
+        } catch (LocalizedException $e) {
             $this->messageManager->addErrorMessage($e->getMessage());
             $hasError = true;
         } catch (\Exception $e) {
@@ -102,11 +116,11 @@ class Save extends \Smile\ScopedEav\Controller\Adminhtml\AbstractSet
     /**
      * Redirect user on new attribute set save.
      *
-     * @param \Magento\Eav\Api\Data\AttributeSetInterface $attributeSet Attribute set.
+     * @param AttributeSetInterface $attributeSet Attribute set.
      *
-     * @return \Magento\Framework\App\ResponseInterface
+     * @return ResponseInterface
      */
-    private function getNewAttributeSetResponse($attributeSet)
+    private function getNewAttributeSetResponse($attributeSet): ResponseInterface
     {
         $resultRedirect = $this->_redirect('*/*/add');
 
@@ -120,9 +134,9 @@ class Save extends \Smile\ScopedEav\Controller\Adminhtml\AbstractSet
     /**
      * Return formatted JSON success response.
      *
-     * @return \Magento\Framework\Controller\Result\Json
+     * @return Json
      */
-    private function getSuccessResponse()
+    private function getSuccessResponse(): Json
     {
         $response = ['error' => 0, 'url' => $this->getUrl('*/*/index')];
 
@@ -132,9 +146,9 @@ class Save extends \Smile\ScopedEav\Controller\Adminhtml\AbstractSet
     /**
      * Return formatted JSON error response.
      *
-     * @return \Magento\Framework\Controller\Result\Json
+     * @return Json
      */
-    private function getErrorResponse()
+    private function getErrorResponse(): Json
     {
         $layout = $this->_view->getLayout();
         $layout->initMessages();

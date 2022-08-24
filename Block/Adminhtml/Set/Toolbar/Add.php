@@ -14,7 +14,7 @@ class Add extends \Magento\Catalog\Block\Adminhtml\Product\Attribute\Set\Toolbar
      *
      * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
-    protected function _prepareLayout()
+    protected function _prepareLayout(): self
     {
         if ($this->getToolbar()) {
             $this->getToolbar()->addChild(

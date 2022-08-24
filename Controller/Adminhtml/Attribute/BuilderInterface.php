@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Controller\Adminhtml\Attribute;
 
+use Magento\Framework\App\RequestInterface;
+use Smile\ScopedEav\Api\Data\AttributeInterface;
+
 /**
  * Scoped entity attribute builder interface used in controllers.
  */
@@ -14,7 +17,7 @@ interface BuilderInterface
      *
      * @param RequestInterface $request Request.
      *
-     * @return \Smile\ScopedEav\Api\Data\AttributeInterface
+     * @return AttributeInterface
      */
-    public function build(\Magento\Framework\App\RequestInterface $request);
+    public function build(RequestInterface $request): AttributeInterface;
 }

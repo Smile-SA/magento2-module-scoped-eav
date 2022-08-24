@@ -4,33 +4,37 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Ui\DataProvider\Entity\Listing;
 
+use Magento\Ui\DataProvider\AbstractDataProvider;
+use Magento\Ui\DataProvider\AddFieldToCollectionInterface;
+use Magento\Ui\DataProvider\AddFilterToCollectionInterface;
+
 /**
  * Scoped EAV entity listing UI component dataprovider.
  */
-class EntityDataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
+class EntityDataProvider extends AbstractDataProvider
 {
     /**
      *
-     * @var \Magento\Ui\DataProvider\AddFieldToCollectionInterface[]
+     * @var AddFieldToCollectionInterface[]
      */
     protected $addFieldStrategies;
 
     /**
      *
-     * @var \Magento\Ui\DataProvider\AddFilterToCollectionInterface[]
+     * @var AddFilterToCollectionInterface[]
      */
     protected $addFilterStrategies;
 
     /**
      * Constructor.
      *
-     * @param string                                                    $name                Name.
-     * @param string                                                    $primaryFieldName    Primary field name.
-     * @param string                                                    $requestFieldName    Request field name.
-     * @param \Magento\Ui\DataProvider\AddFieldToCollectionInterface[]  $addFieldStrategies  Field add stategies.
-     * @param \Magento\Ui\DataProvider\AddFilterToCollectionInterface[] $addFilterStrategies Filter strategies.
-     * @param array                                                     $meta                Meta.
-     * @param array                                                     $data                Data.
+     * @param string  $name Name.
+     * @param string $primaryFieldName Primary field name.
+     * @param string $requestFieldName Request field name.
+     * @param AddFieldToCollectionInterface[] $addFieldStrategies Field add stategies.
+     * @param AddFilterToCollectionInterface[] $addFilterStrategies Filter strategies.
+     * @param array $meta Meta.
+     * @param array $data Data.
      */
     public function __construct(
         $name,

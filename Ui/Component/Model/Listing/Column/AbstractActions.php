@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Ui\Component\Model\Listing\Column;
 
+use Magento\Framework\UrlInterface;
+use Magento\Framework\View\Element\UiComponent\ContextInterface;
+use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Ui\Component\Listing\Columns\Column;
 
 /**
@@ -12,23 +15,23 @@ use Magento\Ui\Component\Listing\Columns\Column;
 abstract class AbstractActions extends Column
 {
     /**
-     * @var \Magento\Framework\UrlInterface
+     * @var UrlInterface
      */
     private $urlBuilder;
 
     /**
      * Constructor.
      *
-     * @param \Magento\Framework\View\Element\UiComponent\ContextInterface $context            Context.
-     * @param \Magento\Framework\View\Element\UiComponentFactory           $uiComponentFactory UI Components factory.
-     * @param \Magento\Framework\UrlInterface                              $urlBuilder         URL Builder.
-     * @param array                                                        $components         UI Components.
-     * @param array                                                        $data               Additional data.
+     * @param ContextInterface $context Context.
+     * @param UiComponentFactory $uiComponentFactory UI Components factory.
+     * @param UrlInterface $urlBuilder URL Builder.
+     * @param array $components UI Components.
+     * @param array $data Additional data.
      */
     public function __construct(
-        \Magento\Framework\View\Element\UiComponent\ContextInterface $context,
-        \Magento\Framework\View\Element\UiComponentFactory $uiComponentFactory,
-        \Magento\Framework\UrlInterface $urlBuilder,
+        ContextInterface $context,
+        UiComponentFactory $uiComponentFactory,
+        UrlInterface $urlBuilder,
         array $components = [],
         array $data = []
     ) {
@@ -43,7 +46,7 @@ abstract class AbstractActions extends Column
      *
      * @return array
      */
-    public function prepareDataSource(array $dataSource)
+    public function prepareDataSource(array $dataSource): array
     {
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as &$item) {
@@ -64,7 +67,7 @@ abstract class AbstractActions extends Column
      *
      * @return string
      */
-    protected function getEditUrl($item)
+    protected function getEditUrl(array $item): string
     {
         $editUrlPath = $this->getDataByPath('config/editUrlPath');
 

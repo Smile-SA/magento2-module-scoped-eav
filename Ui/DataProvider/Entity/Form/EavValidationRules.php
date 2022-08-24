@@ -15,11 +15,11 @@ class EavValidationRules
      * Build validation rules for the attribute.
      *
      * @param ProductAttributeInterface $attribute Attribute.
-     * @param array                     $data      Additional data.
+     * @param array $data Additional data.
      *
      * @return array
      */
-    public function build(AttributeInterface $attribute, array $data)
+    public function build(AttributeInterface $attribute, array $data): array
     {
         $rules = [];
 
@@ -53,7 +53,7 @@ class EavValidationRules
      *
      * @return array
      */
-    private function mapRules($class, array $rules)
+    private function mapRules(string $class, array $rules): array
     {
         switch ($class) {
             case 'validate-number':

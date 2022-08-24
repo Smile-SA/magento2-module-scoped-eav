@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Ui\DataProvider\Entity\Form\Modifier;
 
+use Magento\Framework\UrlInterface;
+use Smile\ScopedEav\Model\Locator\LocatorInterface;
+
 /**
  * Scoped EAV generic system form modifier.
  */
@@ -14,12 +17,12 @@ class System extends AbstractModifier
     const KEY_RELOAD_URL = 'reloadUrl';
 
     /**
-     * @var \Smile\ScopedEav\Model\Locator\LocatorInterface
+     * @var LocatorInterface
      */
     private $locator;
 
     /**
-     * @var \Magento\Framework\UrlInterface
+     * @var UrlInterface
      */
     private $urlBuilder;
 
@@ -39,13 +42,13 @@ class System extends AbstractModifier
     /**
      * Constructor.
      *
-     * @param \Smile\ScopedEav\Model\Locator\LocatorInterface $locator    Entity locator.
-     * @param \Magento\Framework\UrlInterface                 $urlBuilder Url builder.
-     * @param array                                           $entityUrls Entity urls.
+     * @param LocatorInterface $locator Entity locator.
+     * @param UrlInterface $urlBuilder Url builder.
+     * @param array  $entityUrls Entity urls.
      */
     public function __construct(
-        \Smile\ScopedEav\Model\Locator\LocatorInterface $locator,
-        \Magento\Framework\UrlInterface $urlBuilder,
+        LocatorInterface $locator,
+        UrlInterface $urlBuilder,
         array $entityUrls = []
     ) {
         $this->locator     = $locator;

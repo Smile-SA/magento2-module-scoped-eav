@@ -14,7 +14,7 @@ class Attribute extends \Magento\Eav\Model\Attribute implements AttributeInterfa
     /**
      * {@inheritdoc}
      */
-    public function getScope()
+    public function getScope(): ?string
     {
         $scope    = self::SCOPE_STORE_TEXT;
         $isGlobal = $this->getIsGlobal();
@@ -39,7 +39,7 @@ class Attribute extends \Magento\Eav\Model\Attribute implements AttributeInterfa
     /**
      * {@inheritdoc}
      */
-    public function setScope($scope)
+    public function setScope(string $scope): self
     {
         $isGlobal = self::SCOPE_STORE;
 
@@ -55,7 +55,7 @@ class Attribute extends \Magento\Eav\Model\Attribute implements AttributeInterfa
     /**
      * {@inheritdoc}
      */
-    public function setIsGlobal($isGlobal)
+    public function setIsGlobal(int $isGlobal): self
     {
         return $this->setData(self::KEY_IS_GLOBAL, $isGlobal);
     }
@@ -63,7 +63,7 @@ class Attribute extends \Magento\Eav\Model\Attribute implements AttributeInterfa
     /**
      * {@inheritdoc}
      */
-    public function isScopeGlobal()
+    public function isScopeGlobal(): bool
     {
         return $this->getIsGlobal() == self::SCOPE_GLOBAL;
     }
@@ -71,7 +71,7 @@ class Attribute extends \Magento\Eav\Model\Attribute implements AttributeInterfa
     /**
      * {@inheritdoc}
      */
-    public function isScopeWebsite()
+    public function isScopeWebsite(): bool
     {
         return $this->getIsGlobal() == self::SCOPE_WEBSITE;
     }
@@ -79,7 +79,7 @@ class Attribute extends \Magento\Eav\Model\Attribute implements AttributeInterfa
     /**
      * {@inheritdoc}
      */
-    public function isScopeStore()
+    public function isScopeStore(): bool
     {
         return !$this->isScopeGlobal() && !$this->isScopeWebsite();
     }

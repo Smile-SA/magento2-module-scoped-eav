@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace Smile\ScopedEav\Controller\Adminhtml\Entity\Image;
 
 use Magento\Backend\App\Action;
+use Magento\Catalog\Model\ImageUploader;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\Exception\NotFoundException;
 
 /**
  * Scoped EAV uploader controller.
@@ -15,7 +18,7 @@ use Magento\Framework\Controller\ResultFactory;
 class Upload extends Action implements HttpPostActionInterface
 {
     /**
-     * @var \Magento\Catalog\Model\ImageUploader
+     * @var ImageUploader
      */
     private $imageUploader;
 
@@ -23,11 +26,11 @@ class Upload extends Action implements HttpPostActionInterface
      * Upload constructor.
      *
      * @param Action\Context                       $context       Context.
-     * @param \Magento\Catalog\Model\ImageUploader $imageUploader Image uploader.
+     * @param ImageUploader $imageUploader Image uploader.
      */
     public function __construct(
         Action\Context $context,
-        \Magento\Catalog\Model\ImageUploader $imageUploader
+        ImageUploader $imageUploader
     ) {
         parent::__construct($context);
         $this->imageUploader = $imageUploader;
@@ -38,13 +41,13 @@ class Upload extends Action implements HttpPostActionInterface
      *
      * Note: Request will be added as operation argument in future
      *
-     * @return \Magento\Framework\Controller\ResultInterface|ResponseInterface
-     * @throws \Magento\Framework\Exception\NotFoundException
+     * @return ResultInterface|ResponseInterface
+     * @throws NotFoundException
      */
     /**
      * Upload file controller action
      *
-     * @return \Magento\Framework\Controller\ResultInterface
+     * @return ResultInterface
      */
     public function execute()
     {

@@ -17,7 +17,7 @@ class DefaultAttributes implements ProviderInterface
      *
      * @return array
      */
-    public function getDefaultAttributes()
+    public function getDefaultAttributes(): array
     {
         return [
             EntityInterface::CREATED_AT,
