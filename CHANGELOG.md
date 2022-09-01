@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.1] - 2022-09-01
+[1.3.1]: https://github.com/Smile-SA/magento2-module-scoped-eav/compare/1.3.0...1.3.1
+
+- Add strict types on php files
+- Remove disclaimer / annotation comments
+- Add .gitattributes and update .gitignore
+- Update README
+
 ## [1.3.0] - 2022-08-10
 [1.3.0]: https://github.com/Smile-SA/magento2-module-scoped-eav/compare/1.2.0...1.3.0
 
