@@ -14,7 +14,7 @@ class EavValidationRules
     /**
      * Build validation rules for the attribute.
      *
-     * @param ProductAttributeInterface $attribute Attribute.
+     * @param AttributeInterface $attribute Attribute.
      * @param array $data Additional data.
      *
      * @return array

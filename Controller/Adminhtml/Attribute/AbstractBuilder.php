@@ -50,7 +50,7 @@ abstract class AbstractBuilder implements BuilderInterface
         if ($attribute === null) {
             $entityTypeId = $this->eavConfig->getEntityType($this->getEntityTypeCode())->getId();
 
-            $attributeId   = $request->getParam('attribute_id');
+            $attributeId = $request->getParam('attribute_id');
             $attributeCode = $request->getParam('attribute_code');
 
             $attribute = $this->getAttributeFactory()->create();

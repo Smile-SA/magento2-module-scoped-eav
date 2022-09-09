@@ -10,6 +10,7 @@
         }
     ],
     "require": {
+        "php": "^7.4 || ^8.1",
         "magento/framework": "*",
         "magento/magento-composer-installer": "*",
         "magento/module-catalog": ">=103.0.4"

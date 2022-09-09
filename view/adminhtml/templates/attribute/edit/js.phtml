@@ -1,5 +1,9 @@
 <?php
 // @codingStandardsIgnoreFile
+
+/** @var $block Magento\Backend\Block\Template */
+/** @var $dataViewModel Smile\ScopedEav\ViewModel\Data */
+$catalogViewModel = $block->getData('catalog_view_model');
 ?>
 <script>
 require([
@@ -118,7 +122,7 @@ function switchDefaultValueField()
             setRowVisibility('frontend_class', false);
         break;
 
-        <?php foreach ($this->helper('Magento\Catalog\Helper\Data')->getAttributeHiddenFields() as $type => $fields): ?>
+        <?php foreach ($catalogViewModel->getAttributeHiddenFields() as $type => $fields): ?>
             case '<?php /* @escapeNotVerified */ echo $type; ?>':
                 <?php foreach ($fields as $one): ?>
                     <?php if ($one == '_default_value'): ?>

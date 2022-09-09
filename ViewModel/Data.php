@@ -2,26 +2,26 @@
 
 declare(strict_types=1);
 
-namespace Smile\ScopedEav\Helper;
+namespace Smile\ScopedEav\ViewModel;
 
 use Magento\Catalog\Helper\Product;
 use Magento\Catalog\Model\Product\UrlFactory;
-use Magento\Framework\App\Helper\AbstractHelper;
-use Magento\Framework\App\Helper\Context;
 use Magento\Framework\EntityManager\EntityMetadataInterface;
 use Magento\Framework\EntityManager\MetadataPool;
 use Magento\Framework\Phrase;
+use Magento\Framework\Registry;
+use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Ui\DataProvider\Mapper\FormElement;
-use Smile\ScopedEav\Api\Data\EntityInterface;
 use Smile\ScopedEav\Api\Data\AttributeInterface;
+use Smile\ScopedEav\Api\Data\EntityInterface;
 use Zend\Validator\Regex;
 use Zend\Validator\RegexFactory;
 
 /**
- * Scoped EAV helper.
+ * Scoped EAV view model.
  */
-class Data extends AbstractHelper
+class Data implements ArgumentInterface
 {
     /**
      * @var UrlFactory
@@ -54,33 +54,37 @@ class Data extends AbstractHelper
     private $regexFactory;
 
     /**
+     * @var Registry
+     */
+    private $coreRegistry;
+
+    /**
      * Constructor.
      *
-     * @param Context $context Context.
      * @param UrlFactory $urlFactory Url factory.
      * @param Product $productHelper Product helper.
      * @param StoreManagerInterface $storeManager Store manager.
      * @param FormElement $formElementMapper Form element mapper.
      * @param MetadataPool $metadataPool Entity manager metadata pool.
      * @param RegexFactory $regexFactory Regexp validator factory.
+     * @param Registry $coreRegistry Regexp validator factory.
      */
     public function __construct(
-        Context $context,
         UrlFactory $urlFactory,
         Product $productHelper,
         StoreManagerInterface $storeManager,
         FormElement $formElementMapper,
         MetadataPool $metadataPool,
-        RegexFactory $regexFactory
+        RegexFactory $regexFactory,
+        Registry $coreRegistry,
     ) {
-        parent::__construct($context);
-
-        $this->storeManager         = $storeManager;
-        $this->urlFactory           = $urlFactory;
-        $this->productHelper        = $productHelper;
-        $this->formElementMapper    = $formElementMapper;
-        $this->metadataPool         = $metadataPool;
-        $this->regexFactory         = $regexFactory;
+        $this->storeManager = $storeManager;
+        $this->urlFactory = $urlFactory;
+        $this->productHelper = $productHelper;
+        $this->formElementMapper = $formElementMapper;
+        $this->metadataPool = $metadataPool;
+        $this->regexFactory = $regexFactory;
+        $this->coreRegistry = $coreRegistry;
     }
 
     /**
@@ -113,7 +117,9 @@ class Data extends AbstractHelper
      */
     public function getAttributeBackendModelByInputType(string $inputType): ?string
     {
-        if ($inputType == 'image') return 'Smile\ScopedEav\Model\Entity\Attribute\Backend\Image';
+        if ($inputType == 'image') {
+            return 'Smile\ScopedEav\Model\Entity\Attribute\Backend\Image';
+        }
         return $this->productHelper->getAttributeBackendModelByInputType($inputType);
     }
 
@@ -212,5 +218,19 @@ class Data extends AbstractHelper
         }
 
         return $interface;
+    }
+
+    /**
+     * Retrieve attribute hidden fields
+     *
+     * @return array
+     */
+    public function getAttributeHiddenFields()
+    {
+        if ($this->coreRegistry->registry('attribute_type_hidden_fields')) {
+            return $this->coreRegistry->registry('attribute_type_hidden_fields');
+        } else {
+            return [];
+        }
     }
 }

@@ -10,7 +10,7 @@ use Magento\Backend\Model\View\Result\Page;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Phrase;
 use Smile\ScopedEav\Api\Data\AttributeInterface;
-use Smile\ScopedEav\Helper\Data;
+use Smile\ScopedEav\ViewModel\Data as DataViewModel;
 
 /**
  * Scoped EAV attribute admin abstract controller.
@@ -18,9 +18,9 @@ use Smile\ScopedEav\Helper\Data;
 abstract class AbstractAttribute extends Action
 {
     /**
-     * @var Data
+     * @var DataViewModel
      */
-    private $entityHelper;
+    private $dataViewModel;
 
     /**
      * @var Attribute\BuilderInterface
@@ -31,17 +31,16 @@ abstract class AbstractAttribute extends Action
      * Constructor.
      *
      * @param Context $context Context.
-     * @param Data $entityHelper Entity helper.
+     * @param DataViewModel $dataViewModel Scoped EAV data view model.
      * @param Attribute\BuilderInterface $attributeBuilder Attribute builder.
      */
     public function __construct(
         Context $context,
-        Data $entityHelper,
+        DataViewModel $dataViewModel,
         Attribute\BuilderInterface $attributeBuilder
     ) {
         parent::__construct($context);
-
-        $this->entityHelper     = $entityHelper;
+        $this->dataViewModel = $dataViewModel;
         $this->attributeBuilder = $attributeBuilder;
     }
 
@@ -64,7 +63,7 @@ abstract class AbstractAttribute extends Action
      */
     protected function generateCode($label): string
     {
-        return $this->entityHelper->generateAttributeCodeFromLabel($label);
+        return $this->dataViewModel->generateAttributeCodeFromLabel($label);
     }
 
     /**
