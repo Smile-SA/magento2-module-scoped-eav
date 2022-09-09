@@ -39,10 +39,10 @@ abstract class AbstractModifier implements ModifierInterface
     /**
      * Retrieve next group sort order.
      *
-     * @param array        $meta             Meta.
-     * @param array|string $groupCodes       Preceding group codes.
-     * @param int          $defaultSortOrder Default sort order.
-     * @param int          $iteration        Value to be added.
+     * @param array $meta Meta.
+     * @param array|string $groupCodes Preceding group codes.
+     * @param int $defaultSortOrder Default sort order.
+     * @param int $iteration Value to be added.
      *
      * @return int
      */
@@ -62,10 +62,10 @@ abstract class AbstractModifier implements ModifierInterface
     /**
      * Retrieve next attribute sort order.
      *
-     * @param array        $meta             Meta.
-     * @param array|string $attributeCodes   Preceding attribute codes.
-     * @param int          $defaultSortOrder Default sort order.
-     * @param int          $iteration        Value to be added.
+     * @param array $meta Meta.
+     * @param array|string $attributeCodes Preceding attribute codes.
+     * @param int $defaultSortOrder Default sort order.
+     * @param int $iteration Value to be added.
      *
      * @return int
      */
@@ -84,7 +84,7 @@ abstract class AbstractModifier implements ModifierInterface
      * Search backwards starting from haystack length characters from the end.
      *
      * @param string $haystack Source string.
-     * @param string $needle   Searched string.
+     * @param string $needle Searched string.
      *
      * @return bool
      */
@@ -120,7 +120,7 @@ abstract class AbstractModifier implements ModifierInterface
     /**
      * Get group code by field.
      *
-     * @param array  $meta  Meta.
+     * @param array $meta Meta.
      * @param string $field Field.
      *
      * @return string|bool
@@ -139,10 +139,10 @@ abstract class AbstractModifier implements ModifierInterface
     /**
      * Retrieve next attribute sort order in a group.
      *
-     * @param array $meta             Meta.
-     * @param array $attributeCodes   Preceding attribute codes.
-     * @param int   $defaultSortOrder Default sort order.
-     * @param int   $iteration        Value to be added.
+     * @param array $meta Meta.
+     * @param array $attributeCodes Preceding attribute codes.
+     * @param int $defaultSortOrder Default sort order.
+     * @param int $iteration Value to be added.
      *
      * @return mixed
      */

@@ -10,7 +10,7 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Serialize\Serializer\FormData;
 use Smile\ScopedEav\Api\Data\AttributeInterface;
 use Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute;
-use Smile\ScopedEav\Helper\Data;
+use Smile\ScopedEav\ViewModel\Data as DataViewModel;
 use Zend\Validator\Regex;
 use Zend\Validator\RegexFactory;
 
@@ -20,9 +20,9 @@ use Zend\Validator\RegexFactory;
 class Save extends AbstractAttribute
 {
     /**
-     * @var Data
+     * @var DataViewModel
      */
-    private $entityHelper;
+    private $dataViewModel;
 
     /**
      * @var RegexFactory
@@ -38,20 +38,20 @@ class Save extends AbstractAttribute
      * Constructor.
      *
      * @param Context $context Context.
-     * @param Data $entityHelper Entity helper.
+     * @param DataViewModel $dataViewModel Scoped EAV data view model.
      * @param BuilderInterface $attributeBuilder Attribute builder.
      * @param RegexFactory $regexFactory Regexp validator factory.
      * @param FormData|null $formDataSerializer
      */
     public function __construct(
         Context $context,
-        Data $entityHelper,
+        DataViewModel $dataViewModel,
         BuilderInterface $attributeBuilder,
         RegexFactory $regexFactory,
         FormData $formDataSerializer = null
     ) {
-        parent::__construct($context, $entityHelper, $attributeBuilder);
-        $this->entityHelper = $entityHelper;
+        parent::__construct($context, $dataViewModel, $attributeBuilder);
+        $this->dataViewModel = $dataViewModel;
         $this->regexFactory = $regexFactory;
         $this->formDataSerializer = $formDataSerializer
             ?: ObjectManager::getInstance()->get(FormData::class);
@@ -110,9 +110,9 @@ class Save extends AbstractAttribute
         if (!$attribute->getId()) {
             $data['attribute_code']  = $this->getAttributeCode();
             $data['is_user_defined'] = true;
-            $data['backend_type']    = ($data['frontend_input'] == 'image') ? 'varchar' : $attribute->getBackendTypeByInput($data['frontend_input']);
-            $data['source_model']    = $this->entityHelper->getAttributeSourceModelByInputType($data['frontend_input']);
-            $data['backend_model']   = $this->entityHelper->getAttributeBackendModelByInputType($data['frontend_input']);
+            $data['backend_type'] = ($data['frontend_input'] == 'image') ? 'varchar' : $attribute->getBackendTypeByInput($data['frontend_input']);
+            $data['source_model'] = $this->dataViewModel->getAttributeSourceModelByInputType($data['frontend_input']);
+            $data['backend_model'] = $this->dataViewModel->getAttributeBackendModelByInputType($data['frontend_input']);
         }
 
         $defaultValueField = $attribute->getDefaultValueByInput($frontendInput);

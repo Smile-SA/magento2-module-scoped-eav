@@ -20,7 +20,11 @@
             <block class="Smile\ScopedEav\Block\Adminhtml\Attribute\Edit" name="attribute_edit_content" />
         </referenceContainer>
         <referenceContainer name="js">
-            <block class="Magento\Backend\Block\Template" name="attribute_edit_js" template="Smile_ScopedEav::attribute/edit/js.phtml" />
+            <block class="Magento\Backend\Block\Template" name="attribute_edit_js" template="Smile_ScopedEav::attribute/edit/js.phtml">
+                <arguments>
+                    <argument name="catalog_view_model" xsi:type="object">Smile\ScopedEav\ViewModel\Data</argument>
+                </arguments>
+            </block>
         </referenceContainer>
     </body>
 

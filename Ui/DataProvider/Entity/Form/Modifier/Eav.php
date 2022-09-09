@@ -95,14 +95,14 @@ class Eav extends AbstractModifier
         array $attributesToEliminate = [],
         array $attributesToDisable = []
     ) {
-        $this->eavHelper             = $eavHelper;
-        $this->locator               = $locator;
-        $this->arrayManager          = $arrayManager;
-        $this->bannedInputTypes      = $bannedInputTypes;
-        $this->validationRules       = $validationRules;
-        $this->dataPersistor         = $dataPersistor;
+        $this->eavHelper = $eavHelper;
+        $this->locator = $locator;
+        $this->arrayManager = $arrayManager;
+        $this->bannedInputTypes = $bannedInputTypes;
+        $this->validationRules = $validationRules;
+        $this->dataPersistor = $dataPersistor;
         $this->attributesToEliminate = $attributesToEliminate;
-        $this->attributesToDisable   = $attributesToDisable;
+        $this->attributesToDisable = $attributesToDisable;
         $this->fileInfo = $fileInfo;
     }
 

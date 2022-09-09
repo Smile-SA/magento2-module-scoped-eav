@@ -10,7 +10,7 @@ use Magento\Framework\DataObject;
 use Magento\Framework\DataObjectFactory;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute;
-use Smile\ScopedEav\Helper\Data;
+use Smile\ScopedEav\ViewModel\Data as DataViewModel;
 
 /**
  * Scoped EAV entity attribute validation controller.
@@ -36,19 +36,19 @@ class Validate extends AbstractAttribute
      * Constructor.
      *
      * @param Context $context Context.
-     * @param Data $entityHelper Entity helper.
+     * @param DataViewModel $dataViewModel Scoped EAV data view model.
      * @param BuilderInterface $attributeBuilder Attribute builder.
      * @param JsonFactory $resultJsonFactory JSON response factory.
      * @param DataObjectFactory $dataObjectFactory Data object factory.
      */
     public function __construct(
         Context $context,
-        Data $entityHelper,
+        DataViewModel $dataViewModel,
         BuilderInterface $attributeBuilder,
         JsonFactory $resultJsonFactory,
         DataObjectFactory $dataObjectFactory
     ) {
-        parent::__construct($context, $entityHelper, $attributeBuilder);
+        parent::__construct($context, $dataViewModel, $attributeBuilder);
         $this->resultJsonFactory = $resultJsonFactory;
         $this->dataObjectFactory = $dataObjectFactory;
     }

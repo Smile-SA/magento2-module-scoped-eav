@@ -13,7 +13,7 @@ use Magento\Framework\Api\SortOrderBuilder;
 use Magento\Framework\Phrase;
 use Smile\ScopedEav\Api\Data\AttributeInterface;
 use Smile\ScopedEav\Api\Data\EntityInterface;
-use Smile\ScopedEav\Helper\Data;
+use Smile\ScopedEav\ViewModel\Data as DataViewModel;
 
 /**
  * Scoped EAV form modifier EAV helper.
@@ -41,9 +41,9 @@ class Eav
     private $sortOrderBuilder;
 
     /**
-     * @var Data
+     * @var DataViewModel
      */
-    private $eavHelper;
+    private $dataViewModel;
 
     /**
      * @var ScopeOverriddenValue
@@ -68,12 +68,12 @@ class Eav
     /**
      * Constructor.
      *
-     * @param AttributeGroupRepositoryInterface    $attributeGroupRepository Attribute group repository.
-     * @param AttributeRepositoryInterface         $attributeRepository      Attribute repository.
-     * @param SearchCriteriaBuilder          $searchCriteriaBuilder    Search criteria builder.
-     * @param SortOrderBuilder               $sortOrderBuilder         Sort order builder.
-     * @param ScopeOverriddenValue $scopeOverriddenValue     Scope attribute helper.
-     * @param Data                          $eavHelper                Scoped EAV helper.
+     * @param AttributeGroupRepositoryInterface $attributeGroupRepository Attribute group repository.
+     * @param AttributeRepositoryInterface $attributeRepository Attribute repository.
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder Search criteria builder.
+     * @param SortOrderBuilder $sortOrderBuilder Sort order builder.
+     * @param ScopeOverriddenValue $scopeOverriddenValue Scope attribute helper.
+     * @param DataViewModel $dataViewModel Scoped EAV data view model.
      */
     public function __construct(
         AttributeGroupRepositoryInterface $attributeGroupRepository,
@@ -81,14 +81,14 @@ class Eav
         SearchCriteriaBuilder $searchCriteriaBuilder,
         SortOrderBuilder $sortOrderBuilder,
         ScopeOverriddenValue $scopeOverriddenValue,
-        Data $eavHelper
+        DataViewModel $dataViewModel
     ) {
         $this->attributeGroupRepository = $attributeGroupRepository;
-        $this->attributeRepository      = $attributeRepository;
-        $this->searchCriteriaBuilder    = $searchCriteriaBuilder;
-        $this->sortOrderBuilder         = $sortOrderBuilder;
-        $this->scopeOverriddenValue     = $scopeOverriddenValue;
-        $this->eavHelper                = $eavHelper;
+        $this->attributeRepository = $attributeRepository;
+        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->sortOrderBuilder = $sortOrderBuilder;
+        $this->scopeOverriddenValue = $scopeOverriddenValue;
+        $this->dataViewModel = $dataViewModel;
     }
 
     /**
@@ -145,7 +145,7 @@ class Eav
      */
     public function getScopeLabel(AttributeInterface $attribute)
     {
-        return $this->eavHelper->getScopeLabel($attribute);
+        return $this->dataViewModel->getScopeLabel($attribute);
     }
 
     /**
@@ -157,7 +157,7 @@ class Eav
      */
     public function isScopeGlobal(AttributeInterface $attribute): bool
     {
-        return $this->eavHelper->isScopeGlobal($attribute);
+        return $this->dataViewModel->isScopeGlobal($attribute);
     }
 
     /**
@@ -171,14 +171,14 @@ class Eav
      */
     public function hasValueForStore(EntityInterface $entity, AttributeInterface $attribute, $storeId): bool
     {
-        $hasValue       = false;
-        $attributeCode  = $attribute->getAttributeCode();
-        $interface      = $this->eavHelper->getEntityInterface($entity);
+        $hasValue = false;
+        $attributeCode = $attribute->getAttributeCode();
+        $interface = $this->dataViewModel->getEntityInterface($entity);
 
         try {
-             $hasValue = $hasValue || $this->scopeOverriddenValue->containsValue($interface, $entity, $attributeCode, $storeId);
+            $hasValue = $hasValue || $this->scopeOverriddenValue->containsValue($interface, $entity, $attributeCode, $storeId);
         } catch (\Exception $e) {
-            ;
+            // Catch exception hasValueForStore function
         }
 
         return $hasValue;
@@ -213,7 +213,7 @@ class Eav
      */
     public function getFormElement(string $frontendInput): ?string
     {
-        return $this->eavHelper->getFormElement($frontendInput);
+        return $this->dataViewModel->getFormElement($frontendInput);
     }
 
     /**
@@ -250,7 +250,7 @@ class Eav
             ->addSortOrder($sortOrder)
             ->create();
 
-        $entityTypeCode  = $this->eavHelper->getEntityMetadata($entity)->getEavEntityType();
+        $entityTypeCode = $this->dataViewModel->getEntityMetadata($entity)->getEavEntityType();
         $groupAttributes = $this->attributeRepository->getList($entityTypeCode, $searchCriteria)->getItems();
 
         foreach ($groupAttributes as $attribute) {
