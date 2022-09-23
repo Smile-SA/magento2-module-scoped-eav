@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Controller\Adminhtml\Attribute;
 
+use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute;
 
 /**
  * Scoped EAV entity attribute deletion controller.
  */
-class Delete extends AbstractAttribute
+class Delete extends AbstractAttribute implements HttpPostActionInterface
 {
     /**
      * @inheritDoc
@@ -20,13 +21,13 @@ class Delete extends AbstractAttribute
         try {
             $attribute = $this->getAttribute();
 
-            if (!$attribute || !$attribute->getId()) {
+            if (!$attribute->getId()) {
                 throw new NoSuchEntityException(__('Attribute does not exists'));
             }
 
             $attribute->delete();
 
-            $this->messageManager->addSuccessMessage(__('Attribute has been deleted'));
+            $this->messageManager->addSuccessMessage((string) __('Attribute has been deleted'));
             $response = $this->resultRedirectFactory->create();
             $response->setPath('*/*/index');
         } catch (\Exception $e) {

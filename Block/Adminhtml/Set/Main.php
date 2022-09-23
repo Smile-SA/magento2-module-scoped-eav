@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Block\Adminhtml\Set;
 
+use Magento\Backend\Block\Template;
+use Magento\Backend\Block\Widget\Button;
 use Magento\Catalog\Block\Adminhtml\Product\Attribute\Set\Main\Tree\Group;
 use Smile\ScopedEav\Block\Adminhtml\Set\Main\Formset;
 
@@ -14,7 +16,10 @@ use Smile\ScopedEav\Block\Adminhtml\Set\Main\Formset;
  */
 class Main extends \Magento\Catalog\Block\Adminhtml\Product\Attribute\Set\Main
 {
-    protected string $_template = 'Magento_Catalog::catalog/product/attribute/set/main.phtml';
+    /**
+     * @inheritDoc
+     */
+    protected $_template = 'Magento_Catalog::catalog/product/attribute/set/main.phtml';
 
     /**
      * Returns attribute set save URL.
@@ -61,7 +66,9 @@ class Main extends \Magento\Catalog\Block\Adminhtml\Product\Attribute\Set\Main
             ]
         );
 
-        $this->getToolbar()->addChild(
+        /** @var Template $toolbar */
+        $toolbar = $this->getToolbar();
+        $toolbar->addChild(
             'back_button',
             Button::class,
             [
@@ -71,7 +78,7 @@ class Main extends \Magento\Catalog\Block\Adminhtml\Product\Attribute\Set\Main
             ]
         );
 
-        $this->getToolbar()->addChild(
+        $toolbar->addChild(
             'reset_button',
             Button::class,
             [
@@ -83,21 +90,22 @@ class Main extends \Magento\Catalog\Block\Adminhtml\Product\Attribute\Set\Main
 
         if (!$this->getIsCurrentSetDefault()) {
             $deleteMessage =
-                __('You are about to delete all products in this attribute set. Are you sure you want to do that ?');
-            $this->getToolbar()->addChild(
+                (string) __(
+                    'You are about to delete all products in this attribute set. Are you sure you want to do that ?'
+                );
+            $toolbar->addChild(
                 'delete_button',
                 Button::class,
                 [
                     'label'   => __('Delete'),
-                    'onclick' =>
-                        'deleteConfirm(\''
+                    'onclick' => 'deleteConfirm(\''
                         . $this->escapeJsQuote($deleteMessage) . '\', \'' . $this->getDeleteUrl() . '\')',
                     'class' => 'delete',
                 ]
             );
         }
 
-        $this->getToolbar()->addChild(
+        $toolbar->addChild(
             'save_button',
             Button::class,
             [

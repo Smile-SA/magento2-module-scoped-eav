@@ -61,7 +61,7 @@ class Validate extends AbstractAttribute
      * Set message to response object.
      *
      * @param DataObject $response Original response object.
-     * @param string[]   $messages Messages.
+     * @param string[] $messages Messages.
      */
     private function setMessageToResponse(DataObject $response, array $messages): DataObject
     {
@@ -93,7 +93,7 @@ class Validate extends AbstractAttribute
         try {
             $this->getAttribute();
         } catch (AlreadyExistsException $e) {
-            $message = __('An attribute with this code already exists.');
+            $message = (string) __('An attribute with this code already exists.');
             $this->setMessageToResponse($response, [$message]);
             $response->setError(true);
         }

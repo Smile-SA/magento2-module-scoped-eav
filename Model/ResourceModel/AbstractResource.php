@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Smile\ScopedEav\Model\ResourceModel;
 
 use Magento\Eav\Model\Entity\AbstractEntity;
+use Magento\Eav\Model\Entity\Attribute\SetFactory;
 use Magento\Eav\Model\Entity\Attribute\Source\Table;
 use Magento\Eav\Model\Entity\Context;
+use Magento\Eav\Model\Entity\TypeFactory;
 use Magento\Framework\EntityManager\EntityManager;
-use Magento\Framework\Model\AbstractModel;
 use Smile\ScopedEav\Model\Entity\Attribute;
 use Smile\ScopedEav\Model\Entity\Attribute\DefaultAttributes;
 
@@ -19,9 +20,9 @@ class AbstractResource extends AbstractEntity
 {
     private EntityManager $entityManager;
 
-    private \Magento\Eav\Model\Entity\TypeFactory $typeFactory;
+    private TypeFactory $typeFactory;
 
-    private \Magento\Eav\Model\Entity\Attribute\SetFactory $setFactory;
+    private SetFactory $setFactory;
 
     private DefaultAttributes $defaultAttributes;
 
@@ -30,16 +31,16 @@ class AbstractResource extends AbstractEntity
      *
      * @param Context $context Context.
      * @param EntityManager $entityManager Entity manager.
-     * @param \Magento\Eav\Model\Entity\TypeFactory $typeFactory Entity type factory.
-     * @param \Magento\Eav\Model\Entity\Attribute\SetFactory $setFactory Attribute set factory.
+     * @param TypeFactory $typeFactory Entity type factory.
+     * @param SetFactory $setFactory Attribute set factory.
      * @param DefaultAttributes $defaultAttributes Default attributes.
-     * @param array                                                     $data              Additional data.
+     * @param array $data Additional data.
      */
     public function __construct(
         Context $context,
         EntityManager $entityManager,
-        \Magento\Eav\Model\Entity\TypeFactory $typeFactory,
-        \Magento\Eav\Model\Entity\Attribute\SetFactory $setFactory,
+        TypeFactory $typeFactory,
+        SetFactory $setFactory,
         DefaultAttributes $defaultAttributes,
         array $data = []
     ) {
@@ -63,7 +64,7 @@ class AbstractResource extends AbstractEntity
      */
     public function validate($object)
     {
-        $entityType   = $this->typeFactory->create()->loadByCode($this->getEntityType());
+        $entityType = $this->typeFactory->create()->loadByCode($this->getEntityType());
         $attributeSet = $this->setFactory->create()->load($object->getAttributeSetId());
 
         if ($attributeSet->getEntityTypeId() != $entityType->getId()) {
@@ -79,7 +80,7 @@ class AbstractResource extends AbstractEntity
     public function load($object, $entityId, $attributes = [])
     {
         $this->loadAttributesMetadata($attributes);
-        $this->entityManager->load($object, $entityId);
+        $this->entityManager->load($object, (string) $entityId);
 
         return $this;
     }
@@ -87,7 +88,7 @@ class AbstractResource extends AbstractEntity
     /**
      * @inheritDoc
      */
-    public function save(AbstractModel $object)
+    public function save($object)
     {
         $this->loadAllAttributes();
         $this->entityManager->save($object);

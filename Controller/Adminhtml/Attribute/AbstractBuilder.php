@@ -9,6 +9,9 @@ use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Registry;
+use Psr\Log\LoggerInterface;
+use Smile\CustomEntity\Api\CustomEntityAttributeRepositoryInterface;
+use Smile\CustomEntity\Api\Data\CustomEntityAttributeInterfaceFactory;
 use Smile\ScopedEav\Api\Data\AttributeInterface;
 
 /**
@@ -20,16 +23,21 @@ abstract class AbstractBuilder implements BuilderInterface
 
     private Registry $registry;
 
+    private LoggerInterface $logger;
+
     /**
      * Constructor.
      *
+     * @param LoggerInterface $logger Logger.
      * @param Registry $registry  Registry.
      * @param Config   $eavConfig EAV configuration.
      */
     public function __construct(
+        LoggerInterface $logger,
         Registry $registry,
         Config $eavConfig
     ) {
+        $this->logger = $logger;
         $this->eavConfig = $eavConfig;
         $this->registry  = $registry;
     }
@@ -56,7 +64,7 @@ abstract class AbstractBuilder implements BuilderInterface
                     throw new AlreadyExistsException(__('An attribute with the same code already exists.'));
                 } catch (NoSuchEntityException $e) {
                     // Does nothing since no other attribute exists => attribute code is valid.
-                    $e->getMessage();
+                    $this->logger->critical($e->getMessage());
                 }
             } elseif ($attributeId != null) {
                 $attribute = $this->getAttributeRepository()->get($attributeId);

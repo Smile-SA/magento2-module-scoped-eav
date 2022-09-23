@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Controller\Adminhtml\Entity;
 
+use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Smile\ScopedEav\Controller\Adminhtml\AbstractEntity;
@@ -11,7 +12,7 @@ use Smile\ScopedEav\Controller\Adminhtml\AbstractEntity;
 /**
  * Scoped EAV entity edit controller.
  */
-class Edit extends AbstractEntity
+class Edit extends AbstractEntity implements HttpGetActionInterface
 {
     /**
      * @inheritDoc

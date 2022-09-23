@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Controller\Adminhtml\Attribute;
 
+use Magento\Framework\App\Action\HttpGetActionInterface;
 use Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute;
 
 /**
  * Scoped EAV entity attribute edit controller.
  */
-class Edit extends AbstractAttribute
+class Edit extends AbstractAttribute implements HttpGetActionInterface
 {
     /**
      * @inheritdoc

@@ -37,12 +37,12 @@ class RegistryLocator implements LocatorInterface
      */
     public function getEntity(): EntityInterface
     {
-        if (null === $this->entity) {
-            $this->entity = $this->registry->registry('current_entity');
-        }
-
-        if (null === $this->entity) {
-            throw new NotFoundException(__('Entity was not registered'));
+        if (empty($this->entity)) {
+            try {
+                $this->entity = $this->registry->registry('current_entity');
+            } catch (NotFoundException $e) {
+                throw new NotFoundException(__('Entity was not registered'));
+            }
         }
 
         return $this->entity;
@@ -55,12 +55,12 @@ class RegistryLocator implements LocatorInterface
      */
     public function getStore(): StoreInterface
     {
-        if (null === $this->store) {
-            $this->store = $this->registry->registry('current_store');
-        }
-
-        if (null === $this->store) {
-             throw new NotFoundException(__('Store was not registered'));
+        if (empty($this->store)) {
+            try {
+                $this->entity = $this->registry->registry('current_store');
+            } catch (NotFoundException $e) {
+                throw new NotFoundException(__('Store was not registered'));
+            }
         }
 
         return $this->store;

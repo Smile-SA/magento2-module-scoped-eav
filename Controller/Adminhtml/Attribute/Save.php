@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Smile\ScopedEav\Controller\Adminhtml\Attribute;
 
 use Magento\Backend\App\Action\Context;
+use Magento\Backend\Model\View\Result\ForwardFactory;
+use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Serialize\Serializer\FormData;
@@ -17,7 +19,7 @@ use Zend\Validator\RegexFactory;
 /**
  * Scoped EAV entity attribute save controller.
  */
-class Save extends AbstractAttribute
+class Save extends AbstractAttribute implements HttpPostActionInterface
 {
     private DataViewModel $dataViewModel;
 
@@ -32,6 +34,7 @@ class Save extends AbstractAttribute
      * @param DataViewModel $dataViewModel Scoped EAV data view model.
      * @param BuilderInterface $attributeBuilder Attribute builder.
      * @param RegexFactory $regexFactory Regexp validator factory.
+     * @param FormData $formDataSerializer Serializer.
      */
     public function __construct(
         Context $context,
@@ -86,8 +89,8 @@ class Save extends AbstractAttribute
             $optionData = $this->formDataSerializer
                 ->unserialize($this->getRequest()->getParam('serialized_options', '[]'));
         } catch (\InvalidArgumentException $e) {
-            $message = __("The attribute couldn't be saved due to an error. Verify your information and try again. "
-                . "If the error persists, please try again later.");
+            $message = (string) __("The attribute couldn't be saved due to an error."
+                . " Verify your information and try again. If the error persists, please try again later.");
             $this->messageManager->addErrorMessage($message);
             return $this->returnResult('catalog/*/edit', ['_current' => true], ['error' => true]);
         }

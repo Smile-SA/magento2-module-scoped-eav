@@ -79,7 +79,7 @@ class Data implements ArgumentInterface
         $validatorAttrCode = $this->regexFactory->create(['pattern' => '/^[a-z][a-z_0-9]{0,29}[a-z0-9]$/']);
 
         if (!$validatorAttrCode->isValid($code)) {
-            $code = 'attr_' . ($code ?: substr(md5(time()), 0, 8)); // @codingStandardsIgnoreLine
+            $code = 'attr_' . ($code ?: substr(md5((string) time()), 0, 8)); // @codingStandardsIgnoreLine
         }
 
         return $code;

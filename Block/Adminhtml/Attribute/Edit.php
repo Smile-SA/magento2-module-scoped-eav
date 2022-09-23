@@ -23,7 +23,7 @@ class Edit extends Container
     /**
      * @inheritdoc
      */
-    protected $_objectId   = 'attribute_id';
+    protected $_objectId = 'attribute_id';
 
     /**
      * @inheritdoc
@@ -59,7 +59,7 @@ class Edit extends Container
         if ($this->getRequest()->getParam('popup')) {
             $region = 'header';
         }
-        parent::addButton($buttonId, $data, $level, $sortOrder, $region);
+        return parent::addButton($buttonId, $data, $level, $sortOrder, $region);
     }
 
     /**
@@ -67,14 +67,14 @@ class Edit extends Container
      */
     public function getHeaderText(): string
     {
-        $headerText = __('New Attribute');
+        $headerText = (string) __('New Attribute');
 
         if ($this->coreRegistry->registry('entity_attribute')->getId()) {
-            $frontendLabel = $this->_coreRegistry->registry('entity_attribute')->getFrontendLabel();
+            $frontendLabel = $this->coreRegistry->registry('entity_attribute')->getFrontendLabel();
             if (is_array($frontendLabel)) {
                 $frontendLabel = $frontendLabel[0];
             }
-            $headerText = __('Edit Attribute "%1"', $this->escapeHtml($frontendLabel));
+            $headerText = (string) __('Edit Attribute "%1"', $this->escapeHtml($frontendLabel));
         }
 
         return $headerText;
@@ -104,8 +104,8 @@ class Edit extends Container
     {
         parent::_construct();
 
-        $this->buttonList->update('save', 'label', __('Save Attribute'));
-        $this->buttonList->update('delete', 'label', __('Delete Attribute'));
+        $this->buttonList->update('save', 'label', (string) __('Save Attribute'));
+        $this->buttonList->update('delete', 'label', (string) __('Delete Attribute'));
 
         $this->addButton('save_and_edit_button', [
             'label' => __('Save and Continue Edit'),

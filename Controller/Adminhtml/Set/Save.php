@@ -9,6 +9,7 @@ use Magento\Eav\Api\AttributeSetRepositoryInterface;
 use Magento\Eav\Api\Data\AttributeSetInterface;
 use Magento\Eav\Api\Data\AttributeSetInterfaceFactory;
 use Magento\Eav\Model\Config;
+use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Controller\Result\Redirect;
@@ -20,8 +21,10 @@ use Smile\ScopedEav\Controller\Adminhtml\AbstractSet;
 
 /**
  * Scoped EAV entity attribute set admin save controller.
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class Save extends AbstractSet
+class Save extends AbstractSet implements HttpPostActionInterface
 {
     private FilterManager $filterManager;
 
@@ -75,7 +78,9 @@ class Save extends AbstractSet
 
             if ($isNewSet === false) {
                 $data = $this->jsonHelper->jsonDecode($this->getRequest()->getPost('data'));
-                $data['attribute_set_name'] = $this->filterManager->stripTags((string) $data['attribute_set_name']);
+                $data['attribute_set_name'] = $this->filterManager->stripTags(
+                    (string) $data['attribute_set_name']
+                );
                 $attributeSet->organizeData($data);
             }
 
@@ -87,13 +92,18 @@ class Save extends AbstractSet
             }
 
             $attributeSet->save();
-            $this->messageManager->addSuccessMessage(__('You saved the attribute set.'));
+            $this->messageManager->addSuccessMessage(
+                (string) __('You saved the attribute set.')
+            );
         } catch (LocalizedException $e) {
             $this->messageManager->addErrorMessage($e->getMessage());
             $hasError = true;
         } catch (\Exception $e) {
             $this->messageManager->addExceptionMessage($e, $e->getMessage());
-            $this->messageManager->addExceptionMessage($e, __('Something went wrong while saving the attribute set.'));
+            $this->messageManager->addExceptionMessage(
+                $e,
+                (string) __('Something went wrong while saving the attribute set.')
+            );
             $hasError = true;
         }
 
@@ -116,7 +126,7 @@ class Save extends AbstractSet
         $resultRedirect = $this->resultRedirectFactory->create();
         $resultRedirect->setPath('*/*/add');
 
-        if ($attributeSet && $attributeSet->getId()) {
+        if ($attributeSet->getId()) {
             $resultRedirect->setPath('*/*/edit', ['id' => $attributeSet->getId()]);
         }
 

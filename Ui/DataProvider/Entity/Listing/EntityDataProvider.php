@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Ui\DataProvider\Entity\Listing;
 
+use Magento\Framework\Api\Filter;
 use Magento\Ui\DataProvider\AbstractDataProvider;
 use Magento\Ui\DataProvider\AddFieldToCollectionInterface;
 use Magento\Ui\DataProvider\AddFilterToCollectionInterface;
@@ -83,7 +84,7 @@ class EntityDataProvider extends AbstractDataProvider
      * @inheritDoc
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function addFilter(\Magento\Framework\Api\Filter $filter)
+    public function addFilter(Filter $filter)
     {
         if (isset($this->addFilterStrategies[$filter->getField()])) {
             $filterStrategy = $this->addFilterStrategies[$filter->getField()];

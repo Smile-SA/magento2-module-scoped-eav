@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Controller\Adminhtml\Entity;
 
+use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Smile\ScopedEav\Controller\Adminhtml\AbstractEntity;
@@ -11,7 +12,7 @@ use Smile\ScopedEav\Controller\Adminhtml\AbstractEntity;
 /**
  * Scoped EAV entity delete controller.
  */
-class Delete extends AbstractEntity
+class Delete extends AbstractEntity implements HttpPostActionInterface
 {
     /**
      * @inheritDoc
@@ -26,13 +27,18 @@ class Delete extends AbstractEntity
             }
 
             $this->getEntity()->delete();
-            $this->messageManager->addSuccessMessage(__('Entity have been deleted successfuly.'));
+            $this->messageManager->addSuccessMessage(
+                (string) __('Entity have been deleted successfuly.')
+            );
         } catch (NoSuchEntityException $e) {
             $this->messageManager->addErrorMessage('This entity doesn\'t exist.');
         } catch (LocalizedException $e) {
             $this->messageManager->addErrorMessage($e->getMessage());
         } catch (\Exception $e) {
-            $this->messageManager->addExceptionMessage($e, __('Can not delete entity.'));
+            $this->messageManager->addExceptionMessage(
+                $e,
+                (string) __('Can not delete entity.')
+            );
         }
 
         $resultRedirect = $this->resultRedirectFactory->create();
