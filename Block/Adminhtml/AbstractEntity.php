@@ -14,10 +14,7 @@ use Magento\Framework\Api\SortOrder;
  */
 abstract class AbstractEntity extends Container
 {
-    /**
-     * @var Config
-     */
-    private $eavConfig;
+    private Config $eavConfig;
 
     /**
      * Constructor.
@@ -37,8 +34,6 @@ abstract class AbstractEntity extends Container
 
     /**
      * Check whether it is single store mode
-     *
-     * @return bool
      */
     public function isSingleStoreMode(): bool
     {
@@ -94,8 +89,6 @@ abstract class AbstractEntity extends Container
      * Retrieve entity create url by specified attribute set id.
      *
      * @param string|int $attributeSetId Attribute set id.
-     *
-     * @return string
      */
     protected function getEntityCreateUrl($attributeSetId): string
     {
@@ -104,8 +97,6 @@ abstract class AbstractEntity extends Container
 
     /**
      * Get current entity type code.
-     *
-     * @return string
      */
     abstract protected function getEntityTypeCode(): string;
 }

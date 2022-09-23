@@ -11,15 +11,10 @@ namespace Smile\ScopedEav\Block\Adminhtml\Set;
  */
 class Main extends \Magento\Catalog\Block\Adminhtml\Product\Attribute\Set\Main
 {
-    /**
-     * @var string
-     */
-    protected $_template = 'Magento_Catalog::catalog/product/attribute/set/main.phtml';
+    protected string $_template = 'Magento_Catalog::catalog/product/attribute/set/main.phtml';
 
     /**
      * Returns attribute set save URL.
-     *
-     * @return string
      */
     public function getMoveUrl(): string
     {
@@ -28,8 +23,6 @@ class Main extends \Magento\Catalog\Block\Adminhtml\Product\Attribute\Set\Main
 
     /**
      * Returns attribute set delete URL.
-     *
-     * @return string
      */
     public function getDeleteUrl(): string
     {
@@ -86,7 +79,7 @@ class Main extends \Magento\Catalog\Block\Adminhtml\Product\Attribute\Set\Main
             ]
         );
 
-        if (! $this->getIsCurrentSetDefault()) {
+        if (!$this->getIsCurrentSetDefault()) {
             $deleteMessage = __('You are about to delete all products in this attribute set. ' . 'Are you sure you want to do that?');
             $this->getToolbar()->addChild(
                 'delete_button',

@@ -17,15 +17,9 @@ use Smile\ScopedEav\ViewModel\Data as DataViewModel;
  */
 abstract class AbstractAttribute extends Action
 {
-    /**
-     * @var DataViewModel
-     */
-    private $dataViewModel;
+    private DataViewModel $dataViewModel;
 
-    /**
-     * @var Attribute\BuilderInterface
-     */
-    private $attributeBuilder;
+    private Attribute\BuilderInterface $attributeBuilder;
 
     /**
      * Constructor.
@@ -46,8 +40,6 @@ abstract class AbstractAttribute extends Action
 
     /**
      * Return current attribute.
-     *
-     * @return AttributeInterface
      */
     protected function getAttribute(): AttributeInterface
     {
@@ -58,10 +50,8 @@ abstract class AbstractAttribute extends Action
      * Generate attribute code from label.
      *
      * @param string $label Attribute label.
-     *
-     * @return string
      */
-    protected function generateCode($label): string
+    protected function generateCode(string $label): string
     {
         return $this->dataViewModel->generateAttributeCodeFromLabel($label);
     }
@@ -70,8 +60,6 @@ abstract class AbstractAttribute extends Action
      * Create the page.
      *
      * @param Phrase|string $title Page title.
-     *
-     * @return Page
      */
     protected function createActionPage($title = null): Page
     {
@@ -92,8 +80,6 @@ abstract class AbstractAttribute extends Action
      * Redirect to index page on error.
      *
      * @param string $message Error message.
-     *
-     * @return ResponseInterface
      */
     protected function getRedirectError(string $message): ResponseInterface
     {

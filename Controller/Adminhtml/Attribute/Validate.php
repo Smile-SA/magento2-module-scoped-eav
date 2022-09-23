@@ -17,20 +17,11 @@ use Smile\ScopedEav\ViewModel\Data as DataViewModel;
  */
 class Validate extends AbstractAttribute
 {
-    /**
-     * @var string
-     */
     const DEFAULT_MESSAGE_KEY = 'message';
 
-    /**
-     * @var JsonFactory
-     */
-    private $resultJsonFactory;
+    private JsonFactory $resultJsonFactory;
 
-    /**
-     * @var DataObjectFactory
-     */
-    private $dataObjectFactory;
+    private DataObjectFactory $dataObjectFactory;
 
     /**
      * Constructor.
@@ -71,8 +62,6 @@ class Validate extends AbstractAttribute
      *
      * @param DataObject $response Original response object.
      * @param string[]   $messages Messages.
-     *
-     * @return DataObject
      */
     private function setMessageToResponse(DataObject $response, array $messages): DataObject
     {
@@ -88,8 +77,6 @@ class Validate extends AbstractAttribute
      * Check an attribute with the same code does not exists yet.
      *
      * @param DataObject $response Response.
-     *
-     * @return DataObject
      */
     private function checkAttributeCode(DataObject $response): DataObject
     {

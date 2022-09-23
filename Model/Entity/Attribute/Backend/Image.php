@@ -16,15 +16,9 @@ use Psr\Log\LoggerInterface;
  */
 class Image extends \Magento\Catalog\Model\Category\Attribute\Backend\Image
 {
-    /**
-     * @var ImageUploader
-     */
-    private $imageUploader;
+    private ImageUploader $imageUploader;
 
-    /**
-     * @var string
-     */
-    private $additionalData = '_additional_data_';
+    private string $additionalData = '_additional_data_';
 
     /**
      * Image constructor.
@@ -38,8 +32,8 @@ class Image extends \Magento\Catalog\Model\Category\Attribute\Backend\Image
         LoggerInterface $logger,
         Filesystem $filesystem,
         UploaderFactory $fileUploaderFactory,
-        StoreManagerInterface $storeManager = null,
-        ImageUploader $imageUploader = null
+        ?StoreManagerInterface $storeManager = null,
+        ?ImageUploader $imageUploader = null
     ) {
         parent::__construct($logger, $filesystem, $fileUploaderFactory, $storeManager, $imageUploader);
         $this->imageUploader = $imageUploader;
@@ -49,10 +43,8 @@ class Image extends \Magento\Catalog\Model\Category\Attribute\Backend\Image
      * Save uploaded file and set its name to category
      *
      * @param DataObject $object Object model.
-     *
-     * @return \Magento\Catalog\Model\Category\Attribute\Backend\Image
      */
-    public function afterSave($object)
+    public function afterSave(DataObject $object): \Magento\Catalog\Model\Category\Attribute\Backend\Image
     {
         $value = $object->getData($this->additionalData . $this->getAttribute()->getName());
 
@@ -67,10 +59,7 @@ class Image extends \Magento\Catalog\Model\Category\Attribute\Backend\Image
         return $this;
     }
 
-    /**
-     * @return ImageUploader
-     */
-    private function getImageUploader()
+    private function getImageUploader(): ImageUploader
     {
         return $this->imageUploader;
     }
@@ -80,8 +69,6 @@ class Image extends \Magento\Catalog\Model\Category\Attribute\Backend\Image
      * Will return empty string in a case when $value is not an array
      *
      * @param array $value Attribute value
-     *
-     * @return string
      */
     private function getUploadedImageName(array $value): string
     {
@@ -96,8 +83,6 @@ class Image extends \Magento\Catalog\Model\Category\Attribute\Backend\Image
      * Check if temporary file is available for new image upload.
      *
      * @param array|null $value Attribute value.
-     *
-     * @return bool
      */
     private function isTmpFileAvailable(?array $value): bool
     {

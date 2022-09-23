@@ -6,8 +6,8 @@ namespace Smile\ScopedEav\Controller\Adminhtml\Entity\Image;
 
 use Magento\Backend\App\Action;
 use Magento\Catalog\Model\ImageUploader;
-use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\App\Action\HttpPostActionInterface;
+use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\NotFoundException;
@@ -17,10 +17,7 @@ use Magento\Framework\Exception\NotFoundException;
  */
 class Upload extends Action implements HttpPostActionInterface
 {
-    /**
-     * @var ImageUploader
-     */
-    private $imageUploader;
+    private ImageUploader $imageUploader;
 
     /**
      * Upload constructor.
@@ -46,10 +43,8 @@ class Upload extends Action implements HttpPostActionInterface
      */
     /**
      * Upload file controller action
-     *
-     * @return ResultInterface
      */
-    public function execute()
+    public function execute(): ResultInterface
     {
         // @todo need https://patch-diff.githubusercontent.com/raw/magento/magento2/pull/19249.patch
         $imageId = $this->_request->getParam('param_name');

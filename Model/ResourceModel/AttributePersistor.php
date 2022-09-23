@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Model\ResourceModel;
 
-use Magento\Framework\Model\Entity\ScopeInterface;
 use Magento\Eav\Model\Entity\Attribute\AbstractAttribute;
+use Magento\Framework\Model\Entity\ScopeInterface;
 use Smile\ScopedEav\Api\Data\AttributeInterface as ScopedEavAttribute;
 
 /**

@@ -23,40 +23,19 @@ use Zend\Validator\RegexFactory;
  */
 class Data implements ArgumentInterface
 {
-    /**
-     * @var UrlFactory
-     */
-    private $urlFactory;
+    private UrlFactory $urlFactory;
 
-    /**
-     * @var Product
-     */
-    private $productHelper;
+    private Product $productHelper;
 
-    /**
-     * @var FormElement
-     */
-    private $formElementMapper;
+    private FormElement $formElementMapper;
 
-    /**
-     * @var StoreManagerInterface
-     */
-    private $storeManager;
+    private StoreManagerInterface $storeManager;
 
-    /**
-     * @var MetadataPool
-     */
-    private $metadataPool;
+    private MetadataPool $metadataPool;
 
-    /**
-     * @var RegexFactory
-     */
-    private $regexFactory;
+    private RegexFactory $regexFactory;
 
-    /**
-     * @var Registry
-     */
-    private $coreRegistry;
+    private Registry $coreRegistry;
 
     /**
      * Constructor.
@@ -91,8 +70,6 @@ class Data implements ArgumentInterface
      * Generate attribute code from label.
      *
      * @param string $label Attribute label.
-     *
-     * @return string
      */
     public function generateAttributeCodeFromLabel(string $label): string
     {
@@ -112,7 +89,6 @@ class Data implements ArgumentInterface
      * Infers attribute backend model from input type.
      *
      * @param string $inputType Input type.
-     *
      * @return string|NULL
      */
     public function getAttributeBackendModelByInputType(string $inputType): ?string
@@ -127,7 +103,6 @@ class Data implements ArgumentInterface
      * Infers attribute source model from input type.
      *
      * @param string $inputType Input type.
-     *
      * @return string|NULL
      */
     public function getAttributeSourceModelByInputType(string $inputType): ?string
@@ -139,21 +114,19 @@ class Data implements ArgumentInterface
      * Return form element by frontend input.
      *
      * @param string $frontendInput Frontend input.
-     *
      * @return string|NULL
      */
     public function getFormElement(string $frontendInput): ?string
     {
         $valueMap = $this->formElementMapper->getMappings();
 
-        return isset($valueMap[$frontendInput]) ? $valueMap[$frontendInput] : $frontendInput;
+        return $valueMap[$frontendInput] ?? $frontendInput;
     }
 
     /**
      * Scope label for an attribute.
      *
      * @param AttributeInterface $attribute Attribute.
-     *
      * @return string|Phrase
      */
     public function getScopeLabel(AttributeInterface $attribute)
@@ -178,8 +151,6 @@ class Data implements ArgumentInterface
      * Check if attribute is global.
      *
      * @param AttributeInterface $attribute Attribute.
-     *
-     * @return boolean
      */
     public function isScopeGlobal(AttributeInterface $attribute): bool
     {
@@ -190,8 +161,6 @@ class Data implements ArgumentInterface
      * Returns entity manager metadata for an entity.
      *
      * @param EntityInterface $entity Entity.
-     *
-     * @return EntityMetadataInterface
      */
     public function getEntityMetadata(EntityInterface $entity): EntityMetadataInterface
     {
@@ -204,8 +173,7 @@ class Data implements ArgumentInterface
      * Returns the interface implemented by an entity.
      *
      * @param EntityInterface $entity Entity.
-     *
-     * @return NULL|string
+     * @return string|NULL
      */
     public function getEntityInterface(EntityInterface $entity): ?string
     {
@@ -225,7 +193,7 @@ class Data implements ArgumentInterface
      *
      * @return array
      */
-    public function getAttributeHiddenFields()
+    public function getAttributeHiddenFields(): array
     {
         if ($this->coreRegistry->registry('attribute_type_hidden_fields')) {
             return $this->coreRegistry->registry('attribute_type_hidden_fields');

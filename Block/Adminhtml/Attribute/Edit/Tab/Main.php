@@ -22,7 +22,7 @@ class Main extends AbstractMain
     /**
      * @var string[]
      */
-    private $disableScopeChangeList;
+    private array $disableScopeChangeList;
 
     /**
      * Constructor.

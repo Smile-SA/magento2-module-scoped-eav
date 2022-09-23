@@ -16,20 +16,14 @@ class System extends AbstractModifier
 
     const KEY_RELOAD_URL = 'reloadUrl';
 
-    /**
-     * @var LocatorInterface
-     */
-    private $locator;
+    private LocatorInterface $locator;
 
-    /**
-     * @var UrlInterface
-     */
-    private $urlBuilder;
+    private UrlInterface $urlBuilder;
 
     /**
      * @var array
      */
-    private $defaultEntityUrls = [
+    private array $defaultEntityUrls = [
         self::KEY_SUBMIT_URL => '*/*/save',
         self::KEY_RELOAD_URL => '*/*/reload',
     ];
@@ -37,7 +31,7 @@ class System extends AbstractModifier
     /**
      * @var array
      */
-    private $entityUrls;
+    private array $entityUrls;
 
     /**
      * Constructor.
@@ -87,10 +81,8 @@ class System extends AbstractModifier
      * Return entity url by url type.
      *
      * @param string $urlType Url type.
-     *
-     * @return string
      */
-    private function getEntityUrl(string $urlType) : string
+    private function getEntityUrl(string $urlType): string
     {
         return (string) ($this->entityUrls[$urlType] ?? $this->defaultEntityUrls[$urlType]);
     }

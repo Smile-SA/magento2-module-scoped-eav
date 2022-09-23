@@ -49,7 +49,6 @@ interface EntityInterface extends CustomAttributesDataInterface
      * Returns is active.
      *
      * @SuppressWarnings(PHPMD.BooleanGetMethodName)
-     *
      * @return mixed
      */
     public function getIsActive();
@@ -100,16 +99,14 @@ interface EntityInterface extends CustomAttributesDataInterface
      * Set entity id
      *
      * @param int $entityId Entity id.
-     *
      * @return $this
      */
-    public function setId($entityId);
+    public function setId(int $entityId);
 
     /**
      * Set attribute set id.
      *
      * @param int $attributeSetId Attribute set id.
-     *
      * @return $this
      */
     public function setAttributeSetId(int $attributeSetId): self;
@@ -117,8 +114,7 @@ interface EntityInterface extends CustomAttributesDataInterface
     /**
      * Set is active.
      *
-     * @param Boolean $isActive Status.
-     *
+     * @param bool $isActive Status.
      * @return $this
      */
     public function setIsActive(bool $isActive): self;
@@ -127,7 +123,6 @@ interface EntityInterface extends CustomAttributesDataInterface
      * Set name.
      *
      * @param string $name Name.
-     *
      * @return $this
      */
     public function setName(string $name): self;
@@ -136,7 +131,6 @@ interface EntityInterface extends CustomAttributesDataInterface
      * Set creation date.
      *
      * @param string $createdAt Creation date.
-     *
      * @return $this
      */
     public function setCreatedAt(string $createdAt): self;
@@ -145,7 +139,6 @@ interface EntityInterface extends CustomAttributesDataInterface
      * Set update date.
      *
      * @param string $updatedAt Update date.
-     *
      * @return $this
      */
     public function setUpdatedAt(string $updatedAt): self;
@@ -154,7 +147,6 @@ interface EntityInterface extends CustomAttributesDataInterface
      * Set entity store id.
      *
      * @param mixed $storeId Store Id
-     *
      * @return $this
      */
     public function setStoreId($storeId);
@@ -163,7 +155,6 @@ interface EntityInterface extends CustomAttributesDataInterface
      * Set entity description.
      *
      * @param string $description Description.
-     *
      * @return $this
      */
     public function setDescription(string $description);
@@ -172,7 +163,6 @@ interface EntityInterface extends CustomAttributesDataInterface
      * Set entity image.
      *
      * @param string $image Image.
-     *
      * @return $this
      */
     public function setImage(string $image);

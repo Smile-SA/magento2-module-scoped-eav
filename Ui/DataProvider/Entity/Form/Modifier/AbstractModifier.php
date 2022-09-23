@@ -11,29 +11,14 @@ use Magento\Ui\DataProvider\Modifier\ModifierInterface;
  */
 abstract class AbstractModifier implements ModifierInterface
 {
-    /**
-     * @var string
-     */
     const DATA_SOURCE_DEFAULT = 'entity';
 
-    /**
-     * @var string
-     */
     const DATA_SCOPE_ENTITY   = 'data.entity';
 
-    /**
-     * @var string
-     */
     const CONTAINER_PREFIX = 'container_';
 
-    /**
-     * @var string
-     */
     const META_CONFIG_PATH = 'arguments/data/config';
 
-    /**
-     * @var int
-     */
     const SORT_ORDER_MULTIPLIER = 10;
 
     /**
@@ -43,8 +28,6 @@ abstract class AbstractModifier implements ModifierInterface
      * @param array|string $groupCodes Preceding group codes.
      * @param int $defaultSortOrder Default sort order.
      * @param int $iteration Value to be added.
-     *
-     * @return int
      */
     protected function getNextGroupSortOrder(array $meta, $groupCodes, int $defaultSortOrder, int $iteration = 1): int
     {
@@ -66,8 +49,6 @@ abstract class AbstractModifier implements ModifierInterface
      * @param array|string $attributeCodes Preceding attribute codes.
      * @param int $defaultSortOrder Default sort order.
      * @param int $iteration Value to be added.
-     *
-     * @return int
      */
     protected function getNextAttributeSortOrder(array $meta, $attributeCodes, int $defaultSortOrder, int $iteration = 1): int
     {
@@ -85,8 +66,6 @@ abstract class AbstractModifier implements ModifierInterface
      *
      * @param string $haystack Source string.
      * @param string $needle Searched string.
-     *
-     * @return bool
      */
     protected function startsWith(string $haystack, string $needle): bool
     {
@@ -97,8 +76,6 @@ abstract class AbstractModifier implements ModifierInterface
      * Retrieve first panel name.
      *
      * @param array $meta Meta.
-     *
-     * @return string|null
      */
     protected function getFirstPanelCode(array $meta): ?string
     {
@@ -122,7 +99,6 @@ abstract class AbstractModifier implements ModifierInterface
      *
      * @param array $meta Meta.
      * @param string $field Field.
-     *
      * @return string|bool
      */
     protected function getGroupCodeByField(array $meta, string $field): ?string
@@ -143,8 +119,6 @@ abstract class AbstractModifier implements ModifierInterface
      * @param array $attributeCodes Preceding attribute codes.
      * @param int $defaultSortOrder Default sort order.
      * @param int $iteration Value to be added.
-     *
-     * @return mixed
      */
     private function getNextAttributeSortOrderInGroup(array $meta, array $attributeCodes, int $defaultSortOrder, int $iteration = 1): mixed
     {

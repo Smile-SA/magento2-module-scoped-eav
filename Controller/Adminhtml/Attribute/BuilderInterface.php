@@ -16,8 +16,6 @@ interface BuilderInterface
      * Init attribute from request.
      *
      * @param RequestInterface $request Request.
-     *
-     * @return AttributeInterface
      */
     public function build(RequestInterface $request): AttributeInterface;
 }

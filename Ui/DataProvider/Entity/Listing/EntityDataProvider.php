@@ -14,16 +14,14 @@ use Magento\Ui\DataProvider\AddFilterToCollectionInterface;
 class EntityDataProvider extends AbstractDataProvider
 {
     /**
-     *
      * @var AddFieldToCollectionInterface[]
      */
-    protected $addFieldStrategies;
+    protected array $addFieldStrategies;
 
     /**
-     *
      * @var AddFilterToCollectionInterface[]
      */
-    protected $addFilterStrategies;
+    protected array $addFilterStrategies;
 
     /**
      * Constructor.
@@ -37,9 +35,9 @@ class EntityDataProvider extends AbstractDataProvider
      * @param array $data Data.
      */
     public function __construct(
-        $name,
-        $primaryFieldName,
-        $requestFieldName,
+        string $name,
+        string $primaryFieldName,
+        string $requestFieldName,
         array $addFieldStrategies = [],
         array $addFilterStrategies = [],
         array $meta = [],

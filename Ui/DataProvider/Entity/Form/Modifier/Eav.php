@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Ui\DataProvider\Entity\Form\Modifier;
 
+use Magento\Catalog\Model\Category\FileInfo;
 use Magento\Eav\Api\Data\AttributeGroupInterface;
 use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Phrase;
 use Magento\Framework\Stdlib\ArrayManager;
-use Magento\Ui\Component\Form\Fieldset;
-use Magento\Ui\Component\Form\Field;
 use Magento\Ui\Component\Container;
-use Smile\ScopedEav\Api\Data\AttributeInterface;
 use Magento\Ui\Component\Form\Element\Wysiwyg as WysiwygElement;
-use Magento\Catalog\Model\Category\FileInfo;
+use Magento\Ui\Component\Form\Field;
+use Magento\Ui\Component\Form\Fieldset;
+use Smile\ScopedEav\Api\Data\AttributeInterface;
 use Smile\ScopedEav\Model\Locator\LocatorInterface;
 use Smile\ScopedEav\Ui\DataProvider\Entity\Form\EavValidationRules;
 
@@ -26,50 +26,32 @@ use Smile\ScopedEav\Ui\DataProvider\Entity\Form\EavValidationRules;
  */
 class Eav extends AbstractModifier
 {
-    /**
-     * @var Helper\Eav
-     */
-    private $eavHelper;
+    private Helper\Eav $eavHelper;
 
-    /**
-     * @var LocatorInterface
-     */
-    private $locator;
+    private LocatorInterface $locator;
 
-    /**
-     * @var ArrayManager
-     */
-    private $arrayManager;
+    private ArrayManager $arrayManager;
 
-    /**
-     * @var EavValidationRules
-     */
-    private $validationRules;
+    private EavValidationRules $validationRules;
 
-    /**
-     * @var DataPersistorInterface
-     */
-    private $dataPersistor;
+    private DataPersistorInterface $dataPersistor;
 
     /**
      * @var array
      */
-    private $bannedInputTypes;
+    private array $bannedInputTypes;
 
     /**
      * @var array
      */
-    private $attributesToEliminate;
+    private array $attributesToEliminate;
 
     /**
      * @var array
      */
-    private $attributesToDisable;
+    private array $attributesToDisable;
 
-    /**
-     * @var FileInfo
-     */
-    private $fileInfo;
+    private FileInfo $fileInfo;
 
     /**
      * Constructor.
@@ -118,7 +100,7 @@ class Eav extends AbstractModifier
         $entityId = $this->locator->getEntity()->getId();
 
         foreach (array_keys($this->getGroups()) as $groupCode) {
-            $attributes = ! empty($this->getAttributes()[$groupCode]) ? $this->getAttributes()[$groupCode] : [];
+            $attributes = !empty($this->getAttributes()[$groupCode]) ? $this->getAttributes()[$groupCode] : [];
 
             foreach ($attributes as $attribute) {
                 if (null !== ($attributeValue = $this->setupAttributeData($attribute))) {
@@ -150,7 +132,7 @@ class Eav extends AbstractModifier
                 $meta[$groupCode]['arguments']['data']['config']['sortOrder'] = $sortOrder * self::SORT_ORDER_MULTIPLIER;
             }
 
-            $sortOrder ++;
+            $sortOrder++;
         }
 
         return $meta;
@@ -160,7 +142,6 @@ class Eav extends AbstractModifier
      * Build attribute container.
      *
      * @param AttributeInterface $attribute Attribute.
-     *
      * @return array
      */
     public function setupAttributeContainerMeta(AttributeInterface $attribute): array
@@ -195,7 +176,6 @@ class Eav extends AbstractModifier
      * @param AttributeInterface $attribute          Attibute.
      * @param string             $groupCode          Group code.
      * @param int                $sortOrder          Attribute sort order.
-     *
      * @return array
      */
     public function addContainerChildren(array $attributeContainer, AttributeInterface $attribute, string $groupCode, int $sortOrder): array
@@ -219,7 +199,6 @@ class Eav extends AbstractModifier
      * @param AttributeInterface $attribute Attribute.
      * @param string             $groupCode Attribute group code.
      * @param int                $sortOrder Sort order.
-     *
      * @return array
      */
     public function getContainerChildren(AttributeInterface $attribute, string $groupCode, int $sortOrder): array
@@ -237,7 +216,6 @@ class Eav extends AbstractModifier
      * @param AttributeInterface $attribute Attribute.
      * @param string             $groupCode Attribute group code.
      * @param int                $sortOrder Sort order.
-     *
      * @return array
      */
     public function setupAttributeMeta(AttributeInterface $attribute, string $groupCode, int $sortOrder): array
@@ -301,7 +279,6 @@ class Eav extends AbstractModifier
      * Setup attribute data for the current entity.
      *
      * @param AttributeInterface $attribute Attribute.
-     *
      * @return mixed|NULL
      */
     public function setupAttributeData(AttributeInterface $attribute)
@@ -311,7 +288,7 @@ class Eav extends AbstractModifier
         $entityId = $entity->getId();
         $prevSetId = $this->getPreviousSetId();
 
-        $notUsed = ! $prevSetId || ($prevSetId && ! in_array($attribute->getAttributeCode(), $this->getPreviousSetAttributes()));
+        $notUsed = !$prevSetId || ($prevSetId && !in_array($attribute->getAttributeCode(), $this->getPreviousSetAttributes()));
 
         if ($entityId && $notUsed) {
             $value = $this->getValue($attribute);
@@ -342,8 +319,6 @@ class Eav extends AbstractModifier
 
     /**
      * Return previous entity attribute set id.
-     *
-     * @return int
      */
     private function getPreviousSetId(): int
     {
@@ -375,7 +350,6 @@ class Eav extends AbstractModifier
      *
      * @param array  $attributes Attributes.
      * @param string $groupCode  Current group code.
-     *
      * @return array
      */
     private function getAttributesMeta(array $attributes, string $groupCode): array
@@ -407,7 +381,6 @@ class Eav extends AbstractModifier
      * Retrieve attribute scope label.
      *
      * @param AttributeInterface $attribute Attribute.
-     *
      * @return Phrase|string
      */
     private function getScopeLabel(AttributeInterface $attribute)
@@ -419,8 +392,6 @@ class Eav extends AbstractModifier
      * Check if attribute scope is global.
      *
      * @param AttributeInterface $attribute Attribute.
-     *
-     * @return bool
      */
     private function isScopeGlobal(AttributeInterface $attribute): bool
     {
@@ -431,8 +402,6 @@ class Eav extends AbstractModifier
      * Whether attribute can have default value.
      *
      * @param AttributeInterface $attribute Attribute.
-     *
-     * @return bool
      */
     private function canDisplayUseDefault(AttributeInterface $attribute): bool
     {
@@ -444,7 +413,6 @@ class Eav extends AbstractModifier
      *
      * @param AttributeInterface $attribute Attribute.
      * @param array              $meta      Attribute meta.
-     *
      * @return array
      */
     private function addUseDefaultValueCheckbox(AttributeInterface $attribute, array $meta): array
@@ -465,7 +433,6 @@ class Eav extends AbstractModifier
      * Return current value for an attribute.
      *
      * @param AttributeInterface $attribute Attribute.
-     *
      * @return mixed|NULL
      */
     private function getValue(AttributeInterface $attribute)
@@ -479,7 +446,6 @@ class Eav extends AbstractModifier
      * Resolve data persistence
      *
      * @param array $data Data.
-     *
      * @return array
      */
     private function resolvePersistentData(array $data): array
@@ -502,7 +468,6 @@ class Eav extends AbstractModifier
      *
      * @param AttributeInterface $attribute Attribute.
      * @param array              $meta      Meta data of data provider.
-     *
      * @return array
      */
     private function customizeWysiwyg(AttributeInterface $attribute, array $meta): array
@@ -529,7 +494,6 @@ class Eav extends AbstractModifier
      *
      * @param AttributeInterface $attribute Attribute.
      * @param array              $meta      Metadata of data provider.
-     *
      * @return array
      */
     private function customizeCheckbox(AttributeInterface $attribute, array $meta): array
@@ -550,7 +514,6 @@ class Eav extends AbstractModifier
      *
      * @param AttributeInterface $attribute Attribute.
      * @param array              $meta      Current metadata of data provider.
-     *
      * @return array
      */
     private function customizeImage(AttributeInterface $attribute, array $meta): array
@@ -573,7 +536,6 @@ class Eav extends AbstractModifier
      *
      * @param AttributeInterface $attribute Attribute.
      * @param string             $value     Attribute value.
-     *
      * @return string|array
      * @throws FileSystemException
      */
@@ -593,7 +555,7 @@ class Eav extends AbstractModifier
             $return[] = [
                 'file' => $value,
                 'size' => isset($stat) ? $stat['size'] : 0,
-                'url' => isset($viewUrl) ? $viewUrl : '',
+                'url' => $viewUrl ?? '',
                 'name' => basename($value), // @codingStandardsIgnoreLine (MEQP1.Security.DiscouragedFunction.Found)
                 'type' => $mime,
             ];

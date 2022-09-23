@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace Smile\ScopedEav\Model\ResourceModel;
 
 use Magento\Eav\Model\Entity\AbstractEntity;
-use Magento\Eav\Model\Entity\Attribute\SetFactory;
 use Magento\Eav\Model\Entity\Attribute\Source\Table;
 use Magento\Eav\Model\Entity\Context;
-use Magento\Eav\Model\Entity\TypeFactory;
 use Magento\Framework\EntityManager\EntityManager;
 use Magento\Framework\Model\AbstractModel;
 use Smile\ScopedEav\Model\Entity\Attribute;
@@ -19,25 +17,13 @@ use Smile\ScopedEav\Model\Entity\Attribute\DefaultAttributes;
  */
 class AbstractResource extends AbstractEntity
 {
-    /**
-     * @var EntityManager
-     */
-    private $entityManager;
+    private EntityManager $entityManager;
 
-    /**
-     * @var \Magento\Eav\Model\Entity\TypeFactory
-     */
-    private $typeFactory;
+    private \Magento\Eav\Model\Entity\TypeFactory $typeFactory;
 
-    /**
-     * @var \Magento\Eav\Model\Entity\Attribute\SetFactory
-     */
-    private $setFactory;
+    private \Magento\Eav\Model\Entity\Attribute\SetFactory $setFactory;
 
-    /**
-     * @var DefaultAttributes
-     */
-    private $defaultAttributes;
+    private DefaultAttributes $defaultAttributes;
 
     /**
      * AbstractResource constructor.

@@ -13,13 +13,9 @@ use Magento\Framework\View\Element\UiComponent\Context;
  */
 class Delete extends Generic
 {
-    /**
-     * @var Escaper
-     */
-    private $jsEscape;
+    private Escaper $jsEscape;
 
     /**
-     *
      * @param Context $context  Context.
      * @param Registry $registry Registry.
      * @param Escaper $jsEscape JS Escape.
@@ -54,8 +50,6 @@ class Delete extends Generic
 
     /**
      * Get delete URL.
-     *
-     * @return string
      */
     private function getDeleteUrl(): string
     {
