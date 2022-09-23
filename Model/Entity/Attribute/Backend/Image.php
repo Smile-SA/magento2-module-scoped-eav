@@ -49,7 +49,7 @@ class Image extends \Magento\Catalog\Model\Category\Attribute\Backend\Image
             try {
                 $this->getImageUploader()->moveFileFromTmp($imageName);
             } catch (\Exception $e) {
-                $this->_logger->critical($e);
+                $this->_logger->critical($e->getMessage());
             }
         }
 

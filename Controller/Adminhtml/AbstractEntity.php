@@ -6,6 +6,7 @@ namespace Smile\ScopedEav\Controller\Adminhtml;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
+use Magento\Backend\Model\View\Result\ForwardFactory;
 use Magento\Backend\Model\View\Result\Page;
 use Magento\Framework\Phrase;
 use Magento\Store\Model\StoreManagerInterface;
@@ -20,22 +21,27 @@ abstract class AbstractEntity extends Action
 
     protected StoreManagerInterface $storeManager;
 
+    protected ForwardFactory $resultForwardFactory;
+
     /**
      * Constructor.
      *
      * @param Context $context Context.
      * @param Entity\BuilderInterface $entityBuilder Entity builder.
      * @param StoreManagerInterface $storeManager Store manager.
+     * @param ForwardFactory $resultForwardFactory Forward.
      */
     public function __construct(
         Context $context,
         Entity\BuilderInterface $entityBuilder,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        ForwardFactory $resultForwardFactory
     ) {
         parent::__construct($context);
 
         $this->entityBuilder = $entityBuilder;
         $this->storeManager  = $storeManager;
+        $this->resultForwardFactory = $resultForwardFactory;
     }
 
     /**

@@ -38,7 +38,7 @@ class Delete extends Generic
             return [];
         }
 
-        $deleteMessage = $this->jsEscape->escapeJsQuote(__("Are you sure you want to delete the entity ?"));
+        $deleteMessage = $this->jsEscape->escapeJsQuote((string) __("Are you sure you want to delete the entity ?"));
 
         return [
             'label'      => __('Delete'),

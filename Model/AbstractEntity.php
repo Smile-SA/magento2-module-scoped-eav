@@ -22,7 +22,7 @@ class AbstractEntity extends AbstractModel implements EntityInterface
     protected const STORE_ID = 'store_id';
 
     /**
-     * Name of object id field
+     * @inheritDoc
      */
     protected $_idFieldName = 'entity_id';
 
@@ -147,7 +147,7 @@ class AbstractEntity extends AbstractModel implements EntityInterface
      */
     public function setStoreId($storeId)
     {
-        $this->setData(self::STORE_ID, $storeId);
+        return $this->setData(self::STORE_ID, $storeId);
     }
 
     /**
@@ -155,7 +155,7 @@ class AbstractEntity extends AbstractModel implements EntityInterface
      */
     public function setDescription(string $description)
     {
-        $this->setData(self::DESCRIPTION, $description);
+        return $this->setData(self::DESCRIPTION, $description);
     }
 
     /**
@@ -163,7 +163,7 @@ class AbstractEntity extends AbstractModel implements EntityInterface
      */
     public function setImage(string $image)
     {
-        $this->setData(self::IMAGE, $image);
+        return $this->setData(self::IMAGE, $image);
     }
 
     /**

@@ -11,12 +11,15 @@ use Magento\Eav\Api\Data\AttributeGroupInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SortOrderBuilder;
 use Magento\Framework\Phrase;
+use Psr\Log\LoggerInterface;
 use Smile\ScopedEav\Api\Data\AttributeInterface;
 use Smile\ScopedEav\Api\Data\EntityInterface;
 use Smile\ScopedEav\ViewModel\Data as DataViewModel;
 
 /**
  * Scoped EAV form modifier EAV helper.
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Eav
 {
@@ -31,6 +34,8 @@ class Eav
     private DataViewModel $dataViewModel;
 
     private ScopeOverriddenValue $scopeOverriddenValue;
+
+    private LoggerInterface $logger;
 
     /**
      * @var AttributeGroupInterface[]
@@ -63,7 +68,8 @@ class Eav
         SearchCriteriaBuilder $searchCriteriaBuilder,
         SortOrderBuilder $sortOrderBuilder,
         ScopeOverriddenValue $scopeOverriddenValue,
-        DataViewModel $dataViewModel
+        DataViewModel $dataViewModel,
+        LoggerInterface $logger
     ) {
         $this->attributeGroupRepository = $attributeGroupRepository;
         $this->attributeRepository = $attributeRepository;
@@ -71,6 +77,7 @@ class Eav
         $this->sortOrderBuilder = $sortOrderBuilder;
         $this->scopeOverriddenValue = $scopeOverriddenValue;
         $this->dataViewModel = $dataViewModel;
+        $this->logger = $logger;
     }
 
     /**
@@ -140,9 +147,9 @@ class Eav
     /**
      * Check if the attribute value have been overriden for the current store.
      *
-     * @param EntityInterface    $entity    Entity
+     * @param EntityInterface $entity Entity
      * @param AttributeInterface $attribute Attribute.
-     * @param int                $storeId   Store id.
+     * @param int $storeId Store id.
      */
     public function hasValueForStore(EntityInterface $entity, AttributeInterface $attribute, int $storeId): bool
     {
@@ -151,7 +158,7 @@ class Eav
         $interface = $this->dataViewModel->getEntityInterface($entity);
 
         try {
-            $hasValue = $hasValue ||
+            $hasValue =
                 $this->scopeOverriddenValue->containsValue(
                     $interface,
                     $entity,
@@ -160,7 +167,7 @@ class Eav
                 );
         } catch (\Exception $e) {
             // Catch exception hasValueForStore function
-            $e->getMessage();
+            $this->logger->critical($e->getMessage());
         }
 
         return $hasValue;
@@ -170,7 +177,7 @@ class Eav
      * Can the use default checkbox be displayed for an attribute.
      *
      * @param AttributeInterface $attribute Attribute.
-     * @param EntityInterface    $entity    Entity.
+     * @param EntityInterface $entity Entity.
      */
     public function canDisplayUseDefault(AttributeInterface $attribute, EntityInterface $entity): mixed
     {

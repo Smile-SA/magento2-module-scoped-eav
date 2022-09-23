@@ -299,13 +299,12 @@ class Eav extends AbstractModifier
      */
     public function setupAttributeData(AttributeInterface $attribute)
     {
-        $value    = null;
-        $entity   = $this->locator->getEntity();
+        $value = null;
+        $entity = $this->locator->getEntity();
         $entityId = $entity->getId();
         $prevSetId = $this->getPreviousSetId();
 
-        $notUsed = !$prevSetId ||
-            ($prevSetId && !in_array($attribute->getAttributeCode(), $this->getPreviousSetAttributes()));
+        $notUsed = $prevSetId && !in_array($attribute->getAttributeCode(), $this->getPreviousSetAttributes());
 
         if ($entityId && $notUsed) {
             $value = $this->getValue($attribute);
@@ -573,7 +572,7 @@ class Eav extends AbstractModifier
 
             $return[] = [
                 'file' => $value,
-                'size' => isset($stat) ? $stat['size'] : 0,
+                'size' => $stat ? $stat['size'] : 0,
                 'url' => $viewUrl ?? '',
                 'name' => basename($value), // @codingStandardsIgnoreLine (MEQP1.Security.DiscouragedFunction.Found)
                 'type' => $mime,

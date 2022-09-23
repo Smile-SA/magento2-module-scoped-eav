@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Smile\ScopedEav\Controller\Adminhtml\Entity;
 
 use Magento\Backend\App\Action\Context;
+use Magento\Backend\Model\View\Result\ForwardFactory;
 use Magento\Eav\Model\Config;
+use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Store\Model\StoreManagerInterface;
@@ -16,7 +18,7 @@ use Smile\ScopedEav\Model\Entity\Attribute\Backend\Image;
 /**
  * Scoped EAV entity save controller.
  */
-class Save extends AbstractEntity
+class Save extends AbstractEntity implements HttpPostActionInterface
 {
     private DataPersistorInterface $dataPersistor;
 
@@ -30,15 +32,17 @@ class Save extends AbstractEntity
      * @param StoreManagerInterface $storeManager Store manager.
      * @param DataPersistorInterface $dataPersistor Data Persistor
      * @param Config $eavConfig Eav config.
+     * @param ForwardFactory $resultForwardFactory Forward.
      */
     public function __construct(
         Context $context,
         BuilderInterface $entityBuilder,
         StoreManagerInterface $storeManager,
         DataPersistorInterface $dataPersistor,
-        Config $eavConfig
+        Config $eavConfig,
+        ForwardFactory $resultForwardFactory
     ) {
-        parent::__construct($context, $entityBuilder, $storeManager);
+        parent::__construct($context, $entityBuilder, $storeManager, $resultForwardFactory);
 
         $this->dataPersistor = $dataPersistor;
         $this->eavConfig = $eavConfig;
@@ -63,7 +67,9 @@ class Save extends AbstractEntity
             $entityId       = $entity->getEntityId();
             $attributeSetId = $entity->getAttributeSetId();
 
-            $this->messageManager->addSuccessMessage(__('You saved the entity.'));
+            $this->messageManager->addSuccessMessage(
+                (string) __('You saved the entity.')
+            );
             $this->dataPersistor->clear('entity');
 
             $resultRedirect->setPath('*/*/index', ['store' => $storeId]);

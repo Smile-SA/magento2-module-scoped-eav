@@ -108,9 +108,8 @@ abstract class AbstractModifier implements ModifierInterface
      *
      * @param array $meta Meta.
      * @param string $field Field.
-     * @return string|bool
      */
-    protected function getGroupCodeByField(array $meta, string $field): ?string
+    protected function getGroupCodeByField(array $meta, string $field): mixed
     {
         foreach ($meta as $groupCode => $groupData) {
             if (

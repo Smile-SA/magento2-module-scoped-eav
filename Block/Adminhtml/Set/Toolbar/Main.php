@@ -18,7 +18,9 @@ class Main extends Template
      */
     protected function _prepareLayout()
     {
-        $this->getToolbar()->addChild(
+        /** @var Template $toolbar */
+        $toolbar = $this->getToolbar();
+        $toolbar->addChild(
             'addButton',
             Button::class,
             [

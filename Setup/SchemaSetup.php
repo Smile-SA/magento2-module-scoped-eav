@@ -161,9 +161,8 @@ class SchemaSetup
      * Prepare a website assigment table for an entity.
      *
      * @param string $entityTableName Entity table name.
-     * @return $this
      */
-    public function getEntityWebsiteTable(string $entityTableName): self
+    public function getEntityWebsiteTable(string $entityTableName): Table
     {
         $websiteTableName = sprintf('%s_website', $entityTableName);
 
