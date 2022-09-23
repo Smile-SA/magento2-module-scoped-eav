@@ -12,10 +12,7 @@ use Magento\Ui\DataProvider\Modifier\PoolInterface;
  */
 class EntityDataProvider extends AbstractDataProvider
 {
-    /**
-     * @var PoolInterface
-     */
-    private $pool;
+    private PoolInterface $pool;
 
     /**
      * Constructor.
@@ -28,9 +25,9 @@ class EntityDataProvider extends AbstractDataProvider
      * @param array $data Original data.
      */
     public function __construct(
-        $name,
-        $primaryFieldName,
-        $requestFieldName,
+        string $name,
+        string $primaryFieldName,
+        string $requestFieldName,
         PoolInterface $pool,
         array $meta = [],
         array $data = []

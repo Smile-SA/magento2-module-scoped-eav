@@ -12,10 +12,7 @@ use Magento\Framework\Setup\SchemaSetupInterface;
  */
 class SchemaSetup
 {
-    /**
-     * @var SchemaSetupInterface
-     */
-    private $setup;
+    private SchemaSetupInterface $setup;
 
     /**
      * Constructor.
@@ -31,8 +28,6 @@ class SchemaSetup
      * Prepare an entity table with mandatory columns.
      *
      * @param string $entityTableName Entity table name.
-     *
-     * @return Table|null
      */
     public function getEntityTable(string $entityTableName): ?Table
     {
@@ -81,18 +76,16 @@ class SchemaSetup
      *
      * @param string $entityTableName Entity table.
      * @param string $valueType Value type.
-     * @param null|int|string $size Value max size (null if unbounded).
-     * @param null|string $tableSuffix Table suffix (if null $valueType is used).
-     *
-     * @return Table|null
+     * @param int|string|null $size Value max size (null if unbounded).
+     * @param string|null $tableSuffix Table suffix (if null $valueType is used).
      */
     public function getEntityAttributeValueTable(
         string $entityTableName,
         string $valueType,
         $size = null,
-        string $tableSuffix = null
+        ?string $tableSuffix = null
     ): ?Table {
-        $tableName = sprintf("%s_%s", $entityTableName, $tableSuffix !== null ? $tableSuffix : $valueType);
+        $tableName = sprintf("%s_%s", $entityTableName, $tableSuffix ?? $valueType);
 
         $table = $this->setup->getConnection()->newTable($this->setup->getTable($tableName))
             ->addColumn(
@@ -168,7 +161,6 @@ class SchemaSetup
      * Prepare a website assigment table for an entity.
      *
      * @param string $entityTableName Entity table name.
-     *
      * @return $this
      */
     public function getEntityWebsiteTable(string $entityTableName): self
@@ -213,8 +205,6 @@ class SchemaSetup
      * Prepare an additional attribute config table for an entity.
      *
      * @param string $entityTableName Entity table name.
-     *
-     * @return Table|null
      */
     public function getAttributeAdditionalTable(string $entityTableName): ?Table
     {

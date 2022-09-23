@@ -13,10 +13,7 @@ use Magento\Ui\Component\Control\Container;
  */
 class Save extends Generic
 {
-    /**
-     * @var string
-     */
-    private $formName;
+    private string $formName;
 
     /**
      * Constructor.

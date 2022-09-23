@@ -14,10 +14,7 @@ use Magento\Ui\Component\Listing\Columns\Column;
  */
 abstract class AbstractActions extends Column
 {
-    /**
-     * @var UrlInterface
-     */
-    private $urlBuilder;
+    private UrlInterface $urlBuilder;
 
     /**
      * Constructor.
@@ -43,7 +40,6 @@ abstract class AbstractActions extends Column
      * Prepare action column content.
      *
      * @param array $dataSource Row data.
-     *
      * @return array
      */
     public function prepareDataSource(array $dataSource): array
@@ -64,8 +60,6 @@ abstract class AbstractActions extends Column
      * Return edit URL for a row.
      *
      * @param array $item Item data.
-     *
-     * @return string
      */
     protected function getEditUrl(array $item): string
     {
@@ -76,8 +70,6 @@ abstract class AbstractActions extends Column
 
     /**
      * Return index field name.
-     *
-     * @return string
      */
     protected function getIndexField(): string
     {
@@ -86,8 +78,6 @@ abstract class AbstractActions extends Column
 
     /**
      * Return request field name.
-     *
-     * @return string
      */
     abstract protected function getRequestFieldName(): string;
 }

@@ -16,26 +16,24 @@ use Magento\Framework\Registry;
 class Edit extends Container
 {
     /**
-     * @var string
+     * @inheritdoc
      */
     protected $_blockGroup = 'Smile_ScopedEav';
 
     /**
-     * @var string
+     * @inheritdoc
      */
     protected $_objectId   = 'attribute_id';
 
     /**
-     * @var string
+     * @inheritdoc
      */
     protected $_controller = 'adminhtml_attribute';
 
     /**
      * Core registry
-     *
-     * @var Registry
      */
-    private $coreRegistry = null;
+    private ?Registry $coreRegistry = null;
 
     /**
      * Constructor.
@@ -84,8 +82,6 @@ class Edit extends Container
 
     /**
      * Retrieve URL for validation
-     *
-     * @return string
      */
     public function getValidationUrl(): string
     {
@@ -94,8 +90,6 @@ class Edit extends Container
 
     /**
      * Retrieve URL for save
-     *
-     * @return string
      */
     public function getSaveUrl(): string
     {

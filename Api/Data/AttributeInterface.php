@@ -43,7 +43,6 @@ interface AttributeInterface extends \Magento\Eav\Api\Data\AttributeInterface
      * Set attribute scope
      *
      * @param string $scope Attribute scope as text.
-     *
      * @return $this
      */
     public function setScope(string $scope): self;
@@ -52,7 +51,6 @@ interface AttributeInterface extends \Magento\Eav\Api\Data\AttributeInterface
      * Set is_global value.
      *
      * @param int $isGlobal Attribute scope as int.
-     *
      * @return $this
      */
     public function setIsGlobal(int $isGlobal): self;

@@ -20,50 +20,32 @@ use Smile\ScopedEav\ViewModel\Data as DataViewModel;
  */
 class Eav
 {
-    /**
-     * @var AttributeGroupRepositoryInterface
-     */
-    private $attributeGroupRepository;
+    private AttributeGroupRepositoryInterface $attributeGroupRepository;
 
-    /**
-     * @var AttributeRepositoryInterface
-     */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /**
-     * @var SearchCriteriaBuilder $searchCriteriaBuilder
-     */
-    private $searchCriteriaBuilder;
+    private SearchCriteriaBuilder $searchCriteriaBuilder;
 
-    /**
-     * @var SortOrderBuilder $searchCriteriaBuilder
-     */
-    private $sortOrderBuilder;
+    private SortOrderBuilder $sortOrderBuilder;
 
-    /**
-     * @var DataViewModel
-     */
-    private $dataViewModel;
+    private DataViewModel $dataViewModel;
 
-    /**
-     * @var ScopeOverriddenValue
-     */
-    private $scopeOverriddenValue;
+    private ScopeOverriddenValue $scopeOverriddenValue;
 
     /**
      * @var AttributeGroupInterface[]
      */
-    private $attributeGroups = [];
+    private array $attributeGroups = [];
 
     /**
      * @var AttributeInterface[]
      */
-    private $attributes = [];
+    private array $attributes = [];
 
     /**
      * @var array
      */
-    private $canDisplayUseDefault = [];
+    private array $canDisplayUseDefault = [];
 
     /**
      * Constructor.
@@ -95,7 +77,6 @@ class Eav
      * List of attribute group by attribute set id.
      *
      * @param int|string $attributeSetId Attribute set id.
-     *
      * @return AttributeGroupInterface[]
      */
     public function getGroups($attributeSetId): array
@@ -120,7 +101,6 @@ class Eav
      *
      * @param EntityInterface $entity Entity.
      * @param int|string $attributeSetId Attribute set id.
-     *
      * @return AttributeInterface[]
      */
     public function getAttributes(EntityInterface $entity, $attributeSetId): array
@@ -140,7 +120,6 @@ class Eav
      * Scope label for an attribute.
      *
      * @param AttributeInterface $attribute Attribute.
-     *
      * @return string|Phrase
      */
     public function getScopeLabel(AttributeInterface $attribute)
@@ -152,8 +131,6 @@ class Eav
      * Check if attribute is global.
      *
      * @param AttributeInterface $attribute Attribute.
-     *
-     * @return boolean
      */
     public function isScopeGlobal(AttributeInterface $attribute): bool
     {
@@ -166,10 +143,8 @@ class Eav
      * @param EntityInterface    $entity    Entity
      * @param AttributeInterface $attribute Attribute.
      * @param int                $storeId   Store id.
-     *
-     * @return boolean
      */
-    public function hasValueForStore(EntityInterface $entity, AttributeInterface $attribute, $storeId): bool
+    public function hasValueForStore(EntityInterface $entity, AttributeInterface $attribute, int $storeId): bool
     {
         $hasValue = false;
         $attributeCode = $attribute->getAttributeCode();
@@ -189,8 +164,6 @@ class Eav
      *
      * @param AttributeInterface $attribute Attribute.
      * @param EntityInterface    $entity    Entity.
-     *
-     * @return mixed
      */
     public function canDisplayUseDefault(AttributeInterface $attribute, EntityInterface $entity): mixed
     {
@@ -208,7 +181,6 @@ class Eav
      * Return form element by frontend input.
      *
      * @param string $frontendInput Frontend input.
-     *
      * @return string|NULL
      */
     public function getFormElement(string $frontendInput): ?string
@@ -220,8 +192,6 @@ class Eav
      * Prepare a search criteria that filter group by attribute set.
      *
      * @param int|string $attributeSetId Attribute set id.
-     *
-     * @return SearchCriteriaBuilder
      */
     private function prepareGroupSearchCriteria($attributeSetId): SearchCriteriaBuilder
     {
@@ -233,10 +203,9 @@ class Eav
      *
      * @param EntityInterface         $entity Entity.
      * @param AttributeGroupInterface $group  Attribute group.
-     *
      * @return \Magento\Eav\Api\Data\AttributeInterface[]
      */
-    private function loadAttributes(EntityInterface $entity, AttributeGroupInterface $group)
+    private function loadAttributes(EntityInterface $entity, AttributeGroupInterface $group): array
     {
         $attributes = [];
 

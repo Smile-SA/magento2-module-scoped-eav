@@ -16,15 +16,9 @@ use Smile\ScopedEav\Api\Data\EntityInterface;
  */
 abstract class AbstractEntity extends Action
 {
-    /**
-     * @var Entity\BuilderInterface
-     */
-    protected $entityBuilder;
+    protected Entity\BuilderInterface $entityBuilder;
 
-    /**
-     * @var StoreManagerInterface
-     */
-    protected $storeManager;
+    protected StoreManagerInterface $storeManager;
 
     /**
      * Constructor.
@@ -48,8 +42,6 @@ abstract class AbstractEntity extends Action
      * Create the page.
      *
      * @param Phrase|string $title Page title.
-     *
-     * @return Page
      */
     protected function createActionPage($title = null): Page
     {
@@ -66,8 +58,6 @@ abstract class AbstractEntity extends Action
 
     /**
      * Return current entity.
-     *
-     * @return EntityInterface
      */
     protected function getEntity(): EntityInterface
     {
@@ -76,8 +66,6 @@ abstract class AbstractEntity extends Action
 
     /**
      * Return current store id.
-     *
-     * @return int
      */
     protected function getStoreId(): int
     {

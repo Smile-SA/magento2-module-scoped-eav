@@ -14,23 +14,11 @@ use Smile\ScopedEav\Api\Data\EntityInterface;
  */
 class RegistryLocator implements LocatorInterface
 {
+    private Registry $registry;
 
-    /**
-     * @var Registry
-     */
-    private $registry;
+    private EntityInterface $entity;
 
-    /**
-     *
-     * @var EntityInterface
-     */
-    private $entity;
-
-    /**
-     *
-     * @var StoreInterface
-     */
-    private $store;
+    private StoreInterface $store;
 
     /**
      * Constructor.

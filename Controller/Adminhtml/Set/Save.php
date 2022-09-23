@@ -23,20 +23,11 @@ use Smile\ScopedEav\Controller\Adminhtml\AbstractSet;
  */
 class Save extends AbstractSet
 {
-    /**
-     * @var FilterManager
-     */
-    private $filterManager;
+    private FilterManager $filterManager;
 
-    /**
-     * @var Data
-     */
-    private $jsonHelper;
+    private Data $jsonHelper;
 
-    /**
-     * @var JsonFactory
-     */
-    private $resultJsonFactory;
+    private JsonFactory $resultJsonFactory;
 
     /**
      * Constructor.
@@ -117,10 +108,8 @@ class Save extends AbstractSet
      * Redirect user on new attribute set save.
      *
      * @param AttributeSetInterface $attributeSet Attribute set.
-     *
-     * @return ResponseInterface
      */
-    private function getNewAttributeSetResponse($attributeSet): ResponseInterface
+    private function getNewAttributeSetResponse(AttributeSetInterface $attributeSet): ResponseInterface
     {
         $resultRedirect = $this->_redirect('*/*/add');
 
@@ -133,8 +122,6 @@ class Save extends AbstractSet
 
     /**
      * Return formatted JSON success response.
-     *
-     * @return Json
      */
     private function getSuccessResponse(): Json
     {
@@ -145,8 +132,6 @@ class Save extends AbstractSet
 
     /**
      * Return formatted JSON error response.
-     *
-     * @return Json
      */
     private function getErrorResponse(): Json
     {

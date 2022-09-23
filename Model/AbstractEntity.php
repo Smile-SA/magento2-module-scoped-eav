@@ -23,8 +23,6 @@ class AbstractEntity extends AbstractModel implements EntityInterface
 
     /**
      * Name of object id field
-     *
-     * @var string
      */
     protected $_idFieldName = 'entity_id';
 
@@ -98,10 +96,8 @@ class AbstractEntity extends AbstractModel implements EntityInterface
 
     /**
      * Retrieve default attribute set id
-     *
-     * @return int
      */
-    public function getDefaultAttributeSetId()
+    public function getDefaultAttributeSetId(): int
     {
         return $this->getResource()->getEntityType()->getDefaultAttributeSetId();
     }
@@ -174,7 +170,6 @@ class AbstractEntity extends AbstractModel implements EntityInterface
      * Return image url.
      *
      * @param string $attributeCode Attribute code.
-     *
      * @return bool|string
      * @throws LocalizedException
      */
@@ -218,8 +213,6 @@ class AbstractEntity extends AbstractModel implements EntityInterface
      * Re-declare attribute model
      *
      * @SuppressWarnings(PHPMD.CamelCaseMethodName)
-     *
-     * @return string
      */
     protected function _getDefaultAttributeModel(): string
     {
@@ -230,7 +223,6 @@ class AbstractEntity extends AbstractModel implements EntityInterface
      * Retrieve default entity attributes
      *
      * @SuppressWarnings(PHPMD.CamelCaseMethodName)
-     *
      * @return string[]
      */
     protected function _getDefaultAttributes(): array

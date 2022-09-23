@@ -14,17 +14,12 @@ use Smile\ScopedEav\Api\Data\EntityInterface;
  */
 class Generic implements ButtonProviderInterface
 {
-    /**
-     * @var Context
-     */
-    private $context;
+    private Context $context;
 
     /**
      * Registry
-     *
-     * @var Registry
      */
-    private $registry;
+    private Registry $registry;
 
     /**
      * Constructor.
@@ -45,8 +40,6 @@ class Generic implements ButtonProviderInterface
      *
      * @param string $route  URL route.
      * @param array  $params URL params.
-     *
-     * @return string
      */
     public function getUrl(string $route = '', array $params = []): string
     {
@@ -55,8 +48,6 @@ class Generic implements ButtonProviderInterface
 
     /**
      * Get current entity.
-     *
-     * @return EntityInterface
      */
     public function getEntity(): EntityInterface
     {

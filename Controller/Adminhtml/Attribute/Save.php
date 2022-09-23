@@ -19,20 +19,11 @@ use Zend\Validator\RegexFactory;
  */
 class Save extends AbstractAttribute
 {
-    /**
-     * @var DataViewModel
-     */
-    private $dataViewModel;
+    private DataViewModel $dataViewModel;
 
-    /**
-     * @var RegexFactory
-     */
-    private $regexFactory;
+    private RegexFactory $regexFactory;
 
-    /**
-     * @var FormData|null
-     */
-    private $formDataSerializer;
+    private ?FormData $formDataSerializer = null;
 
     /**
      * Constructor.
@@ -41,14 +32,13 @@ class Save extends AbstractAttribute
      * @param DataViewModel $dataViewModel Scoped EAV data view model.
      * @param BuilderInterface $attributeBuilder Attribute builder.
      * @param RegexFactory $regexFactory Regexp validator factory.
-     * @param FormData|null $formDataSerializer
      */
     public function __construct(
         Context $context,
         DataViewModel $dataViewModel,
         BuilderInterface $attributeBuilder,
         RegexFactory $regexFactory,
-        FormData $formDataSerializer = null
+        ?FormData $formDataSerializer = null
     ) {
         parent::__construct($context, $dataViewModel, $attributeBuilder);
         $this->dataViewModel = $dataViewModel;
@@ -84,8 +74,6 @@ class Save extends AbstractAttribute
      * Add request post data to the attribute.
      *
      * @param AttributeInterface $attribute Attribute.
-     *
-     * @return AttributeInterface
      */
     private function addPostData(AttributeInterface $attribute): AttributeInterface
     {
@@ -105,12 +93,12 @@ class Save extends AbstractAttribute
             $optionData
         );
 
-        $frontendInput = isset($data['frontend_input']) ? $data['frontend_input'] : $attribute->getFrontendInput();
+        $frontendInput = $data['frontend_input'] ?? $attribute->getFrontendInput();
 
         if (!$attribute->getId()) {
             $data['attribute_code']  = $this->getAttributeCode();
             $data['is_user_defined'] = true;
-            $data['backend_type'] = ($data['frontend_input'] == 'image') ? 'varchar' : $attribute->getBackendTypeByInput($data['frontend_input']);
+            $data['backend_type'] = $data['frontend_input'] == 'image' ? 'varchar' : $attribute->getBackendTypeByInput($data['frontend_input']);
             $data['source_model'] = $this->dataViewModel->getAttributeSourceModelByInputType($data['frontend_input']);
             $data['backend_model'] = $this->dataViewModel->getAttributeBackendModelByInputType($data['frontend_input']);
         }
@@ -129,8 +117,6 @@ class Save extends AbstractAttribute
      * Generate attribute code from request params.
      *
      * @throws \Exception
-     *
-     * @return string
      */
     private function getAttributeCode(): string
     {

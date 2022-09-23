@@ -16,8 +16,6 @@ interface BuilderInterface
      * Retrieve and init an entity from the request.
      *
      * @param RequestInterface $request Request.
-     *
-     * @return EntityInterface|null
      */
     public function build(RequestInterface $request): ?EntityInterface;
 }

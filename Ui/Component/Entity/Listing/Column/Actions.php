@@ -13,8 +13,6 @@ class Actions extends AbstractActions
 {
     /**
      * Return request field name.
-     *
-     * @return string
      */
     protected function getRequestFieldName(): string
     {

@@ -16,15 +16,9 @@ use Smile\ScopedEav\Api\Data\AttributeInterface;
  */
 abstract class AbstractBuilder implements BuilderInterface
 {
-    /**
-     * @var Config
-     */
-    private $eavConfig;
+    private Config $eavConfig;
 
-    /**
-     * @var Registry
-     */
-    private $registry;
+    private Registry $registry;
 
     /**
      * Constructor.
@@ -60,8 +54,7 @@ abstract class AbstractBuilder implements BuilderInterface
                 try {
                     $this->getAttributeRepository()->get($attributeCode);
                     throw new AlreadyExistsException(__('An attribute with the same code already exists.'));
-                } catch (NoSuchEntityException $e) {
-                    ; // Does nothing since no other attribute exists => attribute code is valid.
+                } catch (NoSuchEntityException $e) {// Does nothing since no other attribute exists => attribute code is valid.
                 }
             } elseif ($attributeId != null) {
                 $attribute = $this->getAttributeRepository()->get($attributeId);
@@ -75,22 +68,16 @@ abstract class AbstractBuilder implements BuilderInterface
 
     /**
      * Entity attribute factory.
-     *
-     * @return \Smile\ScopedEav\Api\Data\AttributeInterfaceFactory
      */
-    abstract protected function getAttributeFactory();
+    abstract protected function getAttributeFactory(): mixed;
 
     /**
      * Entity attribute repository.
-     *
-     * @return mixed
      */
     abstract protected function getAttributeRepository(): mixed;
 
     /**
      * Entity type code.
-     *
-     * @return string
      */
     abstract protected function getEntityTypeCode(): string;
 }

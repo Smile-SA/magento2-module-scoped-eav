@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Controller\Adminhtml\Entity;
 
-use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Eav\Model\Config;
 use Magento\Framework\App\Request\DataPersistorInterface;
@@ -18,15 +17,9 @@ use Smile\ScopedEav\Controller\Adminhtml\AbstractEntity;
  */
 class Save extends AbstractEntity
 {
-    /**
-     * @var DataPersistorInterface
-     */
-    private $dataPersistor;
+    private DataPersistorInterface $dataPersistor;
 
-    /**
-     * @var Config
-     */
-    private $eavConfig;
+    private Config $eavConfig;
 
     /**
      * Constructor.
@@ -119,7 +112,6 @@ class Save extends AbstractEntity
      *
      * @param EntityInterface $entity Current entity.
      * @param array $data Data.
-     *
      * @return array
      * @throws LocalizedException
      */
