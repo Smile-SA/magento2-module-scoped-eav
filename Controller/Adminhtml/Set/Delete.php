@@ -12,7 +12,7 @@ use Smile\ScopedEav\Controller\Adminhtml\AbstractSet;
 class Delete extends AbstractSet
 {
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function execute()
     {
@@ -23,6 +23,7 @@ class Delete extends AbstractSet
             $this->messageManager->addErrorMessage(__('We can\'t delete this set right now.'));
         }
 
-        return $this->_redirect('*/*/index');
+        $resultRedirect = $this->resultRedirectFactory->create();
+        return $resultRedirect->setPath('*/*/index');
     }
 }

@@ -11,19 +11,19 @@ namespace Smile\ScopedEav\Api\Data;
  */
 interface AttributeInterface extends \Magento\Eav\Api\Data\AttributeInterface
 {
-    const SCOPE_STORE_TEXT = 'store';
+    public const SCOPE_STORE_TEXT = 'store';
 
-    const SCOPE_GLOBAL_TEXT = 'global';
+    public const SCOPE_GLOBAL_TEXT = 'global';
 
-    const SCOPE_WEBSITE_TEXT = 'website';
+    public const SCOPE_WEBSITE_TEXT = 'website';
 
-    const SCOPE_STORE = 0;
+    public const SCOPE_STORE = 0;
 
-    const SCOPE_GLOBAL = 1;
+    public const SCOPE_GLOBAL = 1;
 
-    const SCOPE_WEBSITE = 2;
+    public const SCOPE_WEBSITE = 2;
 
-    const KEY_IS_GLOBAL = 'is_global';
+    public const KEY_IS_GLOBAL = 'is_global';
 
     /**
      * Retrieve attribute scope as text.

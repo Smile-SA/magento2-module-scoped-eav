@@ -9,9 +9,9 @@ use Magento\Eav\Api\AttributeSetRepositoryInterface;
 use Magento\Eav\Api\Data\AttributeSetInterface;
 use Magento\Eav\Api\Data\AttributeSetInterfaceFactory;
 use Magento\Eav\Model\Config;
-use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
+use Magento\Framework\Controller\Result\Redirect;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Filter\FilterManager;
 use Magento\Framework\Json\Helper\Data;
@@ -59,7 +59,7 @@ class Save extends AbstractSet
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function execute()
     {
@@ -69,7 +69,9 @@ class Save extends AbstractSet
         $attributeSet = $this->getAttributeSet();
 
         try {
-            $attributeSet->setAttributeSetName($this->filterManager->stripTags((string) $this->getRequest()->getParam('attribute_set_name')));
+            $attributeSet->setAttributeSetName(
+                $this->filterManager->stripTags((string) $this->getRequest()->getParam('attribute_set_name'))
+            );
 
             if ($isNewSet === false) {
                 $data = $this->jsonHelper->jsonDecode($this->getRequest()->getPost('data'));
@@ -109,12 +111,13 @@ class Save extends AbstractSet
      *
      * @param AttributeSetInterface $attributeSet Attribute set.
      */
-    private function getNewAttributeSetResponse(AttributeSetInterface $attributeSet): ResponseInterface
+    private function getNewAttributeSetResponse(AttributeSetInterface $attributeSet): Redirect
     {
-        $resultRedirect = $this->_redirect('*/*/add');
+        $resultRedirect = $this->resultRedirectFactory->create();
+        $resultRedirect->setPath('*/*/add');
 
         if ($attributeSet && $attributeSet->getId()) {
-            $resultRedirect = $this->_redirect('*/*/edit', ['id' => $attributeSet->getId()]);
+            $resultRedirect->setPath('*/*/edit', ['id' => $attributeSet->getId()]);
         }
 
         return $resultRedirect;

@@ -13,7 +13,7 @@ use Smile\ScopedEav\Controller\Adminhtml\AbstractEntity;
 class Reload extends AbstractEntity
 {
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function execute()
     {

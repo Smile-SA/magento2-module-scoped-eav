@@ -12,7 +12,7 @@ use Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute;
 class NewAction extends AbstractAttribute
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function execute()
     {

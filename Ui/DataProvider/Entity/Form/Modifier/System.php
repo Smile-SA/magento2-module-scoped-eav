@@ -12,9 +12,9 @@ use Smile\ScopedEav\Model\Locator\LocatorInterface;
  */
 class System extends AbstractModifier
 {
-    const KEY_SUBMIT_URL = 'submit_url';
+    private const KEY_SUBMIT_URL = 'submit_url';
 
-    const KEY_RELOAD_URL = 'reloadUrl';
+    private const KEY_RELOAD_URL = 'reloadUrl';
 
     private LocatorInterface $locator;
 
@@ -51,7 +51,7 @@ class System extends AbstractModifier
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function modifyData(array $data)
     {
@@ -61,16 +61,22 @@ class System extends AbstractModifier
         $parameters = ['id' => $model->getId(), 'store' => $model->getStoreId()];
 
         $actionParameters = array_merge($parameters, ['set' => $attributeSetId]);
-        $reloadParameters = array_merge($parameters, ['popup' => 1, 'componentJson' => 1, 'prev_set_id' => $attributeSetId]);
+        $reloadParameters = array_merge(
+            $parameters,
+            ['popup' => 1, 'componentJson' => 1, 'prev_set_id' => $attributeSetId]
+        );
 
         $submitUrl = $this->urlBuilder->getUrl($this->getEntityUrl(self::KEY_SUBMIT_URL), $actionParameters);
         $reloadUrl = $this->urlBuilder->getUrl($this->getEntityUrl(self::KEY_RELOAD_URL), $reloadParameters);
 
-        return array_replace_recursive($data, ['config' => [self::KEY_SUBMIT_URL => $submitUrl, self::KEY_RELOAD_URL => $reloadUrl]]);
+        return array_replace_recursive(
+            $data,
+            ['config' => [self::KEY_SUBMIT_URL => $submitUrl, self::KEY_RELOAD_URL => $reloadUrl]]
+        );
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function modifyMeta(array $meta)
     {

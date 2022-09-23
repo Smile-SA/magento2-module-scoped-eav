@@ -17,7 +17,7 @@ use Smile\ScopedEav\ViewModel\Data as DataViewModel;
  */
 class Validate extends AbstractAttribute
 {
-    const DEFAULT_MESSAGE_KEY = 'message';
+    private const DEFAULT_MESSAGE_KEY = 'message';
 
     private JsonFactory $resultJsonFactory;
 
@@ -45,7 +45,7 @@ class Validate extends AbstractAttribute
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function execute()
     {

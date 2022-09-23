@@ -30,7 +30,7 @@ class Delete extends Generic
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getButtonData()
     {

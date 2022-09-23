@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Smile\ScopedEav\Block\Adminhtml\Set\Toolbar;
 
 use Magento\Backend\Block\Template;
+use Magento\Backend\Block\Widget\Button;
 
 /**
  * Attribute set listing main container.
@@ -12,15 +13,14 @@ use Magento\Backend\Block\Template;
 class Main extends Template
 {
     /**
-     * {@inheritdoc}
-     *
+     * @inheritDoc
      * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _prepareLayout()
     {
         $this->getToolbar()->addChild(
             'addButton',
-            'Magento\Backend\Block\Widget\Button',
+            Button::class,
             [
                 'label' => __('Add Attribute Set'),
                 'onclick' => 'setLocation(\'' . $this->getUrl('*/*/add') . '\')',

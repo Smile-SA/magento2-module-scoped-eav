@@ -14,7 +14,7 @@ use Smile\ScopedEav\Controller\Adminhtml\AbstractEntity;
 class Edit extends AbstractEntity
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function execute()
     {
@@ -28,17 +28,22 @@ class Edit extends AbstractEntity
             $entity = $this->getEntity();
 
             $response = $this->createActionPage($entity->getName());
-
-            if (!$this->storeManager->isSingleStoreMode() && ($switchBlock = $response->getLayout()->getBlock('store_switcher'))) {
-                $switchUrl = $this->getUrl('*/*/*', ['_current' => true, 'active_tab' => null, 'tab' => null, 'store' => null]);
+            $switchBlock = $response->getLayout()->getBlock('store_switcher');
+            if (!$this->storeManager->isSingleStoreMode() && $switchBlock) {
+                $switchUrl = $this->getUrl(
+                    '*/*/*',
+                    ['_current' => true, 'active_tab' => null, 'tab' => null, 'store' => null]
+                );
                 $switchBlock->setDefaultStoreName(__('Default Values'))->setSwitchUrl($switchUrl);
             }
         } catch (NoSuchEntityException $e) {
             $this->messageManager->addErrorMessage('This entity doesn\'t exist.');
-            $response = $this->_redirect('*/*/index');
+            $response = $this->resultRedirectFactory->create();
+            $response->setPath('*/*/index');
         } catch (LocalizedException $e) {
             $this->messageManager->addErrorMessage($e->getMessage());
-            $response = $this->_redirect('*/*/index');
+            $response = $this->resultRedirectFactory->create();
+            $response->setPath('*/*/index');
         }
 
         return $response;

@@ -108,8 +108,8 @@ abstract class AbstractSet extends Action
         if ($attributeSet == null) {
             $entityTypeId = $this->getTypeId();
             $attributeSet = $this->attributeSetFactory->create()->setEntityTypeId($entityTypeId);
-
-            if ($attributeSetId = $this->getRequest()->getParam('id')) {
+            $attributeSetId = $this->getRequest()->getParam('id');
+            if ($attributeSetId) {
                 $attributeSet = $this->attributeSetRepository->get($attributeSetId);
 
                 if ($attributeSet->getEntityTypeId() != $entityTypeId) {

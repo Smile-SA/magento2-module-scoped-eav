@@ -151,9 +151,16 @@ class Eav
         $interface = $this->dataViewModel->getEntityInterface($entity);
 
         try {
-            $hasValue = $hasValue || $this->scopeOverriddenValue->containsValue($interface, $entity, $attributeCode, $storeId);
+            $hasValue = $hasValue ||
+                $this->scopeOverriddenValue->containsValue(
+                    $interface,
+                    $entity,
+                    $attributeCode,
+                    $storeId
+                );
         } catch (\Exception $e) {
             // Catch exception hasValueForStore function
+            $e->getMessage();
         }
 
         return $hasValue;

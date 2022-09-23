@@ -19,7 +19,7 @@ class AbstractEntity extends AbstractModel implements EntityInterface
     /**
      * Entity Store Id
      */
-    const STORE_ID = 'store_id';
+    protected const STORE_ID = 'store_id';
 
     /**
      * Name of object id field
@@ -27,7 +27,7 @@ class AbstractEntity extends AbstractModel implements EntityInterface
     protected $_idFieldName = 'entity_id';
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getAttributeSetId()
     {
@@ -35,7 +35,7 @@ class AbstractEntity extends AbstractModel implements EntityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getCreatedAt(): ?string
     {
@@ -43,7 +43,7 @@ class AbstractEntity extends AbstractModel implements EntityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getUpdatedAt(): ?string
     {
@@ -51,7 +51,7 @@ class AbstractEntity extends AbstractModel implements EntityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getName(): ?string
     {
@@ -59,7 +59,7 @@ class AbstractEntity extends AbstractModel implements EntityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getIsActive()
     {
@@ -67,7 +67,7 @@ class AbstractEntity extends AbstractModel implements EntityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getStoreId()
     {
@@ -79,7 +79,7 @@ class AbstractEntity extends AbstractModel implements EntityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getDescription(): ?string
     {
@@ -87,7 +87,7 @@ class AbstractEntity extends AbstractModel implements EntityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getImage(): ?string
     {
@@ -103,7 +103,7 @@ class AbstractEntity extends AbstractModel implements EntityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function setAttributeSetId(int $attributeSetId): self
     {
@@ -111,7 +111,7 @@ class AbstractEntity extends AbstractModel implements EntityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function setCreatedAt(string $createdAt): self
     {
@@ -119,7 +119,7 @@ class AbstractEntity extends AbstractModel implements EntityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function setUpdatedAt(string $updatedAt): self
     {
@@ -127,7 +127,7 @@ class AbstractEntity extends AbstractModel implements EntityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function setName(string $name): self
     {
@@ -135,7 +135,7 @@ class AbstractEntity extends AbstractModel implements EntityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function setIsActive(bool $isActive): self
     {
@@ -143,7 +143,7 @@ class AbstractEntity extends AbstractModel implements EntityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function setStoreId($storeId)
     {
@@ -151,7 +151,7 @@ class AbstractEntity extends AbstractModel implements EntityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function setDescription(string $description)
     {
@@ -159,7 +159,7 @@ class AbstractEntity extends AbstractModel implements EntityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function setImage(string $image)
     {
@@ -206,7 +206,12 @@ class AbstractEntity extends AbstractModel implements EntityInterface
      */
     public function getDefaultAttributes(): array
     {
-        return array_unique(array_merge($this->_getDefaultAttributes(), [$this->getEntityIdField(), $this->getLinkField()]));
+        return array_unique(
+            array_merge(
+                $this->_getDefaultAttributes(),
+                [$this->getEntityIdField(), $this->getLinkField()]
+            )
+        );
     }
 
     /**

@@ -55,7 +55,7 @@ class Generic implements ButtonProviderInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getButtonData()
     {

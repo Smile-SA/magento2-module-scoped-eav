@@ -10,8 +10,7 @@ namespace Smile\ScopedEav\Block\Adminhtml\Set\Main;
 class Formset extends \Magento\Catalog\Block\Adminhtml\Product\Attribute\Set\Main\Formset
 {
     /**
-     * {@inheritdoc}
-     *
+     * @inheritDoc
      * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _prepareForm()

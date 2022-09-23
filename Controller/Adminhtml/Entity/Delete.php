@@ -14,7 +14,7 @@ use Smile\ScopedEav\Controller\Adminhtml\AbstractEntity;
 class Delete extends AbstractEntity
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function execute()
     {
@@ -35,6 +35,7 @@ class Delete extends AbstractEntity
             $this->messageManager->addExceptionMessage($e, __('Can not delete entity.'));
         }
 
-        return $this->_redirect("*/*/");
+        $resultRedirect = $this->resultRedirectFactory->create();
+        return $resultRedirect->setPath('*/*/');
     }
 }

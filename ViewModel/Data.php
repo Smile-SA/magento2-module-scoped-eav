@@ -55,7 +55,7 @@ class Data implements ArgumentInterface
         FormElement $formElementMapper,
         MetadataPool $metadataPool,
         RegexFactory $regexFactory,
-        Registry $coreRegistry,
+        Registry $coreRegistry
     ) {
         $this->storeManager = $storeManager;
         $this->urlFactory = $urlFactory;
@@ -94,7 +94,7 @@ class Data implements ArgumentInterface
     public function getAttributeBackendModelByInputType(string $inputType): ?string
     {
         if ($inputType == 'image') {
-            return 'Smile\ScopedEav\Model\Entity\Attribute\Backend\Image';
+            return \Smile\ScopedEav\Model\Entity\Attribute\Backend\Image::class;
         }
         return $this->productHelper->getAttributeBackendModelByInputType($inputType);
     }
@@ -180,7 +180,10 @@ class Data implements ArgumentInterface
         $interface = null;
 
         foreach (class_implements(get_class($entity)) as $currentInterface) {
-            if (in_array(EntityInterface::class, class_implements($currentInterface)) && $currentInterface !== EntityInterface::class) {
+            if (
+                in_array(EntityInterface::class, class_implements($currentInterface))
+                && $currentInterface !== EntityInterface::class
+            ) {
                 $interface = $currentInterface;
             }
         }

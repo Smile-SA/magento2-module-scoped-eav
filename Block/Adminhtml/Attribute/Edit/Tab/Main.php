@@ -11,6 +11,7 @@ use Magento\Eav\Block\Adminhtml\Attribute\PropertyLocker;
 use Magento\Eav\Helper\Data;
 use Magento\Eav\Model\Adminhtml\System\Config\Source\InputtypeFactory;
 use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
+use Magento\Framework\Data\Form\Element\Select;
 use Magento\Framework\Data\FormFactory;
 use Magento\Framework\Registry;
 
@@ -48,13 +49,21 @@ class Main extends AbstractMain
         array $disableScopeChangeList = [],
         array $data = []
     ) {
-        parent::__construct($context, $registry, $formFactory, $eavData, $yesnoFactory, $inputTypeFactory, $propertyLocker, $data);
+        parent::__construct(
+            $context,
+            $registry,
+            $formFactory,
+            $eavData,
+            $yesnoFactory,
+            $inputTypeFactory,
+            $propertyLocker,
+            $data
+        );
         $this->disableScopeChangeList = $disableScopeChangeList;
     }
 
     /**
-     * {@inheritDoc}
-     *
+     * @inheritDoc
      * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _prepareForm(): self
@@ -66,7 +75,7 @@ class Main extends AbstractMain
         $form     = $this->getForm();
 
         // Change Frontend input field name.
-        /** @var \Magento\Framework\Data\Form\Element\Select $element */
+        /** @var Select $element */
         $element = $form->getElement('frontend_input');
         $element->setLabel(__('Input Type'));
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Block\Adminhtml;
 
+use Magento\Backend\Block\Widget\Button\SplitButton;
 use Magento\Backend\Block\Widget\Container;
 use Magento\Backend\Block\Widget\Context;
 use Magento\Eav\Model\Config;
@@ -41,8 +42,7 @@ abstract class AbstractEntity extends Container
     }
 
     /**
-     * {@inheritDoc}
-     *
+     * @inheritDoc
      * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _prepareLayout()
@@ -52,7 +52,7 @@ abstract class AbstractEntity extends Container
             'label' => __('Add'),
             'class' => 'add',
             'button_class' => '',
-            'class_name' => 'Magento\Backend\Block\Widget\Button\SplitButton',
+            'class_name' => SplitButton::class,
             'options' => $this->getAddEntityButtonOptions(),
         ];
 

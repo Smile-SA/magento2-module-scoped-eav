@@ -16,19 +16,19 @@ interface EntityInterface extends CustomAttributesDataInterface
     /**#@+
      * Constants defined for keys of data array
      */
-    const NAME = 'name';
+    public const NAME = 'name';
 
-    const IS_ACTIVE = 'is_active';
+    public const IS_ACTIVE = 'is_active';
 
-    const ATTRIBUTE_SET_ID = 'attribute_set_id';
+    public const ATTRIBUTE_SET_ID = 'attribute_set_id';
 
-    const CREATED_AT = 'created_at';
+    public const CREATED_AT = 'created_at';
 
-    const UPDATED_AT = 'updated_at';
+    public const UPDATED_AT = 'updated_at';
 
-    const IMAGE = 'image';
+    public const IMAGE = 'image';
 
-    const DESCRIPTION = 'description';
+    public const DESCRIPTION = 'description';
     /**#@-*/
 
     /**

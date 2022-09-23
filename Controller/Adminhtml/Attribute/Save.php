@@ -48,7 +48,7 @@ class Save extends AbstractAttribute
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function execute()
     {
@@ -58,10 +58,15 @@ class Save extends AbstractAttribute
 
             $attribute->save();
 
-            $response = $this->_redirect("*/*/index");
+            $response = $this->resultRedirectFactory->create();
 
             if ($this->getRequest()->getParam('back', false)) {
-                $response = $this->_redirect("*/*/edit", ['attribute_id' => $attribute->getId(), '_current' => true]);
+                $response->setPath(
+                    "*/*/edit",
+                    ['attribute_id' => $attribute->getId(), '_current' => true]
+                );
+            } else {
+                $response->setPath('*/*/index');
             }
         } catch (\Exception $e) {
             $response = $this->getRedirectError($e->getMessage());
@@ -98,7 +103,8 @@ class Save extends AbstractAttribute
         if (!$attribute->getId()) {
             $data['attribute_code']  = $this->getAttributeCode();
             $data['is_user_defined'] = true;
-            $data['backend_type'] = $data['frontend_input'] == 'image' ? 'varchar' : $attribute->getBackendTypeByInput($data['frontend_input']);
+            $data['backend_type'] = $data['frontend_input'] == 'image' ?
+                'varchar' : $attribute->getBackendTypeByInput($data['frontend_input']);
             $data['source_model'] = $this->dataViewModel->getAttributeSourceModelByInputType($data['frontend_input']);
             $data['backend_model'] = $this->dataViewModel->getAttributeBackendModelByInputType($data['frontend_input']);
         }
