@@ -35,7 +35,7 @@ abstract class AbstractBuilder implements BuilderInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function build(RequestInterface $request): AttributeInterface
     {
@@ -54,7 +54,9 @@ abstract class AbstractBuilder implements BuilderInterface
                 try {
                     $this->getAttributeRepository()->get($attributeCode);
                     throw new AlreadyExistsException(__('An attribute with the same code already exists.'));
-                } catch (NoSuchEntityException $e) {// Does nothing since no other attribute exists => attribute code is valid.
+                } catch (NoSuchEntityException $e) {
+                    // Does nothing since no other attribute exists => attribute code is valid.
+                    $e->getMessage();
                 }
             } elseif ($attributeId != null) {
                 $attribute = $this->getAttributeRepository()->get($attributeId);

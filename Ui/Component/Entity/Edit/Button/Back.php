@@ -10,7 +10,7 @@ namespace Smile\ScopedEav\Ui\Component\Entity\Edit\Button;
 class Back extends Generic
 {
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getButtonData()
     {

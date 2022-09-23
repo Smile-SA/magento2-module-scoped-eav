@@ -30,10 +30,12 @@ class EavValidationRules
 
         foreach ($validationClasses as $class) {
             if (preg_match('/^maximum-length-(\d+)$/', $class, $matches)) {
+                // @codingStandardsIgnoreLine
                 $rules = array_merge($rules, ['max_text_length' => $matches[1]]);
                 continue;
             }
             if (preg_match('/^minimum-length-(\d+)$/', $class, $matches)) {
+                // @codingStandardsIgnoreLine
                 $rules = array_merge($rules, ['min_text_length' => $matches[1]]);
                 continue;
             }

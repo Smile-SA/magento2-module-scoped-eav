@@ -12,7 +12,7 @@ use Smile\ScopedEav\Controller\Adminhtml\AbstractSet;
 class Add extends AbstractSet
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function execute()
     {

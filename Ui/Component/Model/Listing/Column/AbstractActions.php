@@ -48,7 +48,8 @@ abstract class AbstractActions extends Column
             foreach ($dataSource['data']['items'] as &$item) {
                 $this->getEditUrl($item);
                 if (isset($item[$this->getIndexField()])) {
-                    $item[$this->getData('name')] = ['edit' => ['href'  => $this->getEditUrl($item), 'label' => __('Edit')]];
+                    $item[$this->getData('name')] =
+                        ['edit' => ['href'  => $this->getEditUrl($item), 'label' => __('Edit')]];
                 }
             }
         }

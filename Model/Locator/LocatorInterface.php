@@ -17,5 +17,8 @@ interface LocatorInterface
      */
     public function getEntity(): EntityInterface;
 
+    /**
+     * Returns current store.
+     */
     public function getStore(): StoreInterface;
 }

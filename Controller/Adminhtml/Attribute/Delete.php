@@ -13,7 +13,7 @@ use Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute;
 class Delete extends AbstractAttribute
 {
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function execute()
     {
@@ -27,7 +27,8 @@ class Delete extends AbstractAttribute
             $attribute->delete();
 
             $this->messageManager->addSuccessMessage(__('Attribute has been deleted'));
-            $response = $this->_redirect("*/*/index");
+            $response = $this->resultRedirectFactory->create();
+            $response->setPath('*/*/index');
         } catch (\Exception $e) {
             $response = $this->getRedirectError($e->getMessage());
         }

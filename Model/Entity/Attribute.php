@@ -12,7 +12,7 @@ use Smile\ScopedEav\Api\Data\AttributeInterface;
 class Attribute extends \Magento\Eav\Model\Attribute implements AttributeInterface
 {
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getScope(): ?string
     {
@@ -29,7 +29,7 @@ class Attribute extends \Magento\Eav\Model\Attribute implements AttributeInterfa
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getIsGlobal()
     {
@@ -37,7 +37,7 @@ class Attribute extends \Magento\Eav\Model\Attribute implements AttributeInterfa
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function setScope(string $scope): self
     {
@@ -53,7 +53,7 @@ class Attribute extends \Magento\Eav\Model\Attribute implements AttributeInterfa
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function setIsGlobal(int $isGlobal): self
     {
@@ -61,7 +61,7 @@ class Attribute extends \Magento\Eav\Model\Attribute implements AttributeInterfa
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function isScopeGlobal(): bool
     {
@@ -69,7 +69,7 @@ class Attribute extends \Magento\Eav\Model\Attribute implements AttributeInterfa
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function isScopeWebsite(): bool
     {
@@ -77,7 +77,7 @@ class Attribute extends \Magento\Eav\Model\Attribute implements AttributeInterfa
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function isScopeStore(): bool
     {
@@ -85,7 +85,7 @@ class Attribute extends \Magento\Eav\Model\Attribute implements AttributeInterfa
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function __sleep()
     {

@@ -50,7 +50,7 @@ class EntityDataProvider extends AbstractDataProvider
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getData()
     {
@@ -67,8 +67,7 @@ class EntityDataProvider extends AbstractDataProvider
     }
 
     /**
-     * {@inheritDoc}
-     *
+     * @inheritDoc
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function addField($field, $alias = null)
@@ -81,15 +80,18 @@ class EntityDataProvider extends AbstractDataProvider
     }
 
     /**
-     * {@inheritdoc}
-     *
+     * @inheritDoc
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function addFilter(\Magento\Framework\Api\Filter $filter)
     {
         if (isset($this->addFilterStrategies[$filter->getField()])) {
             $filterStrategy = $this->addFilterStrategies[$filter->getField()];
-            $filterStrategy->addFilter($this->getCollection(), $filter->getField(), [$filter->getConditionType() => $filter->getValue()]);
+            $filterStrategy->addFilter(
+                $this->getCollection(),
+                $filter->getField(),
+                [$filter->getConditionType() => $filter->getValue()]
+            );
         } else {
             parent::addFilter($filter);
         }

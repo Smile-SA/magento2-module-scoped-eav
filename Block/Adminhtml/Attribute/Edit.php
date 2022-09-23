@@ -52,7 +52,7 @@ class Edit extends Container
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function addButton($buttonId, $data, $level = 0, $sortOrder = 0, $region = 'toolbar')
     {
@@ -63,7 +63,7 @@ class Edit extends Container
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getHeaderText(): string
     {
@@ -97,8 +97,7 @@ class Edit extends Container
     }
 
     /**
-     * {@inheritDoc}
-     *
+     * @inheritDoc
      * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _construct()

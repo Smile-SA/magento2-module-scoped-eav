@@ -12,12 +12,13 @@ use Smile\ScopedEav\Controller\Adminhtml\AbstractEntity;
 class NewAction extends AbstractEntity
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function execute()
     {
         if (!$this->getRequest()->getParam('set')) {
-            return $this->_forward('noroute');
+            $resultForward = $this->resultForwardFactory->create();
+            return $resultForward->forward('noroute');
         }
 
         $this->getEntity();

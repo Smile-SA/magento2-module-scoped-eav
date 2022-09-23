@@ -10,8 +10,7 @@ namespace Smile\ScopedEav\Block\Adminhtml\Attribute\Edit;
 class Tabs extends \Magento\Backend\Block\Widget\Tabs
 {
     /**
-     * {@inheritDoc}
-     *
+     * @inheritDoc
      * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _construct()
@@ -23,8 +22,7 @@ class Tabs extends \Magento\Backend\Block\Widget\Tabs
     }
 
     /**
-     * {@inheritDoc}
-     *
+     * @inheritDoc
      * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _beforeToHtml()

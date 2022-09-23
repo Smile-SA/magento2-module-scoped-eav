@@ -89,7 +89,7 @@ class Eav extends AbstractModifier
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function modifyData(array $data)
     {
@@ -103,7 +103,8 @@ class Eav extends AbstractModifier
             $attributes = !empty($this->getAttributes()[$groupCode]) ? $this->getAttributes()[$groupCode] : [];
 
             foreach ($attributes as $attribute) {
-                if (null !== ($attributeValue = $this->setupAttributeData($attribute))) {
+                $attributeValue = $this->setupAttributeData($attribute);
+                if (null !== $attributeValue) {
                     $attributeValue = $this->overrideImageUploaderData($attribute, $attributeValue);
                     $data[$entityId][self::DATA_SOURCE_DEFAULT][$attribute->getAttributeCode()] = $attributeValue;
                 }
@@ -114,7 +115,7 @@ class Eav extends AbstractModifier
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function modifyMeta(array $meta)
     {
@@ -129,7 +130,8 @@ class Eav extends AbstractModifier
                 $meta[$groupCode]['arguments']['data']['config']['label'] = __('%1', $group->getAttributeGroupName());
                 $meta[$groupCode]['arguments']['data']['config']['collapsible'] = false;
                 $meta[$groupCode]['arguments']['data']['config']['dataScope'] = self::DATA_SCOPE_ENTITY;
-                $meta[$groupCode]['arguments']['data']['config']['sortOrder'] = $sortOrder * self::SORT_ORDER_MULTIPLIER;
+                $meta[$groupCode]['arguments']['data']['config']['sortOrder'] =
+                    $sortOrder * self::SORT_ORDER_MULTIPLIER;
             }
 
             $sortOrder++;
@@ -178,8 +180,12 @@ class Eav extends AbstractModifier
      * @param int                $sortOrder          Attribute sort order.
      * @return array
      */
-    public function addContainerChildren(array $attributeContainer, AttributeInterface $attribute, string $groupCode, int $sortOrder): array
-    {
+    public function addContainerChildren(
+        array $attributeContainer,
+        AttributeInterface $attribute,
+        string $groupCode,
+        int $sortOrder
+    ): array {
         foreach ($this->getContainerChildren($attribute, $groupCode, $sortOrder) as $childCode => $child) {
             $attributeContainer['children'][$childCode] = $child;
         }
@@ -203,7 +209,8 @@ class Eav extends AbstractModifier
      */
     public function getContainerChildren(AttributeInterface $attribute, string $groupCode, int $sortOrder): array
     {
-        if (!($child = $this->setupAttributeMeta($attribute, $groupCode, $sortOrder))) {
+        $child = $this->setupAttributeMeta($attribute, $groupCode, $sortOrder);
+        if (!$child) {
             return [];
         }
 
@@ -238,11 +245,19 @@ class Eav extends AbstractModifier
         ]);
 
         if ($attribute->usesSource()) {
-            $meta = $this->arrayManager->merge($configPath, $meta, ['options' => $attribute->getSource()->getAllOptions()]);
+            $meta = $this->arrayManager->merge(
+                $configPath,
+                $meta,
+                ['options' => $attribute->getSource()->getAllOptions()]
+            );
         }
 
         if ($this->canDisplayUseDefault($attribute)) {
-            $meta = $this->arrayManager->merge($configPath, $meta, ['service' => ['template' => 'ui/form/element/helper/service']]);
+            $meta = $this->arrayManager->merge(
+                $configPath,
+                $meta,
+                ['service' => ['template' => 'ui/form/element/helper/service']]
+            );
         }
 
         if (!$this->arrayManager->exists($configPath . '/componentType', $meta)) {
@@ -254,7 +269,8 @@ class Eav extends AbstractModifier
         }
 
         $childData = $this->arrayManager->get($configPath, $meta, []);
-        if (($rules = $this->validationRules->build($attribute, $childData))) {
+        $rules = $this->validationRules->build($attribute, $childData);
+        if ($rules) {
             $meta = $this->arrayManager->merge($configPath, $meta, ['validation' => $rules]);
         }
 
@@ -288,7 +304,8 @@ class Eav extends AbstractModifier
         $entityId = $entity->getId();
         $prevSetId = $this->getPreviousSetId();
 
-        $notUsed = !$prevSetId || ($prevSetId && !in_array($attribute->getAttributeCode(), $this->getPreviousSetAttributes()));
+        $notUsed = !$prevSetId ||
+            ($prevSetId && !in_array($attribute->getAttributeCode(), $this->getPreviousSetAttributes()));
 
         if ($entityId && $notUsed) {
             $value = $this->getValue($attribute);
@@ -365,7 +382,8 @@ class Eav extends AbstractModifier
                 continue;
             }
 
-            if (!($attributeContainer = $this->setupAttributeContainerMeta($attribute))) {
+            $attributeContainer = $this->setupAttributeContainerMeta($attribute);
+            if (!$attributeContainer) {
                 continue;
             }
 
@@ -423,7 +441,8 @@ class Eav extends AbstractModifier
             $storeId = $this->locator->getStore()->getId();
             $entity  = $this->locator->getEntity();
             $meta['arguments']['data']['config']['service'] = ['template' => 'ui/form/element/helper/service'];
-            $meta['arguments']['data']['config']['disabled'] = !$this->eavHelper->hasValueForStore($entity, $attribute, $storeId);
+            $meta['arguments']['data']['config']['disabled'] =
+                !$this->eavHelper->hasValueForStore($entity, $attribute, $storeId);
         }
 
         return $meta;

@@ -37,7 +37,7 @@ class EntityDataProvider extends AbstractDataProvider
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getData()
     {
@@ -49,7 +49,7 @@ class EntityDataProvider extends AbstractDataProvider
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getMeta()
     {

@@ -14,8 +14,7 @@ use Smile\ScopedEav\Api\Data\AttributeInterface as ScopedEavAttribute;
 class AttributePersistor extends \Magento\Eav\Model\ResourceModel\AttributePersistor
 {
     /**
-     * {@inheritdoc}
-     *
+     * @inheritDoc
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      */
     protected function getScopeValue(ScopeInterface $scope, AbstractAttribute $attribute, $useDefault = false)

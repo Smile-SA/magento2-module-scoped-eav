@@ -51,7 +51,7 @@ class AbstractResource extends AbstractEntity
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getDefaultAttributeSourceModel()
     {
@@ -59,7 +59,7 @@ class AbstractResource extends AbstractEntity
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function validate($object)
     {
@@ -74,7 +74,7 @@ class AbstractResource extends AbstractEntity
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function load($object, $entityId, $attributes = [])
     {
@@ -85,7 +85,7 @@ class AbstractResource extends AbstractEntity
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function save(AbstractModel $object)
     {
@@ -96,7 +96,7 @@ class AbstractResource extends AbstractEntity
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function delete($object)
     {
@@ -106,8 +106,7 @@ class AbstractResource extends AbstractEntity
     }
 
     /**
-     * {@inheritdoc}
-     *
+     * @inheritDoc
      * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _getDefaultAttributes()
@@ -116,8 +115,7 @@ class AbstractResource extends AbstractEntity
     }
 
     /**
-     * {@inheritdoc}
-     *
+     * @inheritDoc
      * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _getDefaultAttributeModel()

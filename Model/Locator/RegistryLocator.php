@@ -31,7 +31,7 @@ class RegistryLocator implements LocatorInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Get Entity
      *
      * @throws NotFoundException
      */
@@ -49,7 +49,7 @@ class RegistryLocator implements LocatorInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Get Store
      *
      * @throws NotFoundException
      */

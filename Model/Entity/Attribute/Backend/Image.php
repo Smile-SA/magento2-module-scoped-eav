@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Smile\ScopedEav\Model\Entity\Attribute\Backend;
 
 use Magento\Catalog\Model\ImageUploader;
-use Magento\Framework\DataObject;
 use Magento\Framework\Filesystem;
 use Magento\MediaStorage\Model\File\UploaderFactory;
 use Magento\Store\Model\StoreManagerInterface;
@@ -40,15 +39,13 @@ class Image extends \Magento\Catalog\Model\Category\Attribute\Backend\Image
     }
 
     /**
-     * Save uploaded file and set its name to category
-     *
-     * @param DataObject $object Object model.
+     * @inheritDoc
      */
-    public function afterSave(DataObject $object): \Magento\Catalog\Model\Category\Attribute\Backend\Image
+    public function afterSave($object)
     {
         $value = $object->getData($this->additionalData . $this->getAttribute()->getName());
-
-        if ($this->isTmpFileAvailable($value) && $imageName = $this->getUploadedImageName($value)) {
+        $imageName = $this->getUploadedImageName($value);
+        if ($this->isTmpFileAvailable($value) && $imageName) {
             try {
                 $this->getImageUploader()->moveFileFromTmp($imageName);
             } catch (\Exception $e) {
@@ -59,6 +56,9 @@ class Image extends \Magento\Catalog\Model\Category\Attribute\Backend\Image
         return $this;
     }
 
+    /**
+     * Get image uploader
+     */
     private function getImageUploader(): ImageUploader
     {
         return $this->imageUploader;
@@ -66,7 +66,6 @@ class Image extends \Magento\Catalog\Model\Category\Attribute\Backend\Image
 
     /**
      * Gets image name from $value array.
-     * Will return empty string in a case when $value is not an array
      *
      * @param array $value Attribute value
      */

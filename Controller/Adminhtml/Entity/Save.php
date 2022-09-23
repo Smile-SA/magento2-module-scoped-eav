@@ -11,6 +11,7 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Store\Model\StoreManagerInterface;
 use Smile\ScopedEav\Api\Data\EntityInterface;
 use Smile\ScopedEav\Controller\Adminhtml\AbstractEntity;
+use Smile\ScopedEav\Model\Entity\Attribute\Backend\Image;
 
 /**
  * Scoped EAV entity save controller.
@@ -44,7 +45,7 @@ class Save extends AbstractEntity
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function execute()
     {
@@ -79,14 +80,17 @@ class Save extends AbstractEntity
         if ($redirectBack === 'new') {
             $resultRedirect->setPath('*/*/new', ['set' => $attributeSetId]);
         } elseif ($redirectBack) {
-            $resultRedirect->setPath('*/*/edit', ['id' => $entityId, '_current' => true, 'set' => $attributeSetId, 'storeId' => $storeId]);
+            $resultRedirect->setPath(
+                '*/*/edit',
+                ['id' => $entityId, '_current' => true, 'set' => $attributeSetId, 'storeId' => $storeId]
+            );
         }
 
         return $resultRedirect;
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected function getEntity(): EntityInterface
     {
@@ -122,7 +126,7 @@ class Save extends AbstractEntity
         foreach ($entityType->getAttributeCollection() as $attributeModel) {
             $attributeCode = $attributeModel->getAttributeCode();
             $backendModel = $attributeModel->getBackend();
-            if (isset($data['entity'][$attributeCode]) || !$backendModel instanceof \Smile\ScopedEav\Model\Entity\Attribute\Backend\Image) {
+            if (isset($data['entity'][$attributeCode]) || !$backendModel instanceof Image) {
                 continue;
             }
 

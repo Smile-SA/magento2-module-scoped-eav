@@ -12,8 +12,7 @@ use Magento\Backend\Block\Widget\Form\Generic;
 class Form extends Generic
 {
     /**
-     * {@inheritDoc}
-     *
+     * @inheritDoc
      * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _prepareForm()
