@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Ui\Component\Entity\Edit\Button;
 
+use Magento\Catalog\Model\AbstractModel;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\UiComponent\Context;
 use Magento\Ui\Component\Control\Container;
@@ -28,7 +29,6 @@ class Save extends Generic
         string $formName
     ) {
         parent::__construct($context, $registry);
-
         $this->formName = $formName;
     }
 
@@ -37,6 +37,7 @@ class Save extends Generic
      */
     public function getButtonData()
     {
+        /** @var AbstractModel $this */
         if ($this->getEntity()->isReadonly()) {
             return [];
         }
@@ -48,6 +49,7 @@ class Save extends Generic
                 'mage-init' => [
                     'buttonAdapter' => [
                         'actions' => [
+                            // @phpstan-ignore-next-line
                             ['targetName' => $this->formName, 'actionName' => 'save', 'params' => [false]],
                         ],
                     ],

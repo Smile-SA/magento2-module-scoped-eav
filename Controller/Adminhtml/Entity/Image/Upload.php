@@ -8,6 +8,7 @@ use Magento\Backend\App\Action;
 use Magento\Catalog\Model\ImageUploader;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\NotFoundException;
@@ -22,7 +23,7 @@ class Upload extends Action implements HttpPostActionInterface
     /**
      * Upload constructor.
      *
-     * @param Action\Context                       $context       Context.
+     * @param Action\Context $context Context.
      * @param ImageUploader $imageUploader Image uploader.
      */
     public function __construct(
@@ -54,7 +55,8 @@ class Upload extends Action implements HttpPostActionInterface
         } catch (\Exception $e) {
             $result = ['error' => $e->getMessage(), 'errorcode' => $e->getCode()];
         }
-
-        return $this->resultFactory->create(ResultFactory::TYPE_JSON)->setData($result);
+        /** @var Json $resultFactory */
+        $resultFactory = $this->resultFactory->create(ResultFactory::TYPE_JSON);
+        return $resultFactory->setData($result);
     }
 }

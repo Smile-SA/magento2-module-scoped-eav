@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Ui\Component\Entity\Edit\Button;
 
+use Magento\Catalog\Model\AbstractModel;
 use Magento\Framework\Escaper;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\UiComponent\Context;
@@ -13,6 +14,7 @@ use Magento\Framework\View\Element\UiComponent\Context;
  */
 class Delete extends Generic
 {
+    // @phpstan-ignore-next-line
     private Escaper $jsEscape;
 
     /**
@@ -34,11 +36,15 @@ class Delete extends Generic
      */
     public function getButtonData()
     {
+        /** @var AbstractModel $this */
         if ($this->getEntity()->isReadonly() || !$this->getEntity()->getId()) {
             return [];
         }
 
-        $deleteMessage = $this->jsEscape->escapeJsQuote((string) __("Are you sure you want to delete the entity ?"));
+        // @phpstan-ignore-next-line
+        $deleteMessage = $this->jsEscape->escapeJsQuote(
+            (string) __("Are you sure you want to delete the entity ?")
+        );
 
         return [
             'label'      => __('Delete'),
@@ -51,7 +57,7 @@ class Delete extends Generic
     /**
      * Get delete URL.
      */
-    private function getDeleteUrl(): string
+    public function getDeleteUrl(): string
     {
         return $this->getUrl('*/*/delete', ['id' => $this->getEntity()->getId()]);
     }

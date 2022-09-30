@@ -64,7 +64,9 @@ class AbstractResource extends AbstractEntity
      */
     public function validate($object)
     {
-        $entityType = $this->typeFactory->create()->loadByCode($this->getEntityType());
+        /** @var string $codeEntityType */
+        $codeEntityType = $this->getEntityType();
+        $entityType = $this->typeFactory->create()->loadByCode($codeEntityType);
         $attributeSet = $this->setFactory->create()->load($object->getAttributeSetId());
 
         if ($attributeSet->getEntityTypeId() != $entityType->getId()) {

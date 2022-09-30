@@ -26,8 +26,9 @@ class Edit extends Container
     protected $_objectId = 'attribute_id';
 
     /**
-     * @inheritdoc
+     * @var string
      */
+    // @codingStandardsIgnoreLine
     protected $_controller = 'adminhtml_attribute';
 
     /**

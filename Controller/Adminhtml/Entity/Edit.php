@@ -35,6 +35,7 @@ class Edit extends AbstractEntity implements HttpGetActionInterface
                     '*/*/*',
                     ['_current' => true, 'active_tab' => null, 'tab' => null, 'store' => null]
                 );
+                // @phpstan-ignore-next-line
                 $switchBlock->setDefaultStoreName(__('Default Values'))->setSwitchUrl($switchUrl);
             }
         } catch (NoSuchEntityException $e) {

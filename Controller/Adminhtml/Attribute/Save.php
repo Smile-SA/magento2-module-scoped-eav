@@ -8,7 +8,9 @@ use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\View\Result\ForwardFactory;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\ObjectManager;
+use Magento\Framework\App\Request\Http;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\Serialize\Serializer\FormData;
 use Smile\ScopedEav\Api\Data\AttributeInterface;
 use Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute;
@@ -59,6 +61,7 @@ class Save extends AbstractAttribute implements HttpPostActionInterface
             $attribute = $this->getAttribute();
             $attribute = $this->addPostData($attribute);
 
+            /** @var AbstractModel $attribute */
             $attribute->save();
 
             $response = $this->resultRedirectFactory->create();
@@ -92,10 +95,13 @@ class Save extends AbstractAttribute implements HttpPostActionInterface
             $message = (string) __("The attribute couldn't be saved due to an error."
                 . " Verify your information and try again. If the error persists, please try again later.");
             $this->messageManager->addErrorMessage($message);
+            // @phpstan-ignore-next-line
             return $this->returnResult('catalog/*/edit', ['_current' => true], ['error' => true]);
         }
 
-        $data = $this->getRequest()->getPostValue();
+        /** @var Http $request */
+        $request = $this->getRequest();
+        $data = $request->getPostValue();
         $data = array_replace_recursive(
             $data,
             $optionData
@@ -103,6 +109,7 @@ class Save extends AbstractAttribute implements HttpPostActionInterface
 
         $frontendInput = $data['frontend_input'] ?? $attribute->getFrontendInput();
 
+        /** @var AbstractModel $attribute */
         if (!$attribute->getId()) {
             $data['attribute_code']  = $this->getAttributeCode();
             $data['is_user_defined'] = true;
@@ -119,6 +126,7 @@ class Save extends AbstractAttribute implements HttpPostActionInterface
 
         $attribute->addData($data);
 
+        /** @var AttributeInterface $attribute */
         return $attribute;
     }
 
