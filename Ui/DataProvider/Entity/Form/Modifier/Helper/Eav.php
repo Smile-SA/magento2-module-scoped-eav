@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Ui\DataProvider\Entity\Form\Modifier\Helper;
 
+use Magento\Catalog\Model\AbstractModel;
 use Magento\Catalog\Model\Attribute\ScopeOverriddenValue;
 use Magento\Eav\Api\AttributeGroupRepositoryInterface;
 use Magento\Eav\Api\AttributeRepositoryInterface;
 use Magento\Eav\Api\Data\AttributeGroupInterface;
+use Magento\Eav\Model\Entity\Attribute\Group;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SortOrderBuilder;
 use Magento\Framework\Phrase;
@@ -89,11 +91,12 @@ class Eav
     public function getGroups($attributeSetId): array
     {
         if (!isset($this->attributeGroups[$attributeSetId])) {
+            // @phpstan-ignore-next-line
             $this->attributeGroups[$attributeSetId] = [];
             $searchCriteria = $this->prepareGroupSearchCriteria($attributeSetId)->create();
-
             $attributeGroupSearchResult = $this->attributeGroupRepository->getList($searchCriteria);
 
+            /** @var Group $group */
             foreach ($attributeGroupSearchResult->getItems() as $group) {
                 $groupCode = $group->getAttributeGroupCode();
                 $this->attributeGroups[$attributeSetId][$groupCode] = $group;
@@ -108,12 +111,14 @@ class Eav
      *
      * @param EntityInterface $entity Entity.
      * @param int|string $attributeSetId Attribute set id.
-     * @return AttributeInterface[]
      */
-    public function getAttributes(EntityInterface $entity, $attributeSetId): array
+    public function getAttributes(EntityInterface $entity, $attributeSetId): AttributeInterface
     {
         if (!isset($this->attributes[$attributeSetId])) {
+            // @phpstan-ignore-next-line
             $this->attributes[$attributeSetId] = [];
+
+            /** @var Group $group */
             foreach ($this->getGroups($attributeSetId) as $group) {
                 $groupCode = $group->getAttributeGroupCode();
                 $this->attributes[$attributeSetId][$groupCode] = $this->loadAttributes($entity, $group);
@@ -158,6 +163,7 @@ class Eav
         $interface = $this->dataViewModel->getEntityInterface($entity);
 
         try {
+            /** @var AbstractModel $entity */
             $hasValue =
                 $this->scopeOverriddenValue->containsValue(
                     $interface,

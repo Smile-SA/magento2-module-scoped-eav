@@ -6,6 +6,7 @@ namespace Smile\ScopedEav\Controller\Adminhtml\Attribute;
 
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Model\AbstractModel;
 use Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute;
 
 /**
@@ -19,12 +20,14 @@ class Delete extends AbstractAttribute implements HttpPostActionInterface
     public function execute()
     {
         try {
+            /** @var AbstractModel $attribute */
             $attribute = $this->getAttribute();
 
             if (!$attribute->getId()) {
                 throw new NoSuchEntityException(__('Attribute does not exists'));
             }
 
+            /** @var AbstractModel $attribute */
             $attribute->delete();
 
             $this->messageManager->addSuccessMessage((string) __('Attribute has been deleted'));

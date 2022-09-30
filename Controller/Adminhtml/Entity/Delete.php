@@ -7,6 +7,7 @@ namespace Smile\ScopedEav\Controller\Adminhtml\Entity;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Model\AbstractModel;
 use Smile\ScopedEav\Controller\Adminhtml\AbstractEntity;
 
 /**
@@ -26,7 +27,9 @@ class Delete extends AbstractEntity implements HttpPostActionInterface
                 throw new LocalizedException(__('Invalid entity id. Should be numeric value greater than 0'));
             }
 
-            $this->getEntity()->delete();
+            /** @var AbstractModel $entity */
+            $entity = $this->getEntity();
+            $entity->delete();
             $this->messageManager->addSuccessMessage(
                 (string) __('Entity have been deleted successfuly.')
             );

@@ -9,7 +9,9 @@ use Magento\Eav\Api\AttributeSetRepositoryInterface;
 use Magento\Eav\Api\Data\AttributeSetInterface;
 use Magento\Eav\Api\Data\AttributeSetInterfaceFactory;
 use Magento\Eav\Model\Config;
+use Magento\Eav\Model\Entity\Attribute\Set;
 use Magento\Framework\App\Action\HttpPostActionInterface;
+use Magento\Framework\App\Request\Http;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Controller\Result\Redirect;
@@ -17,6 +19,7 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Filter\FilterManager;
 use Magento\Framework\Json\Helper\Data;
 use Magento\Framework\Registry;
+use Magento\Framework\View\Layout;
 use Smile\ScopedEav\Controller\Adminhtml\AbstractSet;
 
 /**
@@ -77,13 +80,18 @@ class Save extends AbstractSet implements HttpPostActionInterface
             );
 
             if ($isNewSet === false) {
-                $data = $this->jsonHelper->jsonDecode($this->getRequest()->getPost('data'));
+                /** @var Http $request */
+                $request = $this->getRequest();
+                $data = $this->jsonHelper->jsonDecode($request->getPost('data'));
                 $data['attribute_set_name'] = $this->filterManager->stripTags(
                     (string) $data['attribute_set_name']
                 );
+
+                /** @var Set $attributeSet */
                 $attributeSet->organizeData($data);
             }
 
+            /** @var Set $attributeSet */
             $attributeSet->validate();
 
             if ($isNewSet) {
@@ -126,6 +134,7 @@ class Save extends AbstractSet implements HttpPostActionInterface
         $resultRedirect = $this->resultRedirectFactory->create();
         $resultRedirect->setPath('*/*/add');
 
+        /** @var Set $attributeSet */
         if ($attributeSet->getId()) {
             $resultRedirect->setPath('*/*/edit', ['id' => $attributeSet->getId()]);
         }
@@ -139,7 +148,6 @@ class Save extends AbstractSet implements HttpPostActionInterface
     private function getSuccessResponse(): Json
     {
         $response = ['error' => 0, 'url' => $this->getUrl('*/*/index')];
-
         return $this->resultJsonFactory->create()->setData($response);
     }
 
@@ -148,6 +156,7 @@ class Save extends AbstractSet implements HttpPostActionInterface
      */
     private function getErrorResponse(): Json
     {
+        /** @var Layout $layout */
         $layout = $this->_view->getLayout();
         $layout->initMessages();
         $response = ['error' => 1, 'message' => $layout->getMessagesBlock()->getGroupedHtml()];

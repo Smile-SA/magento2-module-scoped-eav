@@ -6,6 +6,7 @@ namespace Smile\ScopedEav\Model;
 
 use Magento\Catalog\Model\AbstractModel;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Store\Model\Store;
 use Smile\ScopedEav\Api\Data\EntityInterface;
 use Smile\ScopedEav\Model\Entity\Attribute;
 
@@ -99,6 +100,7 @@ class AbstractEntity extends AbstractModel implements EntityInterface
      */
     public function getDefaultAttributeSetId(): int
     {
+        // @phpstan-ignore-next-line
         return $this->getResource()->getEntityType()->getDefaultAttributeSetId();
     }
 
@@ -187,7 +189,9 @@ class AbstractEntity extends AbstractModel implements EntityInterface
             $url = $image;
             $isRelativeUrl = substr($image, 0, 1) === '/';
             if (!$isRelativeUrl) {
-                $mediaBaseUrl = $this->_storeManager->getStore()->getBaseUrl(
+                /** @var Store $store */
+                $store = $this->_storeManager->getStore();
+                $mediaBaseUrl = $store->getBaseUrl(
                     \Magento\Framework\UrlInterface::URL_TYPE_MEDIA
                 );
                 $url = $mediaBaseUrl

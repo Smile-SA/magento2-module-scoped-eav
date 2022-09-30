@@ -9,7 +9,10 @@ use Magento\Backend\Model\View\Result\ForwardFactory;
 use Magento\Eav\Model\Config;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\Request\DataPersistorInterface;
+use Magento\Framework\App\Request\Http;
+use Magento\Framework\DataObject;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Model\AbstractModel;
 use Magento\Store\Model\StoreManagerInterface;
 use Smile\ScopedEav\Api\Data\EntityInterface;
 use Smile\ScopedEav\Controller\Adminhtml\AbstractEntity;
@@ -61,6 +64,7 @@ class Save extends AbstractEntity implements HttpPostActionInterface
         $resultRedirect = $this->resultRedirectFactory->create();
 
         try {
+            /** @var AbstractModel $entity */
             $entity = $this->getEntity();
             $entity->save();
 
@@ -75,11 +79,15 @@ class Save extends AbstractEntity implements HttpPostActionInterface
             $resultRedirect->setPath('*/*/index', ['store' => $storeId]);
         } catch (LocalizedException $e) {
             $this->messageManager->addErrorMessage($e->getMessage());
-            $this->dataPersistor->set('entity', $this->getRequest()->getPostValue());
+            /** @var Http $request */
+            $request = $this->getRequest();
+            $this->dataPersistor->set('entity', $request->getPostValue());
             $redirectBack = $entityId ? true : 'new';
         } catch (\Exception $e) {
             $this->messageManager->addError($e->getMessage());
-            $this->dataPersistor->set('entity', $this->getRequest()->getPostValue());
+            /** @var Http $request */
+            $request = $this->getRequest();
+            $this->dataPersistor->set('entity', $request->getPostValue());
             $redirectBack = $entityId ? true : 'new';
         }
 
@@ -102,11 +110,15 @@ class Save extends AbstractEntity implements HttpPostActionInterface
     {
         $entity = parent::getEntity();
 
-        $data = $this->getRequest()->getPostValue();
+        /** @var Http $request */
+        $request = $this->getRequest();
+        $data = $request->getPostValue();
         $data = $this->imagePreprocessing($entity, $data);
+
+        /** @var DataObject $entity */
         $entity->addData($data['entity']);
 
-        $useDefaults = (array) $this->getRequest()->getPost('use_default', []);
+        $useDefaults = (array) $request->getPost('use_default', []);
 
         foreach ($useDefaults as $attributeCode => $useDefault) {
             if ((bool) $useDefault) {
@@ -114,6 +126,7 @@ class Save extends AbstractEntity implements HttpPostActionInterface
             }
         }
 
+        /** @var EntityInterface $entity */
         return $entity;
     }
 
@@ -127,6 +140,7 @@ class Save extends AbstractEntity implements HttpPostActionInterface
      */
     private function imagePreprocessing(EntityInterface $entity, array $data): array
     {
+        // @phpstan-ignore-next-line
         $entityType = $this->eavConfig->getEntityType($entity->getResource()->getEntityType()->getEntityTypeCode());
 
         foreach ($entityType->getAttributeCollection() as $attributeModel) {

@@ -88,13 +88,17 @@ class EntityDataProvider extends AbstractDataProvider
     {
         if (isset($this->addFilterStrategies[$filter->getField()])) {
             $filterStrategy = $this->addFilterStrategies[$filter->getField()];
+
+            /** @var string $condition */
+            $condition = [$filter->getConditionType() => $filter->getValue()];
             $filterStrategy->addFilter(
                 $this->getCollection(),
                 $filter->getField(),
-                [$filter->getConditionType() => $filter->getValue()]
+                $condition
             );
+            return $filterStrategy;
         } else {
-            parent::addFilter($filter);
+            return parent::addFilter($filter);
         }
     }
 }

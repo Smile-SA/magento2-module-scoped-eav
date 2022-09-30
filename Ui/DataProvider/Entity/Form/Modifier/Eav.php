@@ -5,9 +5,13 @@ declare(strict_types=1);
 namespace Smile\ScopedEav\Ui\DataProvider\Entity\Form\Modifier;
 
 use Magento\Catalog\Model\Category\FileInfo;
+use Magento\Catalog\Model\ResourceModel\Eav\Attribute;
 use Magento\Eav\Api\Data\AttributeGroupInterface;
+use Magento\Eav\Model\Entity\Attribute\AbstractAttribute;
 use Magento\Framework\App\Request\DataPersistorInterface;
+use Magento\Framework\DataObject;
 use Magento\Framework\Exception\FileSystemException;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Phrase;
 use Magento\Framework\Stdlib\ArrayManager;
 use Magento\Ui\Component\Container;
@@ -15,6 +19,7 @@ use Magento\Ui\Component\Form\Element\Wysiwyg as WysiwygElement;
 use Magento\Ui\Component\Form\Field;
 use Magento\Ui\Component\Form\Fieldset;
 use Smile\ScopedEav\Api\Data\AttributeInterface;
+use Smile\ScopedEav\Model\AbstractEntity;
 use Smile\ScopedEav\Model\Locator\LocatorInterface;
 use Smile\ScopedEav\Ui\DataProvider\Entity\Form\EavValidationRules;
 
@@ -122,6 +127,7 @@ class Eav extends AbstractModifier
         $sortOrder = 0;
 
         foreach ($this->getGroups() as $groupCode => $group) {
+            /** @var array $attributes */
             $attributes = !empty($this->getAttributes()[$groupCode]) ? $this->getAttributes()[$groupCode] : [];
 
             if ($attributes) {
@@ -160,6 +166,7 @@ class Eav extends AbstractModifier
             ]
         );
 
+        /** @var Attribute $attribute */
         if ($attribute->getIsWysiwygEnabled()) {
             $containerMeta = $this->arrayManager->merge(
                 self::META_CONFIG_PATH,
@@ -244,6 +251,7 @@ class Eav extends AbstractModifier
             'sortOrder'   => $sortOrder * self::SORT_ORDER_MULTIPLIER,
         ]);
 
+        /** @var AbstractAttribute $attribute */
         if ($attribute->usesSource()) {
             $meta = $this->arrayManager->merge(
                 $configPath,
@@ -252,6 +260,7 @@ class Eav extends AbstractModifier
             );
         }
 
+        /** @var AttributeInterface $attribute */
         if ($this->canDisplayUseDefault($attribute)) {
             $meta = $this->arrayManager->merge(
                 $configPath,
@@ -304,7 +313,10 @@ class Eav extends AbstractModifier
         $entityId = $entity->getId();
         $prevSetId = $this->getPreviousSetId();
 
-        $notUsed = $prevSetId && !in_array($attribute->getAttributeCode(), $this->getPreviousSetAttributes());
+        /** @var array $haystack */
+        $haystack = $this->getPreviousSetAttributes();
+        $needle = $attribute->getAttributeCode();
+        $notUsed = $prevSetId && !in_array($needle, $haystack);
 
         if ($entityId && $notUsed) {
             $value = $this->getValue($attribute);
@@ -325,10 +337,8 @@ class Eav extends AbstractModifier
 
     /**
      * List of attributes of the form.
-     *
-     * @return AttributeInterface[]
      */
-    private function getAttributes(): array
+    private function getAttributes(): AttributeInterface
     {
         return $this->eavHelper->getAttributes($this->locator->getEntity(), $this->getAttributeSetId());
     }
@@ -338,15 +348,14 @@ class Eav extends AbstractModifier
      */
     private function getPreviousSetId(): int
     {
+        // @phpstan-ignore-next-line
         return (int) $this->locator->getEntity()->getPrevAttributeSetId();
     }
 
     /**
      * Return previous entity attributes.
-     *
-     * @return AttributeInterface[]
      */
-    private function getPreviousSetAttributes(): array
+    private function getPreviousSetAttributes(): AttributeInterface
     {
         return $this->eavHelper->getAttributes($this->locator->getEntity(), $this->getPreviousSetId());
     }
@@ -455,9 +464,11 @@ class Eav extends AbstractModifier
      */
     private function getValue(AttributeInterface $attribute)
     {
+        /** @var DataObject $entity */
         $entity = $this->locator->getEntity();
-
-        return $entity->getData($attribute->getAttributeCode());
+        /** @var string $data */
+        $data = $attribute->getAttributeCode();
+        return $entity->getData($data);
     }
 
     /**
@@ -490,6 +501,7 @@ class Eav extends AbstractModifier
      */
     private function customizeWysiwyg(AttributeInterface $attribute, array $meta): array
     {
+        /** @var Attribute $attribute */
         if (!$attribute->getIsWysiwygEnabled()) {
             return $meta;
         }
@@ -553,9 +565,10 @@ class Eav extends AbstractModifier
      * Return image data.
      *
      * @param AttributeInterface $attribute Attribute.
-     * @param string             $value     Attribute value.
+     * @param string $value Attribute value.
      * @return string|array
      * @throws FileSystemException
+     * @throws LocalizedException
      */
     private function overrideImageUploaderData(AttributeInterface $attribute, string $value)
     {
@@ -568,12 +581,18 @@ class Eav extends AbstractModifier
             $stat = $this->fileInfo->getStat($value);
             $mime = $this->fileInfo->getMimeType($value);
 
-            $viewUrl = $this->locator->getEntity()->getImageUrl($attribute->getAttributeCode());
+            /** @var AbstractEntity $entity */
+            $entity = $this->locator->getEntity();
+            $viewUrl = $entity->getImageUrl($attribute->getAttributeCode());
+
+            if (empty($viewUrl)) {
+                $viewUrl = '';
+            }
 
             $return[] = [
                 'file' => $value,
                 'size' => $stat ? $stat['size'] : 0,
-                'url' => $viewUrl ?? '',
+                'url' => $viewUrl,
                 'name' => basename($value), // @codingStandardsIgnoreLine (MEQP1.Security.DiscouragedFunction.Found)
                 'type' => $mime,
             ];
