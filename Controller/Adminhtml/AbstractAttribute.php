@@ -8,6 +8,7 @@ use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\View\Result\Page;
 use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\Result\ForwardFactory;
 use Magento\Framework\Phrase;
 use Smile\ScopedEav\Api\Data\AttributeInterface;
 use Smile\ScopedEav\ViewModel\Data as DataViewModel;
@@ -21,21 +22,26 @@ abstract class AbstractAttribute extends Action
 
     private Attribute\BuilderInterface $attributeBuilder;
 
+    protected ForwardFactory $resultForwardFactory;
+
     /**
      * Constructor.
      *
      * @param Context $context Context.
      * @param DataViewModel $dataViewModel Scoped EAV data view model.
      * @param Attribute\BuilderInterface $attributeBuilder Attribute builder.
+     * @param ForwardFactory $resultForwardFactory Forward factory.
      */
     public function __construct(
         Context $context,
         DataViewModel $dataViewModel,
-        Attribute\BuilderInterface $attributeBuilder
+        Attribute\BuilderInterface $attributeBuilder,
+        ForwardFactory $resultForwardFactory
     ) {
         parent::__construct($context);
         $this->dataViewModel = $dataViewModel;
         $this->attributeBuilder = $attributeBuilder;
+        $this->resultForwardFactory = $resultForwardFactory;
     }
 
     /**
@@ -85,6 +91,7 @@ abstract class AbstractAttribute extends Action
     {
         $this->messageManager->addErrorMessage($message);
 
+        // @codingStandardsIgnoreLine
         return $this->_redirect("*/*");
     }
 }

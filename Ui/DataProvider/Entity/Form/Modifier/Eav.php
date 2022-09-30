@@ -316,7 +316,9 @@ class Eav extends AbstractModifier
         /** @var array $haystack */
         $haystack = $this->getPreviousSetAttributes();
         $needle = $attribute->getAttributeCode();
-        $notUsed = $prevSetId && !in_array($needle, $haystack);
+
+        // @phpstan-ignore-next-line
+        $notUsed = !$prevSetId || $prevSetId && !in_array($needle, $haystack);
 
         if ($entityId && $notUsed) {
             $value = $this->getValue($attribute);
@@ -338,7 +340,7 @@ class Eav extends AbstractModifier
     /**
      * List of attributes of the form.
      */
-    private function getAttributes(): AttributeInterface
+    private function getAttributes(): array
     {
         return $this->eavHelper->getAttributes($this->locator->getEntity(), $this->getAttributeSetId());
     }
@@ -355,7 +357,7 @@ class Eav extends AbstractModifier
     /**
      * Return previous entity attributes.
      */
-    private function getPreviousSetAttributes(): AttributeInterface
+    private function getPreviousSetAttributes(): array
     {
         return $this->eavHelper->getAttributes($this->locator->getEntity(), $this->getPreviousSetId());
     }

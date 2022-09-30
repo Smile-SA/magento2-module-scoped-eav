@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Smile\ScopedEav\Controller\Adminhtml\Attribute;
 
 use Magento\Backend\App\Action\Context;
+use Magento\Framework\App\Action\HttpPostActionInterface;
+use Magento\Framework\Controller\Result\ForwardFactory;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\DataObject;
 use Magento\Framework\DataObjectFactory;
@@ -15,7 +17,7 @@ use Smile\ScopedEav\ViewModel\Data as DataViewModel;
 /**
  * Scoped EAV entity attribute validation controller.
  */
-class Validate extends AbstractAttribute
+class Validate extends AbstractAttribute implements HttpPostActionInterface
 {
     private const DEFAULT_MESSAGE_KEY = 'message';
 
@@ -31,15 +33,17 @@ class Validate extends AbstractAttribute
      * @param BuilderInterface $attributeBuilder Attribute builder.
      * @param JsonFactory $resultJsonFactory JSON response factory.
      * @param DataObjectFactory $dataObjectFactory Data object factory.
+     * @param ForwardFactory $resultForwardFactory Forward factory.
      */
     public function __construct(
         Context $context,
         DataViewModel $dataViewModel,
         BuilderInterface $attributeBuilder,
         JsonFactory $resultJsonFactory,
-        DataObjectFactory $dataObjectFactory
+        DataObjectFactory $dataObjectFactory,
+        ForwardFactory $resultForwardFactory
     ) {
-        parent::__construct($context, $dataViewModel, $attributeBuilder);
+        parent::__construct($context, $dataViewModel, $attributeBuilder, $resultForwardFactory);
         $this->resultJsonFactory = $resultJsonFactory;
         $this->dataObjectFactory = $dataObjectFactory;
     }
@@ -65,8 +69,8 @@ class Validate extends AbstractAttribute
      */
     private function setMessageToResponse(DataObject $response, array $messages): DataObject
     {
-        $messageKey = $this->getRequest()->getParam('message_key', static::DEFAULT_MESSAGE_KEY);
-        if ($messageKey === static::DEFAULT_MESSAGE_KEY) {
+        $messageKey = $this->getRequest()->getParam('message_key', self::DEFAULT_MESSAGE_KEY);
+        if ($messageKey === self::DEFAULT_MESSAGE_KEY) {
             $messages = reset($messages);
         }
 

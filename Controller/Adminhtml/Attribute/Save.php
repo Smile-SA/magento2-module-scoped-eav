@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Smile\ScopedEav\Controller\Adminhtml\Attribute;
 
 use Magento\Backend\App\Action\Context;
-use Magento\Backend\Model\View\Result\ForwardFactory;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\Request\Http;
+use Magento\Framework\Controller\Result\ForwardFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\Serialize\Serializer\FormData;
@@ -36,16 +36,18 @@ class Save extends AbstractAttribute implements HttpPostActionInterface
      * @param DataViewModel $dataViewModel Scoped EAV data view model.
      * @param BuilderInterface $attributeBuilder Attribute builder.
      * @param RegexFactory $regexFactory Regexp validator factory.
-     * @param FormData $formDataSerializer Serializer.
+     * @param FormData|null $formDataSerializer Serializer.
+     * @param ForwardFactory $resultForwardFactory Forward factory.
      */
     public function __construct(
         Context $context,
         DataViewModel $dataViewModel,
         BuilderInterface $attributeBuilder,
         RegexFactory $regexFactory,
-        ?FormData $formDataSerializer = null
+        ?FormData $formDataSerializer = null,
+        ForwardFactory $resultForwardFactory
     ) {
-        parent::__construct($context, $dataViewModel, $attributeBuilder);
+        parent::__construct($context, $dataViewModel, $attributeBuilder, $resultForwardFactory);
         $this->dataViewModel = $dataViewModel;
         $this->regexFactory = $regexFactory;
         $this->formDataSerializer = $formDataSerializer

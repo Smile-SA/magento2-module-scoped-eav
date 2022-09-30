@@ -1,4 +1,0 @@
-phpcs:
-  standard: phpcs.xml
-phpmd:
-  standard: vendor/smile/magento2-smilelab-phpmd/phpmd-rulesets/rulset.xml

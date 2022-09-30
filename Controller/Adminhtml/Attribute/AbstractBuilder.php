@@ -10,8 +10,6 @@ use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Registry;
 use Psr\Log\LoggerInterface;
-use Smile\CustomEntity\Api\CustomEntityAttributeRepositoryInterface;
-use Smile\CustomEntity\Api\Data\CustomEntityAttributeInterfaceFactory;
 use Smile\ScopedEav\Api\Data\AttributeInterface;
 
 /**
@@ -78,13 +76,17 @@ abstract class AbstractBuilder implements BuilderInterface
 
     /**
      * Entity attribute factory.
+     *
+     * @return mixed
      */
-    abstract protected function getAttributeFactory(): mixed;
+    abstract protected function getAttributeFactory();
 
     /**
      * Entity attribute repository.
+     *
+     * @return mixed
      */
-    abstract protected function getAttributeRepository(): mixed;
+    abstract protected function getAttributeRepository();
 
     /**
      * Entity type code.

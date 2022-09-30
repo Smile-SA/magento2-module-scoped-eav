@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Controller\Adminhtml\Entity;
 
-use Magento\Framework\App\Action\HttpPostActionInterface;
+use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Model\AbstractModel;
@@ -13,7 +13,7 @@ use Smile\ScopedEav\Controller\Adminhtml\AbstractEntity;
 /**
  * Scoped EAV entity delete controller.
  */
-class Delete extends AbstractEntity implements HttpPostActionInterface
+class Delete extends AbstractEntity implements HttpGetActionInterface
 {
     /**
      * @inheritDoc
