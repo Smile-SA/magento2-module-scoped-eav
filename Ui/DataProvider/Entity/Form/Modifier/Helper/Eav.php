@@ -112,7 +112,7 @@ class Eav
      * @param EntityInterface $entity Entity.
      * @param int|string $attributeSetId Attribute set id.
      */
-    public function getAttributes(EntityInterface $entity, $attributeSetId): AttributeInterface
+    public function getAttributes(EntityInterface $entity, $attributeSetId): array
     {
         if (!isset($this->attributes[$attributeSetId])) {
             // @phpstan-ignore-next-line

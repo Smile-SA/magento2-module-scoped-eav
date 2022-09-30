@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.4] - 2022-10-19
+[1.3.4]: https://github.com/Smile-SA/magento2-module-scoped-eav/compare/1.3.3...1.3.4
+
+- Add Smile Lab Quality Suite
+- Analyse code style with phpcs / phpmd / phpstan command
+
 ## [1.3.3] - 2022-09-14
 [1.3.3]: https://github.com/Smile-SA/magento2-module-scoped-eav/compare/1.3.2...1.3.3
 

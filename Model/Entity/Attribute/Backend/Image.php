@@ -44,15 +44,16 @@ class Image extends \Magento\Catalog\Model\Category\Attribute\Backend\Image
     public function afterSave($object)
     {
         $value = $object->getData($this->additionalData . $this->getAttribute()->getName());
-        $imageName = $this->getUploadedImageName($value);
-        if ($this->isTmpFileAvailable($value) && $imageName) {
-            try {
-                $this->getImageUploader()->moveFileFromTmp($imageName);
-            } catch (\Exception $e) {
-                $this->_logger->critical($e->getMessage());
+        if ($value) {
+            $imageName = $this->getUploadedImageName($value);
+            if ($this->isTmpFileAvailable($value) && $imageName) {
+                try {
+                    $this->getImageUploader()->moveFileFromTmp($imageName);
+                } catch (\Exception $e) {
+                    $this->_logger->critical($e->getMessage());
+                }
             }
         }
-
         return $this;
     }
 

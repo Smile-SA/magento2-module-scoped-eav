@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Controller\Adminhtml\Set;
 
-use Magento\Framework\App\Action\HttpPostActionInterface;
+use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\Model\AbstractModel;
 use Smile\ScopedEav\Controller\Adminhtml\AbstractSet;
 
 /**
  * Scoped EAV entity attribute set admin delete controller.
  */
-class Delete extends AbstractSet implements HttpPostActionInterface
+class Delete extends AbstractSet implements HttpGetActionInterface
 {
     /**
      * @inheritDoc

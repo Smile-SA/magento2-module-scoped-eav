@@ -17,8 +17,6 @@ class Index extends AbstractAttribute implements HttpGetActionInterface
      */
     public function execute()
     {
-        $resultPage = $this->createActionPage(__('Manage Attributes'));
-
-        return $resultPage;
+        return $this->createActionPage(__('Manage Attributes'));
     }
 }

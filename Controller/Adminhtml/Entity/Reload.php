@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Controller\Adminhtml\Entity;
 
-use Magento\Framework\App\Action\HttpGetActionInterface;
+use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\Controller\Result\Forward;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\View\Result\Layout;
@@ -13,7 +13,7 @@ use Smile\ScopedEav\Controller\Adminhtml\AbstractEntity;
 /**
  * Scoped EAV entity reload controller.
  */
-class Reload extends AbstractEntity implements HttpGetActionInterface
+class Reload extends AbstractEntity implements HttpPostActionInterface
 {
     /**
      * @inheritDoc
