@@ -39,7 +39,7 @@ class AbstractEntity extends AbstractModel implements EntityInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreatedAt(): string
+    public function getCreatedAt(): ?string
     {
         return $this->_getData(self::CREATED_AT);
     }
@@ -47,7 +47,7 @@ class AbstractEntity extends AbstractModel implements EntityInterface
     /**
      * {@inheritdoc}
      */
-    public function getUpdatedAt(): string
+    public function getUpdatedAt(): ?string
     {
         return $this->_getData(self::UPDATED_AT);
     }
@@ -55,7 +55,7 @@ class AbstractEntity extends AbstractModel implements EntityInterface
     /**
      * {@inheritdoc}
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->_getData(self::NAME);
     }
@@ -91,7 +91,7 @@ class AbstractEntity extends AbstractModel implements EntityInterface
     /**
      * {@inheritdoc}
      */
-    public function getImage(): string
+    public function getImage(): ?string
     {
         return $this->_getData(self::IMAGE);
     }
