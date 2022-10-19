@@ -27,7 +27,7 @@ class Save extends AbstractAttribute implements HttpPostActionInterface
 
     private RegexFactory $regexFactory;
 
-    private ?FormData $formDataSerializer = null;
+    private FormData $formDataSerializer;
 
     /**
      * Constructor.
@@ -36,7 +36,7 @@ class Save extends AbstractAttribute implements HttpPostActionInterface
      * @param DataViewModel $dataViewModel Scoped EAV data view model.
      * @param BuilderInterface $attributeBuilder Attribute builder.
      * @param RegexFactory $regexFactory Regexp validator factory.
-     * @param FormData|null $formDataSerializer Serializer.
+     * @param FormData $formDataSerializer Serializer.
      * @param ForwardFactory $resultForwardFactory Forward factory.
      */
     public function __construct(
@@ -44,14 +44,13 @@ class Save extends AbstractAttribute implements HttpPostActionInterface
         DataViewModel $dataViewModel,
         BuilderInterface $attributeBuilder,
         RegexFactory $regexFactory,
-        ?FormData $formDataSerializer = null,
+        FormData $formDataSerializer,
         ForwardFactory $resultForwardFactory
     ) {
         parent::__construct($context, $dataViewModel, $attributeBuilder, $resultForwardFactory);
         $this->dataViewModel = $dataViewModel;
         $this->regexFactory = $regexFactory;
-        $this->formDataSerializer = $formDataSerializer
-            ?: ObjectManager::getInstance()->get(FormData::class);
+        $this->formDataSerializer = $formDataSerializer;
     }
 
     /**
