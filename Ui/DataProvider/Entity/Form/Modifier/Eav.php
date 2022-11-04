@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Smile\ScopedEav\Ui\DataProvider\Entity\Form\Modifier;
 
 use Magento\Catalog\Model\Category\FileInfo;
-use Magento\Catalog\Model\ResourceModel\Eav\Attribute;
+use Magento\Catalog\Model\ResourceModel\Eav\Attribute as EavAttribute;
+use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory as EavAttributeFactory;
 use Magento\Eav\Api\Data\AttributeGroupInterface;
-use Magento\Eav\Model\Entity\Attribute\AbstractAttribute;
 use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\DataObject;
 use Magento\Framework\Exception\FileSystemException;
@@ -41,6 +41,10 @@ class Eav extends AbstractModifier
 
     private DataPersistorInterface $dataPersistor;
 
+    private FileInfo $fileInfo;
+
+    private EavAttributeFactory $eavAttributeFactory;
+
     /**
      * @var array
      */
@@ -56,7 +60,10 @@ class Eav extends AbstractModifier
      */
     private array $attributesToDisable;
 
-    private FileInfo $fileInfo;
+    /**
+     * @var array
+     */
+    private array $attributesCache = [];
 
     /**
      * Constructor.
@@ -67,9 +74,12 @@ class Eav extends AbstractModifier
      * @param EavValidationRules $validationRules EAV validation rules
      * @param DataPersistorInterface $dataPersistor Data persistor.
      * @param FileInfo $fileInfo File information.
-     * @param array $bannedInputTypes Input types removed from the form.
+     * @param array $attributesToEliminate Attribute codes removed from the form.
+     * @param EavAttributeFactory $eavAttributeFactory Eav attribute factory.
      * @param array $attributesToEliminate Attribute codes removed from the form.
      * @param array $attributesToDisable Attribute codes to be disabled.
+     *
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         Helper\Eav $eavHelper,
@@ -78,6 +88,7 @@ class Eav extends AbstractModifier
         EavValidationRules $validationRules,
         DataPersistorInterface $dataPersistor,
         FileInfo $fileInfo,
+        EavAttributeFactory $eavAttributeFactory,
         array $bannedInputTypes = [],
         array $attributesToEliminate = [],
         array $attributesToDisable = []
@@ -91,6 +102,7 @@ class Eav extends AbstractModifier
         $this->attributesToEliminate = $attributesToEliminate;
         $this->attributesToDisable = $attributesToDisable;
         $this->fileInfo = $fileInfo;
+        $this->eavAttributeFactory = $eavAttributeFactory;
     }
 
     /**
@@ -166,7 +178,7 @@ class Eav extends AbstractModifier
             ]
         );
 
-        /** @var Attribute $attribute */
+        /** @var EavAttribute $attribute */
         if ($attribute->getIsWysiwygEnabled()) {
             $containerMeta = $this->arrayManager->merge(
                 self::META_CONFIG_PATH,
@@ -181,10 +193,10 @@ class Eav extends AbstractModifier
     /**
      * Add attribute container children.
      *
-     * @param array              $attributeContainer Attribute container.
-     * @param AttributeInterface $attribute          Attibute.
-     * @param string             $groupCode          Group code.
-     * @param int                $sortOrder          Attribute sort order.
+     * @param array $attributeContainer Attribute container.
+     * @param AttributeInterface $attribute Attibute.
+     * @param string $groupCode Group code.
+     * @param int $sortOrder Attribute sort order.
      * @return array
      */
     public function addContainerChildren(
@@ -210,8 +222,8 @@ class Eav extends AbstractModifier
      * Retrieve container child fields.
      *
      * @param AttributeInterface $attribute Attribute.
-     * @param string             $groupCode Attribute group code.
-     * @param int                $sortOrder Sort order.
+     * @param string $groupCode Attribute group code.
+     * @param int $sortOrder Sort order.
      * @return array
      */
     public function getContainerChildren(AttributeInterface $attribute, string $groupCode, int $sortOrder): array
@@ -228,8 +240,8 @@ class Eav extends AbstractModifier
      * Retrieve attribute meta config.
      *
      * @param AttributeInterface $attribute Attribute.
-     * @param string             $groupCode Attribute group code.
-     * @param int                $sortOrder Sort order.
+     * @param string $groupCode Attribute group code.
+     * @param int $sortOrder Sort order.
      * @return array
      */
     public function setupAttributeMeta(AttributeInterface $attribute, string $groupCode, int $sortOrder): array
@@ -251,12 +263,14 @@ class Eav extends AbstractModifier
             'sortOrder'   => $sortOrder * self::SORT_ORDER_MULTIPLIER,
         ]);
 
-        /** @var AbstractAttribute $attribute */
-        if ($attribute->usesSource()) {
+        $attributeModel = $this->getAttributeModel($attribute);
+        if ($attributeModel->usesSource()) {
+            $source = $attributeModel->getSource();
+            $options = $source->getAllOptions();
             $meta = $this->arrayManager->merge(
                 $configPath,
                 $meta,
-                ['options' => $attribute->getSource()->getAllOptions()]
+                ['options' => $this->convertOptionsValueToString($options)]
             );
         }
 
@@ -440,7 +454,7 @@ class Eav extends AbstractModifier
      * Append a use default value if needed.
      *
      * @param AttributeInterface $attribute Attribute.
-     * @param array              $meta      Attribute meta.
+     * @param array $meta Attribute meta.
      * @return array
      */
     private function addUseDefaultValueCheckbox(AttributeInterface $attribute, array $meta): array
@@ -452,7 +466,7 @@ class Eav extends AbstractModifier
             $entity  = $this->locator->getEntity();
             $meta['arguments']['data']['config']['service'] = ['template' => 'ui/form/element/helper/service'];
             $meta['arguments']['data']['config']['disabled'] =
-                !$this->eavHelper->hasValueForStore($entity, $attribute, $storeId);
+                !$this->eavHelper->hasValueForStore($entity, $attribute, (int) $storeId);
         }
 
         return $meta;
@@ -498,12 +512,12 @@ class Eav extends AbstractModifier
      * Add wysiwyg properties.
      *
      * @param AttributeInterface $attribute Attribute.
-     * @param array              $meta      Meta data of data provider.
+     * @param array $meta Meta data of data provider.
      * @return array
      */
     private function customizeWysiwyg(AttributeInterface $attribute, array $meta): array
     {
-        /** @var Attribute $attribute */
+        /** @var EavAttribute $attribute */
         if (!$attribute->getIsWysiwygEnabled()) {
             return $meta;
         }
@@ -525,7 +539,7 @@ class Eav extends AbstractModifier
      * Customize checkboxes.
      *
      * @param AttributeInterface $attribute Attribute.
-     * @param array              $meta      Metadata of data provider.
+     * @param array $meta Metadata of data provider.
      * @return array
      */
     private function customizeCheckbox(AttributeInterface $attribute, array $meta): array
@@ -545,7 +559,7 @@ class Eav extends AbstractModifier
      * Customize image field.
      *
      * @param AttributeInterface $attribute Attribute.
-     * @param array              $meta      Current metadata of data provider.
+     * @param array $meta current metadata of data provider.
      * @return array
      */
     private function customizeImage(AttributeInterface $attribute, array $meta): array
@@ -601,5 +615,45 @@ class Eav extends AbstractModifier
         }
 
         return $return;
+    }
+
+    /**
+     * Convert options value to string.
+     *
+     * @param array $options
+     * @return array
+     */
+    private function convertOptionsValueToString(array $options): array
+    {
+        array_walk(
+            $options,
+            function (&$value): void {
+                if (isset($value['value']) && is_scalar($value['value'])) {
+                    $value['value'] = (string) $value['value'];
+                }
+            }
+        );
+
+        return $options;
+    }
+
+    /**
+     * Convert options value to string.
+     *
+     * @param mixed $attribute
+     * @return EavAttribute
+     */
+    private function getAttributeModel($attribute): EavAttribute
+    {
+        if ($attribute instanceof EavAttribute) {
+            return $attribute;
+        }
+        $attributeId = $attribute->getAttributeId();
+
+        if (!array_key_exists($attributeId, $this->attributesCache)) {
+            $this->attributesCache[$attributeId] = $this->eavAttributeFactory->create()->load($attributeId);
+        }
+
+        return $this->attributesCache[$attributeId];
     }
 }
