@@ -6,7 +6,6 @@ namespace Smile\ScopedEav\Controller\Adminhtml\Attribute;
 
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Action\HttpPostActionInterface;
-use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\Controller\Result\ForwardFactory;
 use Magento\Framework\Exception\LocalizedException;

@@ -57,7 +57,7 @@ class RegistryLocator implements LocatorInterface
     {
         if (empty($this->store)) {
             try {
-                $this->entity = $this->registry->registry('current_store');
+                $this->store = $this->registry->registry('current_store');
             } catch (NotFoundException $e) {
                 throw new NotFoundException(__('Store was not registered'));
             }
