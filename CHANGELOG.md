@@ -2,11 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.3.5] - 2022-11-04
+## [1.3.5] - 2022-11-07
 [1.3.5]: https://github.com/Smile-SA/magento2-module-scoped-eav/compare/1.3.4...1.3.5
 
 - Switch between two stores on custom entity create/edit
 - Use a multiselect attribute on custom entity create/edit
+- Update return for function getEntityWebsiteTable on schema setup
 
 ## [1.3.4] - 2022-10-19
 [1.3.4]: https://github.com/Smile-SA/magento2-module-scoped-eav/compare/1.3.3...1.3.4
