@@ -78,7 +78,6 @@ class Eav extends AbstractModifier
      * @param EavAttributeFactory $eavAttributeFactory Eav attribute factory.
      * @param array $attributesToEliminate Attribute codes removed from the form.
      * @param array $attributesToDisable Attribute codes to be disabled.
-     *
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
@@ -641,7 +640,6 @@ class Eav extends AbstractModifier
      * Convert options value to string.
      *
      * @param mixed $attribute
-     * @return EavAttribute
      */
     private function getAttributeModel($attribute): EavAttribute
     {

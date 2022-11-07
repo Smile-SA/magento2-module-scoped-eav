@@ -162,10 +162,11 @@ class SchemaSetup
      *
      * @param string $entityTableName Entity table name.
      */
-    public function getEntityWebsiteTable(string $entityTableName): Table
+    public function getEntityWebsiteTable(string $entityTableName): self
     {
         $websiteTableName = sprintf('%s_website', $entityTableName);
 
+        /** @var SchemaSetup $table */
         $table = $this->setup->getConnection()->newTable($this->setup->getTable($websiteTableName))
             ->addColumn(
                 'entity_id',
