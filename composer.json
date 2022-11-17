@@ -3,12 +3,25 @@
     "type": "magento2-module",
     "description": "Smile - Scoped EAV utils.",
     "keywords": ["magento2", "elasticsuite"],
-    "repositories": [
+    "authors": [
         {
-            "type": "composer",
-            "url": "https://repo.magento.com/"
+            "name": "Aurélien FOUCRET",
+            "email": "aurelien.foucret@smile.fr"
+        },
+        {
+            "name": "Cédric MAGREZ",
+            "email": "cedric.magrez@smile.fr"
         }
     ],
+    "license": "OSL-3.0",
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "magento/composer-dependency-version-audit-plugin": true,
+            "magento/magento-composer-installer": false
+        },
+        "sort-packages": true
+    },
     "require": {
         "php": "^7.4 || ^8.1",
         "magento/framework": "*",
@@ -18,13 +31,6 @@
     "require-dev": {
         "smile/magento2-smilelab-quality-suite": "^3.0"
     },
-    "license": "OSL-3.0",
-    "authors": [
-        {
-            "name": "Aurélien FOUCRET",
-            "email": "aurelien.foucret@smile.fr"
-        }
-    ],
     "autoload": {
         "files": [
             "registration.php"
@@ -33,6 +39,12 @@
             "Smile\\ScopedEav\\" : ""
         }
     },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://repo.magento.com/"
+        }
+    ],
     "minimum-stability": "dev",
     "prefer-stable": true
 }
