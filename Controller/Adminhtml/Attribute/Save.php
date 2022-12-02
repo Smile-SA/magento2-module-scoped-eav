@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Controller\Adminhtml\Attribute;
 
+use Laminas\Validator\Regex;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\Request\Http;
@@ -14,8 +15,6 @@ use Magento\Framework\Serialize\Serializer\FormData;
 use Smile\ScopedEav\Api\Data\AttributeInterface;
 use Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute;
 use Smile\ScopedEav\ViewModel\Data as DataViewModel;
-use Zend\Validator\Regex;
-use Zend\Validator\RegexFactory;
 
 /**
  * Scoped EAV entity attribute save controller.
@@ -23,8 +22,6 @@ use Zend\Validator\RegexFactory;
 class Save extends AbstractAttribute implements HttpPostActionInterface
 {
     private DataViewModel $dataViewModel;
-
-    private RegexFactory $regexFactory;
 
     private FormData $formDataSerializer;
 
@@ -34,7 +31,6 @@ class Save extends AbstractAttribute implements HttpPostActionInterface
      * @param Context $context Context.
      * @param DataViewModel $dataViewModel Scoped EAV data view model.
      * @param BuilderInterface $attributeBuilder Attribute builder.
-     * @param RegexFactory $regexFactory Regexp validator factory.
      * @param FormData $formDataSerializer Serializer.
      * @param ForwardFactory $resultForwardFactory Forward factory.
      */
@@ -42,13 +38,11 @@ class Save extends AbstractAttribute implements HttpPostActionInterface
         Context $context,
         DataViewModel $dataViewModel,
         BuilderInterface $attributeBuilder,
-        RegexFactory $regexFactory,
         FormData $formDataSerializer,
         ForwardFactory $resultForwardFactory
     ) {
         parent::__construct($context, $dataViewModel, $attributeBuilder, $resultForwardFactory);
         $this->dataViewModel = $dataViewModel;
-        $this->regexFactory = $regexFactory;
         $this->formDataSerializer = $formDataSerializer;
     }
 
@@ -145,7 +139,7 @@ class Save extends AbstractAttribute implements HttpPostActionInterface
 
         if (trim($attributeCode) == '') {
             /** @var Regex $validatorAttrCode */
-            $validatorAttrCode = $this->regexFactory->create(['pattern' => '/^[a-z][a-z_0-9]{0,30}$/']);
+            $validatorAttrCode = new Regex('/^[a-z][a-z_0-9]{0,30}$/');
 
             if (!$validatorAttrCode->isValid($attributeCode)) {
                 $errorMessageParts = [
