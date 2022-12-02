@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\ViewModel;
 
+use Laminas\Validator\Regex;
 use Magento\Catalog\Helper\Product;
 use Magento\Catalog\Model\Product\UrlFactory;
 use Magento\Framework\EntityManager\EntityMetadataInterface;
@@ -15,8 +16,6 @@ use Magento\Store\Model\StoreManagerInterface;
 use Magento\Ui\DataProvider\Mapper\FormElement;
 use Smile\ScopedEav\Api\Data\AttributeInterface;
 use Smile\ScopedEav\Api\Data\EntityInterface;
-use Zend\Validator\Regex;
-use Zend\Validator\RegexFactory;
 
 /**
  * Scoped EAV view model.
@@ -33,8 +32,6 @@ class Data implements ArgumentInterface
 
     private MetadataPool $metadataPool;
 
-    private RegexFactory $regexFactory;
-
     private Registry $coreRegistry;
 
     /**
@@ -45,7 +42,6 @@ class Data implements ArgumentInterface
      * @param StoreManagerInterface $storeManager Store manager.
      * @param FormElement $formElementMapper Form element mapper.
      * @param MetadataPool $metadataPool Entity manager metadata pool.
-     * @param RegexFactory $regexFactory Regexp validator factory.
      * @param Registry $coreRegistry Regexp validator factory.
      */
     public function __construct(
@@ -54,7 +50,6 @@ class Data implements ArgumentInterface
         StoreManagerInterface $storeManager,
         FormElement $formElementMapper,
         MetadataPool $metadataPool,
-        RegexFactory $regexFactory,
         Registry $coreRegistry
     ) {
         $this->storeManager = $storeManager;
@@ -62,7 +57,6 @@ class Data implements ArgumentInterface
         $this->productHelper = $productHelper;
         $this->formElementMapper = $formElementMapper;
         $this->metadataPool = $metadataPool;
-        $this->regexFactory = $regexFactory;
         $this->coreRegistry = $coreRegistry;
     }
 
@@ -76,7 +70,7 @@ class Data implements ArgumentInterface
         $code = substr(preg_replace('/[^a-z_0-9]/', '_', $this->urlFactory->create()->formatUrlKey($label)), 0, 30);
 
         /** @var Regex $validatorAttrCode */
-        $validatorAttrCode = $this->regexFactory->create(['pattern' => '/^[a-z][a-z_0-9]{0,29}[a-z0-9]$/']);
+        $validatorAttrCode = new Regex('/^[a-z][a-z_0-9]{0,29}[a-z0-9]$/');
 
         if (!$validatorAttrCode->isValid($code)) {
             $code = 'attr_' . ($code ?: substr(md5((string) time()), 0, 8)); // @codingStandardsIgnoreLine
