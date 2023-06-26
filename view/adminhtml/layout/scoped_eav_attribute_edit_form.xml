@@ -8,11 +8,11 @@
         <referenceContainer name="left">
             <block class="Smile\ScopedEav\Block\Adminhtml\Attribute\Edit\Tabs" name="attribute_edit_tabs">
                 <container label="Main" name="main">
-                    <block class="Smile\ScopedEav\Block\Adminhtml\Attribute\Edit\Tab\Main" as="base" />
-                    <block class="Magento\Eav\Block\Adminhtml\Attribute\Edit\Options\Options" as="options" />
+                    <block class="Smile\ScopedEav\Block\Adminhtml\Attribute\Edit\Tab\Main" name="main.base"/>
+                    <block class="Magento\Eav\Block\Adminhtml\Attribute\Edit\Options\Options" name="main.options" />
                 </container>
                 <container label="Labels" name="labels">
-                    <block class="Magento\Eav\Block\Adminhtml\Attribute\Edit\Options\Labels" as="labels" />
+                    <block class="Magento\Eav\Block\Adminhtml\Attribute\Edit\Options\Labels" as="labels.options" />
                 </container>
             </block>
         </referenceContainer>

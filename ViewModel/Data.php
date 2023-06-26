@@ -80,6 +80,17 @@ class Data implements ArgumentInterface
     }
 
     /**
+     * Detect backend storage type using frontend input type.
+     *
+     * @param string $inputType
+     * @return string|null
+     */
+    public function getAttributeBackendTypeByInput(string $inputType): ?string
+    {
+        return $inputType == 'image' ? 'varchar' : null;
+    }
+
+    /**
      * Infers attribute backend model from input type.
      *
      * @param string $inputType Input type.
