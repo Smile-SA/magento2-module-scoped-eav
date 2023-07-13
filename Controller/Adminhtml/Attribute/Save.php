@@ -79,6 +79,7 @@ class Save extends AbstractAttribute implements HttpPostActionInterface
      * Add request post data to the attribute.
      *
      * @param AttributeInterface $attribute Attribute.
+     * @throws \Exception
      */
     private function addPostData(AttributeInterface $attribute): AttributeInterface
     {
@@ -101,18 +102,19 @@ class Save extends AbstractAttribute implements HttpPostActionInterface
             $optionData
         );
 
-        $frontendInput = $data['frontend_input'] ?? $attribute->getFrontendInput();
-
         /** @var AbstractModel $attribute */
         if (!$attribute->getId()) {
             $data['attribute_code']  = $this->getAttributeCode();
             $data['is_user_defined'] = true;
-            $data['backend_type'] = $data['frontend_input'] == 'image' ?
-                'varchar' : $attribute->getBackendTypeByInput($data['frontend_input']);
+            $data['backend_type'] = $this->dataViewModel->getAttributeBackendTypeByInput(
+                (string) $data['frontend_input']
+            ) ?: $attribute->getBackendTypeByInput($data['frontend_input']);
+
             $data['source_model'] = $this->dataViewModel->getAttributeSourceModelByInputType($data['frontend_input']);
             $data['backend_model'] = $this->dataViewModel->getAttributeBackendModelByInputType($data['frontend_input']);
         }
 
+        $frontendInput = $data['frontend_input'] ?? $attribute->getFrontendInput();
         $defaultValueField = $attribute->getDefaultValueByInput($frontendInput);
         if ($defaultValueField) {
             $data['default_value'] = $this->getRequest()->getParam($defaultValueField);
