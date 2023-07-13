@@ -16,6 +16,7 @@ use Magento\Store\Model\StoreManagerInterface;
 use Magento\Ui\DataProvider\Mapper\FormElement;
 use Smile\ScopedEav\Api\Data\AttributeInterface;
 use Smile\ScopedEav\Api\Data\EntityInterface;
+use Smile\ScopedEav\Model\Entity\Attribute\Backend\Image;
 
 /**
  * Scoped EAV view model.
@@ -23,15 +24,10 @@ use Smile\ScopedEav\Api\Data\EntityInterface;
 class Data implements ArgumentInterface
 {
     private UrlFactory $urlFactory;
-
     private Product $productHelper;
-
     private FormElement $formElementMapper;
-
     private StoreManagerInterface $storeManager;
-
     private MetadataPool $metadataPool;
-
     private Registry $coreRegistry;
 
     /**
@@ -81,9 +77,6 @@ class Data implements ArgumentInterface
 
     /**
      * Detect backend storage type using frontend input type.
-     *
-     * @param string $inputType
-     * @return string|null
      */
     public function getAttributeBackendTypeByInput(string $inputType): ?string
     {
@@ -99,7 +92,7 @@ class Data implements ArgumentInterface
     public function getAttributeBackendModelByInputType(string $inputType): ?string
     {
         if ($inputType == 'image') {
-            return \Smile\ScopedEav\Model\Entity\Attribute\Backend\Image::class;
+            return Image::class;
         }
         return $this->productHelper->getAttributeBackendModelByInputType($inputType);
     }

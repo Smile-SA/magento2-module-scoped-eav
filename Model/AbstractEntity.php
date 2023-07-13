@@ -6,6 +6,7 @@ namespace Smile\ScopedEav\Model;
 
 use Magento\Catalog\Model\AbstractModel;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\UrlInterface;
 use Magento\Store\Model\Store;
 use Smile\ScopedEav\Api\Data\EntityInterface;
 use Smile\ScopedEav\Model\Entity\Attribute;
@@ -192,7 +193,7 @@ class AbstractEntity extends AbstractModel implements EntityInterface
                 /** @var Store $store */
                 $store = $this->_storeManager->getStore();
                 $mediaBaseUrl = $store->getBaseUrl(
-                    \Magento\Framework\UrlInterface::URL_TYPE_MEDIA
+                    UrlInterface::URL_TYPE_MEDIA
                 );
                 $url = $mediaBaseUrl
                     . 'scoped_eav/entity/'

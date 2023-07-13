@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Controller\Adminhtml\Set;
 
+use Exception;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\Model\AbstractModel;
 use Smile\ScopedEav\Controller\Adminhtml\AbstractSet;
@@ -23,7 +24,7 @@ class Delete extends AbstractSet implements HttpGetActionInterface
             $attributeSet = $this->getAttributeSet();
             $attributeSet->delete();
             $this->messageManager->addSuccessMessage((string) __('The attribute set has been removed.'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->messageManager->addErrorMessage((string) __('We can\'t delete this set right now.'));
         }
 

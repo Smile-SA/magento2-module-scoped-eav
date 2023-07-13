@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Controller\Adminhtml\Attribute;
 
+use Exception;
+use InvalidArgumentException;
 use Laminas\Validator\Regex;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Action\HttpPostActionInterface;
@@ -68,7 +70,7 @@ class Save extends AbstractAttribute implements HttpPostActionInterface
             } else {
                 $response->setPath('*/*/index');
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = $this->getRedirectError($e->getMessage());
         }
 
@@ -86,7 +88,7 @@ class Save extends AbstractAttribute implements HttpPostActionInterface
         try {
             $optionData = $this->formDataSerializer
                 ->unserialize($this->getRequest()->getParam('serialized_options', '[]'));
-        } catch (\InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             $message = (string) __("The attribute couldn't be saved due to an error."
                 . " Verify your information and try again. If the error persists, please try again later.");
             $this->messageManager->addErrorMessage($message);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Controller\Adminhtml\Attribute;
 
+use Exception;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute;
 
@@ -24,7 +25,7 @@ class Edit extends AbstractAttribute implements HttpGetActionInterface
                 $title = __('Edit %1', $attribute->getAttributeCode());
             }
             $response = $this->createActionPage($title);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = $this->getRedirectError($e->getMessage());
         }
 

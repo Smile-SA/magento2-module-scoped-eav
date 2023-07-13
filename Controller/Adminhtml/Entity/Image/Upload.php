@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Controller\Adminhtml\Entity\Image;
 
+use Exception;
 use Magento\Backend\App\Action;
 use Magento\Catalog\Model\ImageUploader;
 use Magento\Framework\App\Action\HttpPostActionInterface;
@@ -52,7 +53,7 @@ class Upload extends Action implements HttpPostActionInterface
 
         try {
             $result = $this->imageUploader->saveFileToTmpDir($imageId);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $result = ['error' => $e->getMessage(), 'errorcode' => $e->getCode()];
         }
         /** @var Json $resultFactory */
