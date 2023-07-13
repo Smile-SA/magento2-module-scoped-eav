@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Ui\DataProvider\Entity\Form\Modifier\Helper;
 
+use Exception;
 use Magento\Catalog\Model\AbstractModel;
 use Magento\Catalog\Model\Attribute\ScopeOverriddenValue;
 use Magento\Eav\Api\AttributeGroupRepositoryInterface;
@@ -26,32 +27,20 @@ use Smile\ScopedEav\ViewModel\Data as DataViewModel;
 class Eav
 {
     private AttributeGroupRepositoryInterface $attributeGroupRepository;
-
     private AttributeRepositoryInterface $attributeRepository;
-
     private SearchCriteriaBuilder $searchCriteriaBuilder;
-
     private SortOrderBuilder $sortOrderBuilder;
-
     private DataViewModel $dataViewModel;
-
     private ScopeOverriddenValue $scopeOverriddenValue;
-
     private LoggerInterface $logger;
 
-    /**
-     * @var AttributeGroupInterface[]
-     */
+    /** @var AttributeGroupInterface[] */
     private array $attributeGroups = [];
 
-    /**
-     * @var AttributeInterface[]
-     */
+    /** @var AttributeInterface[] */
     private array $attributes = [];
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private array $canDisplayUseDefault = [];
 
     /**
@@ -91,7 +80,6 @@ class Eav
     public function getGroups($attributeSetId): array
     {
         if (!isset($this->attributeGroups[$attributeSetId])) {
-            // @phpstan-ignore-next-line
             $this->attributeGroups[$attributeSetId] = [];
             $searchCriteria = $this->prepareGroupSearchCriteria($attributeSetId)->create();
             $attributeGroupSearchResult = $this->attributeGroupRepository->getList($searchCriteria);
@@ -115,7 +103,6 @@ class Eav
     public function getAttributes(EntityInterface $entity, $attributeSetId): array
     {
         if (!isset($this->attributes[$attributeSetId])) {
-            // @phpstan-ignore-next-line
             $this->attributes[$attributeSetId] = [];
 
             /** @var Group $group */
@@ -171,7 +158,7 @@ class Eav
                     $attributeCode,
                     $storeId
                 );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Catch exception hasValueForStore function
             $this->logger->critical($e->getMessage());
         }

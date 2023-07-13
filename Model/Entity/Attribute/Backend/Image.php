@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Model\Entity\Attribute\Backend;
 
+use Exception;
 use Magento\Catalog\Model\ImageUploader;
 use Magento\Framework\Filesystem;
 use Magento\MediaStorage\Model\File\UploaderFactory;
@@ -49,7 +50,7 @@ class Image extends \Magento\Catalog\Model\Category\Attribute\Backend\Image
             if ($this->isTmpFileAvailable($value) && $imageName) {
                 try {
                     $this->getImageUploader()->moveFileFromTmp($imageName);
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $this->_logger->critical($e->getMessage());
                 }
             }

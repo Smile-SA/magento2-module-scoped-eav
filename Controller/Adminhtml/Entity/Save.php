@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Controller\Adminhtml\Entity;
 
+use Exception;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\View\Result\ForwardFactory;
 use Magento\Eav\Model\Config;
@@ -83,7 +84,7 @@ class Save extends AbstractEntity implements HttpPostActionInterface
             $request = $this->getRequest();
             $this->dataPersistor->set('entity', $request->getPostValue());
             $redirectBack = $entityId ? true : 'new';
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->messageManager->addError($e->getMessage());
             /** @var Http $request */
             $request = $this->getRequest();

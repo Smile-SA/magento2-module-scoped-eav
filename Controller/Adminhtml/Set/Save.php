@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Controller\Adminhtml\Set;
 
+use Exception;
 use Magento\Backend\App\Action\Context;
 use Magento\Eav\Api\AttributeSetRepositoryInterface;
 use Magento\Eav\Api\Data\AttributeSetInterface;
@@ -106,7 +107,7 @@ class Save extends AbstractSet implements HttpPostActionInterface
         } catch (LocalizedException $e) {
             $this->messageManager->addErrorMessage($e->getMessage());
             $hasError = true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->messageManager->addExceptionMessage($e, $e->getMessage());
             $this->messageManager->addExceptionMessage(
                 $e,

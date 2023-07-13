@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Controller\Adminhtml\Attribute;
 
+use Exception;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Model\AbstractModel;
@@ -33,7 +34,7 @@ class Delete extends AbstractAttribute implements HttpPostActionInterface
             $this->messageManager->addSuccessMessage((string) __('Attribute has been deleted'));
             $response = $this->resultRedirectFactory->create();
             $response->setPath('*/*/index');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = $this->getRedirectError($e->getMessage());
         }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Setup;
 
+use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Framework\DB\Ddl\Table;
 use Magento\Framework\Setup\SchemaSetupInterface;
 
@@ -127,10 +128,10 @@ class SchemaSetup
                 $this->setup->getIdxName(
                     $tableName,
                     ['entity_id', 'attribute_id', 'store_id'],
-                    \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE
+                    AdapterInterface::INDEX_TYPE_UNIQUE
                 ),
                 ['entity_id', 'attribute_id', 'store_id'],
-                ['type' => \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE]
+                ['type' => AdapterInterface::INDEX_TYPE_UNIQUE]
             )
             ->addIndex($this->setup->getIdxName($tableName, ['attribute_id']), ['attribute_id'])
             ->addIndex($this->setup->getIdxName($tableName, ['store_id']), ['store_id'])
