@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.9] - 2024-01-09
+[1.3.9]: https://github.com/Smile-SA/magento2-module-scoped-eav/compare/1.3.8...1.3.9
+
+- Add "use_default" to the entity data on controller save action
+
+## [1.3.8] - 2023-07-13
+[1.3.8]: https://github.com/Smile-SA/magento2-module-scoped-eav/compare/1.3.7...1.3.8
+
+- Move backend_type detection from controller to ViewModel
+- Add name to blocks in attribute edit form
+
 ## [1.3.7] - 2022-12-02
 [1.3.7]: https://github.com/Smile-SA/magento2-module-scoped-eav/compare/1.3.6...1.3.7
 
