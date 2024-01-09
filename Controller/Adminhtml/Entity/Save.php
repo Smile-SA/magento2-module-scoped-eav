@@ -121,6 +121,11 @@ class Save extends AbstractEntity implements HttpPostActionInterface
 
         $useDefaults = (array) $request->getPost('use_default', []);
 
+        if (!empty($useDefaults)) {
+            // Add use_default to the entity data so that it can be accessed (e.g. for url key generation)
+            $entity->setData('use_default', $useDefaults);
+        }
+
         foreach ($useDefaults as $attributeCode => $useDefault) {
             if ((bool) $useDefault) {
                 $entity->setData($attributeCode, null);
