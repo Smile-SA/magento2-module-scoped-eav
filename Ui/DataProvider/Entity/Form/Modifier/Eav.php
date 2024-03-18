@@ -178,7 +178,10 @@ class Eav extends AbstractModifier
         );
 
         /** @var EavAttribute $attribute */
-        if ($attribute->getIsWysiwygEnabled()) {
+        if (
+            $attribute->getFrontendInput() == 'texteditor' ||
+            $attribute->getIsWysiwygEnabled()
+        ) {
             $containerMeta = $this->arrayManager->merge(
                 self::META_CONFIG_PATH,
                 $containerMeta,
@@ -303,6 +306,8 @@ class Eav extends AbstractModifier
                 $meta = $this->customizeCheckbox($attribute, $meta);
                 break;
             case 'textarea':
+            case 'texteditor':
+            case 'pagebuilder':
                 $meta = $this->customizeWysiwyg($attribute, $meta);
                 break;
             case 'image':
@@ -517,7 +522,10 @@ class Eav extends AbstractModifier
     private function customizeWysiwyg(AttributeInterface $attribute, array $meta): array
     {
         /** @var EavAttribute $attribute */
-        if (!$attribute->getIsWysiwygEnabled()) {
+        if (
+            !in_array($attribute->getFrontendInput(), ['texteditor', 'pagebuilder']) ||
+            $attribute->getFrontendInput() == 'textarea' && !$attribute->getIsWysiwygEnabled()
+        ) {
             return $meta;
         }
 
@@ -530,6 +538,11 @@ class Eav extends AbstractModifier
             'use_container' => true,
             'container_class' => 'hor-scroll',
         ];
+
+        if (in_array($attribute->getFrontendInput(), ['texteditor', 'pagebuilder'])) {
+            $meta['arguments']['data']['config']['wysiwygConfigData']['is_pagebuilder_enabled'] =
+                ($attribute->getFrontendInput() == 'pagebuilder' ? true : false);
+        }
 
         return $meta;
     }
