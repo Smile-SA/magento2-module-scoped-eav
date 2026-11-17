@@ -65,7 +65,7 @@ class Save extends AbstractEntity implements HttpPostActionInterface
         $resultRedirect = $this->resultRedirectFactory->create();
 
         try {
-            /** @var AbstractModel $entity */
+            /** @var EntityInterface&AbstractModel $entity */
             $entity = $this->getEntity();
             $entity->save();
 
@@ -116,7 +116,7 @@ class Save extends AbstractEntity implements HttpPostActionInterface
         $data = $request->getPostValue();
         $data = $this->imagePreprocessing($entity, $data);
 
-        /** @var DataObject $entity */
+        /** @var EntityInterface&DataObject $entity */
         $entity->addData($data['entity']);
 
         $useDefaults = (array) $request->getPost('use_default', []);
@@ -141,7 +141,6 @@ class Save extends AbstractEntity implements HttpPostActionInterface
      *
      * @param EntityInterface $entity Current entity.
      * @param array $data Data.
-     * @return array
      * @throws LocalizedException
      */
     private function imagePreprocessing(EntityInterface $entity, array $data): array

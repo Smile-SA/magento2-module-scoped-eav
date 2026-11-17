@@ -89,11 +89,11 @@ class EntityDataProvider extends AbstractDataProvider
         if (isset($this->addFilterStrategies[$filter->getField()])) {
             $filterStrategy = $this->addFilterStrategies[$filter->getField()];
 
-            /** @var string $condition */
             $condition = [$filter->getConditionType() => $filter->getValue()];
             $filterStrategy->addFilter(
                 $this->getCollection(),
                 $filter->getField(),
+                // @phpstan-ignore argument.type (Magento PHPDoc says string|null, but core passes condition arrays too)
                 $condition
             );
             return $filterStrategy;

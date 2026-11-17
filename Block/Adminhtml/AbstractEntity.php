@@ -63,8 +63,6 @@ abstract class AbstractEntity extends Container
 
     /**
      * Retrieve options for 'Add Product' split button
-     *
-     * @return array
      */
     protected function getAddEntityButtonOptions(): array
     {

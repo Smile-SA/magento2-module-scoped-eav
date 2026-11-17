@@ -20,17 +20,11 @@ class System extends AbstractModifier
 
     private UrlInterface $urlBuilder;
 
-    /**
-     * @var array
-     */
     private array $defaultEntityUrls = [
         self::KEY_SUBMIT_URL => '*/*/save',
         self::KEY_RELOAD_URL => '*/*/reload',
     ];
 
-    /**
-     * @var array
-     */
     private array $entityUrls;
 
     /**
