@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Ui\Component\Entity\Edit\Button;
 
-use Magento\Catalog\Model\AbstractModel;
 use Magento\Framework\Escaper;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\UiComponent\Context;
@@ -14,7 +13,6 @@ use Magento\Framework\View\Element\UiComponent\Context;
  */
 class Delete extends Generic
 {
-    // @phpstan-ignore-next-line
     private Escaper $jsEscape;
 
     /**
@@ -36,12 +34,11 @@ class Delete extends Generic
      */
     public function getButtonData()
     {
-        /** @var AbstractModel $this */
+        // @phpstan-ignore method.notFound (isReadonly() comes from Catalog AbstractModel, which entities extend)
         if ($this->getEntity()->isReadonly() || !$this->getEntity()->getId()) {
             return [];
         }
 
-        // @phpstan-ignore-next-line
         $deleteMessage = $this->jsEscape->escapeJsQuote(
             (string) __("Are you sure you want to delete the entity ?")
         );

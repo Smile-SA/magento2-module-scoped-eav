@@ -73,7 +73,7 @@ class Image extends \Magento\Catalog\Model\Category\Attribute\Backend\Image
      */
     private function getUploadedImageName(array $value): string
     {
-        if (is_array($value) && isset($value[0]['name'])) {
+        if (isset($value[0]['name'])) {
             return $value[0]['name'];
         }
 

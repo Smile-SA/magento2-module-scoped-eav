@@ -40,7 +40,6 @@ class Eav
     /** @var AttributeInterface[] */
     private array $attributes = [];
 
-    /** @var array */
     private array $canDisplayUseDefault = [];
 
     /**
@@ -150,7 +149,7 @@ class Eav
         $interface = $this->dataViewModel->getEntityInterface($entity);
 
         try {
-            /** @var AbstractModel $entity */
+            /** @var EntityInterface&AbstractModel $entity */
             $hasValue =
                 $this->scopeOverriddenValue->containsValue(
                     $interface,

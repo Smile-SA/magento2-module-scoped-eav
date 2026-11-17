@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Smile\ScopedEav\Controller\Adminhtml\Set;
 
+use Magento\Eav\Api\Data\AttributeSetInterface;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Model\AbstractModel;
@@ -21,7 +22,7 @@ class Edit extends AbstractSet implements HttpGetActionInterface
     {
         $this->setTypeId();
         try {
-            /** @var AbstractModel $attributeSet */
+            /** @var AttributeSetInterface&AbstractModel $attributeSet */
             $attributeSet = $this->getAttributeSet();
             $result = $this->createActionPage(
                 $attributeSet->getId() ? $attributeSet->getAttributeSetName() : (string) __('New Set')

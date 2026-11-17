@@ -191,8 +191,6 @@ class Data implements ArgumentInterface
 
     /**
      * Retrieve attribute hidden fields
-     *
-     * @return array
      */
     public function getAttributeHiddenFields(): array
     {

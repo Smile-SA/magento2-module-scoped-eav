@@ -57,7 +57,7 @@ class Save extends AbstractAttribute implements HttpPostActionInterface
             $attribute = $this->getAttribute();
             $attribute = $this->addPostData($attribute);
 
-            /** @var AbstractModel $attribute */
+            /** @var AttributeInterface&AbstractModel $attribute */
             $attribute->save();
 
             $response = $this->resultRedirectFactory->create();
@@ -104,7 +104,7 @@ class Save extends AbstractAttribute implements HttpPostActionInterface
             $optionData
         );
 
-        /** @var AbstractModel $attribute */
+        /** @var AttributeInterface&AbstractModel $attribute */
         if (!$attribute->getId()) {
             $data['attribute_code']  = $this->getAttributeCode();
             $data['is_user_defined'] = true;
