@@ -23,6 +23,20 @@ use Smile\ScopedEav\ViewModel\Data as DataViewModel;
  */
 class Save extends AbstractAttribute implements HttpPostActionInterface
 {
+    /**
+     * Fields that cannot be changed on an existing attribute (mirrors core product attribute save).
+     */
+    private const PROTECTED_FIELDS = [
+        'attribute_code',
+        'entity_type_id',
+        'is_user_defined',
+        'backend_type',
+        'backend_model',
+        'backend_table',
+        'source_model',
+        'frontend_model',
+    ];
+
     private DataViewModel $dataViewModel;
 
     private FormData $formDataSerializer;
@@ -114,6 +128,11 @@ class Save extends AbstractAttribute implements HttpPostActionInterface
 
             $data['source_model'] = $this->dataViewModel->getAttributeSourceModelByInputType($data['frontend_input']);
             $data['backend_model'] = $this->dataViewModel->getAttributeBackendModelByInputType($data['frontend_input']);
+        } else {
+            // Structural fields of an existing attribute must never come from the request.
+            foreach (self::PROTECTED_FIELDS as $field) {
+                unset($data[$field]);
+            }
         }
 
         $frontendInput = $data['frontend_input'] ?? $attribute->getFrontendInput();
