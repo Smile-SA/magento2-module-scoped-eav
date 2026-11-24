@@ -24,19 +24,21 @@ use Smile\ScopedEav\ViewModel\Data as DataViewModel;
 class Save extends AbstractAttribute implements HttpPostActionInterface
 {
     /**
-     * Fields never taken from the request.
+     * Structural fields never taken from the request: they are computed on creation and frozen afterwards.
+     * Model fields hold class names instantiated by Magento, so accepting them would allow arbitrary instantiation.
+     * The id and the set assignment fields would let the request target another attribute or attribute set.
      */
     private const PROTECTED_FIELDS = [
-        'attribute_id',
         'attribute_code',
         'entity_type_id',
         'is_user_defined',
-        'attribute_model',
         'backend_type',
         'backend_model',
         'backend_table',
         'source_model',
         'frontend_model',
+        'attribute_model',
+        'attribute_id',
         'attribute_set_id',
         'attribute_group_id',
         'sort_order',
@@ -123,6 +125,7 @@ class Save extends AbstractAttribute implements HttpPostActionInterface
             $optionData
         );
 
+        // Structural fields must never come from the request.
         foreach (self::PROTECTED_FIELDS as $field) {
             unset($data[$field]);
         }
@@ -138,7 +141,8 @@ class Save extends AbstractAttribute implements HttpPostActionInterface
             $data['source_model'] = $this->dataViewModel->getAttributeSourceModelByInputType($data['frontend_input']);
             $data['backend_model'] = $this->dataViewModel->getAttributeBackendModelByInputType($data['frontend_input']);
         } else {
-            $data['frontend_input'] = $attribute->getFrontendInput();
+            // The input type is read-only in the edit form: changing it would desync backend type and models.
+            unset($data['frontend_input']);
         }
 
         $frontendInput = $data['frontend_input'] ?? $attribute->getFrontendInput();
