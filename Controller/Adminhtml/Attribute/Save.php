@@ -13,6 +13,7 @@ use Magento\Framework\App\Request\Http;
 use Magento\Framework\Controller\Result\ForwardFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Model\AbstractModel;
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 use Magento\Framework\Serialize\Serializer\FormData;
 use Smile\ScopedEav\Api\Data\AttributeInterface;
 use Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute;
@@ -23,6 +24,27 @@ use Smile\ScopedEav\ViewModel\Data as DataViewModel;
  */
 class Save extends AbstractAttribute implements HttpPostActionInterface
 {
+    /**
+     * Structural fields never taken from the request: they are computed on creation and frozen afterwards.
+     * Model fields hold class names instantiated by Magento, so accepting them would allow arbitrary instantiation.
+     * The id and the set assignment fields would let the request target another attribute or attribute set.
+     */
+    private const PROTECTED_FIELDS = [
+        'attribute_code',
+        'entity_type_id',
+        'is_user_defined',
+        'backend_type',
+        'backend_model',
+        'backend_table',
+        'source_model',
+        'frontend_model',
+        'attribute_model',
+        'attribute_id',
+        'attribute_set_id',
+        'attribute_group_id',
+        'sort_order',
+    ];
+
     private DataViewModel $dataViewModel;
 
     private FormData $formDataSerializer;
@@ -104,6 +126,11 @@ class Save extends AbstractAttribute implements HttpPostActionInterface
             $optionData
         );
 
+        // Structural fields must never come from the request.
+        foreach (self::PROTECTED_FIELDS as $field) {
+            unset($data[$field]);
+        }
+
         /** @var AttributeInterface&AbstractModel $attribute */
         if (!$attribute->getId()) {
             $data['attribute_code']  = $this->getAttributeCode();
@@ -114,7 +141,12 @@ class Save extends AbstractAttribute implements HttpPostActionInterface
 
             $data['source_model'] = $this->dataViewModel->getAttributeSourceModelByInputType($data['frontend_input']);
             $data['backend_model'] = $this->dataViewModel->getAttributeBackendModelByInputType($data['frontend_input']);
+        } else {
+            // The input type is read-only in the edit form: changing it would desync backend type and models.
+            unset($data['frontend_input']);
         }
+
+        $data = $this->filterOptionData($data, $attribute);
 
         $frontendInput = $data['frontend_input'] ?? $attribute->getFrontendInput();
         $defaultValueField = $attribute->getDefaultValueByInput($frontendInput);
@@ -126,6 +158,49 @@ class Save extends AbstractAttribute implements HttpPostActionInterface
 
         /** @var AttributeInterface $attribute */
         return $attribute;
+    }
+
+    /**
+     * Remove from the posted options the ids that do not belong to the attribute.
+     *
+     * Core updates and deletes options by option_id alone, so a forged id would reach another attribute's options.
+     *
+     * @param array $data Post data.
+     * @param AbstractModel $attribute Attribute.
+     */
+    private function filterOptionData(array $data, AbstractModel $attribute): array
+    {
+        if (!isset($data['option']) || !is_array($data['option'])) {
+            unset($data['option']);
+
+            return $data;
+        }
+
+        $ownOptionIds = [];
+        if ($attribute->getId()) {
+            /** @var AbstractDb $resource */
+            $resource = $attribute->getResource();
+            $connection = $resource->getConnection();
+            $select = $connection->select()
+                ->from($resource->getTable('eav_attribute_option'), 'option_id')
+                ->where('attribute_id = ?', (int) $attribute->getId());
+            $ownOptionIds = array_map('intval', $connection->fetchCol($select));
+        }
+
+        foreach ($data['option'] as $key => $rows) {
+            if (!is_array($rows)) {
+                unset($data['option'][$key]);
+                continue;
+            }
+            foreach (array_keys($rows) as $optionId) {
+                // Non numeric ids (option_0, ...) are new options, core inserts them for the current attribute.
+                if (is_numeric($optionId) && !in_array((int) $optionId, $ownOptionIds, true)) {
+                    unset($data['option'][$key][$optionId]);
+                }
+            }
+        }
+
+        return $data;
     }
 
     /**

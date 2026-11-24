@@ -12,6 +12,7 @@ parameters:
         - .
     excludePaths:
         - 'vendor/*'
+        - 'Test/*'
 
 includes:
     - %currentWorkingDirectory%/vendor/smile/magento2-smilelab-phpstan/extension.neon

@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.10] - 2026-11-24
+[1.3.10]: https://github.com/Smile-SA/magento2-module-scoped-eav/compare/1.3.9...1.3.10
+
+- Security: ignore structural and set assignment attribute fields posted to the attribute save controller
+- Security: ignore posted option ids that do not belong to the saved attribute
+- Security: image upload controller checks an ACL resource (injectable, defaults to `Magento_Backend::admin`)
+- Add unit tests for the attribute save controller
+
 ## [1.3.9] - 2024-01-09
 [1.3.9]: https://github.com/Smile-SA/magento2-module-scoped-eav/compare/1.3.8...1.3.9
 
