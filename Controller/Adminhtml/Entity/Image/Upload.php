@@ -21,18 +21,31 @@ class Upload extends Action implements HttpPostActionInterface
 {
     private ImageUploader $imageUploader;
 
+    private string $aclResource;
+
     /**
      * Upload constructor.
      *
      * @param Action\Context $context Context.
      * @param ImageUploader $imageUploader Image uploader.
+     * @param string $aclResource ACL resource required to upload (set it in the module using scoped EAV).
      */
     public function __construct(
         Action\Context $context,
-        ImageUploader $imageUploader
+        ImageUploader $imageUploader,
+        string $aclResource = self::ADMIN_RESOURCE
     ) {
         parent::__construct($context);
         $this->imageUploader = $imageUploader;
+        $this->aclResource = $aclResource;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function _isAllowed(): bool
+    {
+        return $this->_authorization->isAllowed($this->aclResource);
     }
 
     /**
