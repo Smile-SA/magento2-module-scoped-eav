@@ -13,6 +13,7 @@ use Magento\Framework\App\Request\Http;
 use Magento\Framework\Controller\Result\ForwardFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Model\AbstractModel;
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 use Magento\Framework\Serialize\Serializer\FormData;
 use Smile\ScopedEav\Api\Data\AttributeInterface;
 use Smile\ScopedEav\Controller\Adminhtml\AbstractAttribute;
@@ -145,6 +146,8 @@ class Save extends AbstractAttribute implements HttpPostActionInterface
             unset($data['frontend_input']);
         }
 
+        $data = $this->filterOptionData($data, $attribute);
+
         $frontendInput = $data['frontend_input'] ?? $attribute->getFrontendInput();
         $defaultValueField = $attribute->getDefaultValueByInput($frontendInput);
         if ($defaultValueField) {
@@ -155,6 +158,49 @@ class Save extends AbstractAttribute implements HttpPostActionInterface
 
         /** @var AttributeInterface $attribute */
         return $attribute;
+    }
+
+    /**
+     * Remove from the posted options the ids that do not belong to the attribute.
+     *
+     * Core updates and deletes options by option_id alone, so a forged id would reach another attribute's options.
+     *
+     * @param array $data Post data.
+     * @param AbstractModel $attribute Attribute.
+     */
+    private function filterOptionData(array $data, AbstractModel $attribute): array
+    {
+        if (!isset($data['option']) || !is_array($data['option'])) {
+            unset($data['option']);
+
+            return $data;
+        }
+
+        $ownOptionIds = [];
+        if ($attribute->getId()) {
+            /** @var AbstractDb $resource */
+            $resource = $attribute->getResource();
+            $connection = $resource->getConnection();
+            $select = $connection->select()
+                ->from($resource->getTable('eav_attribute_option'), 'option_id')
+                ->where('attribute_id = ?', (int) $attribute->getId());
+            $ownOptionIds = array_map('intval', $connection->fetchCol($select));
+        }
+
+        foreach ($data['option'] as $key => $rows) {
+            if (!is_array($rows)) {
+                unset($data['option'][$key]);
+                continue;
+            }
+            foreach (array_keys($rows) as $optionId) {
+                // Non numeric ids (option_0, ...) are new options, core inserts them for the current attribute.
+                if (is_numeric($optionId) && !in_array((int) $optionId, $ownOptionIds, true)) {
+                    unset($data['option'][$key][$optionId]);
+                }
+            }
+        }
+
+        return $data;
     }
 
     /**

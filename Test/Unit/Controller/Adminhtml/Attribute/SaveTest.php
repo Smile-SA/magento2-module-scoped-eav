@@ -7,12 +7,15 @@ namespace Smile\ScopedEav\Test\Unit\Controller\Adminhtml\Attribute;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Backend\Model\View\Result\RedirectFactory;
+use Magento\Eav\Model\ResourceModel\Entity\Attribute as AttributeResource;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\Controller\Result\ForwardFactory;
+use Magento\Framework\DB\Adapter\AdapterInterface;
+use Magento\Framework\DB\Select;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Serialize\Serializer\FormData;
 use Magento\Framework\Serialize\Serializer\Json;
-use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DataProvider as DataProviderAttribute;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
@@ -23,6 +26,8 @@ use Smile\ScopedEav\ViewModel\Data as DataViewModel;
 
 /**
  * The attribute save controller takes no structural field from the request.
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class SaveTest extends TestCase
 {
@@ -96,10 +101,7 @@ class SaveTest extends TestCase
      */
     private $builder;
 
-    /**
-     * @var Save
-     */
-    private $controller;
+    private Save $controller;
 
     /**
      * @inheritdoc
@@ -133,7 +135,7 @@ class SaveTest extends TestCase
      *
      * @dataProvider existingAttributeFieldProvider
      */
-    #[DataProvider('existingAttributeFieldProvider')]
+    #[DataProviderAttribute('existingAttributeFieldProvider')]
     public function testExistingAttributeKeepsStoredField(string $field): void
     {
         $attribute = $this->createAttribute(self::STORED_ATTRIBUTE);
@@ -164,7 +166,7 @@ class SaveTest extends TestCase
      *
      * @dataProvider newAttributeFieldProvider
      */
-    #[DataProvider('newAttributeFieldProvider')]
+    #[DataProviderAttribute('newAttributeFieldProvider')]
     public function testNewAttributeIgnoresForgedField(string $field): void
     {
         $attribute = $this->createAttribute(['entity_type_id' => self::ENTITY_TYPE_ID]);
@@ -184,6 +186,49 @@ class SaveTest extends TestCase
         $this->assertSame(['New label'], $attribute->getData('frontend_label'));
         $this->assertSame(self::DERIVED_SOURCE_MODEL, $attribute->getData('source_model'));
         $this->assertSame(self::DERIVED_BACKEND_MODEL, $attribute->getData('backend_model'));
+    }
+
+    /**
+     * Option ids of another attribute are dropped, own and new options are kept.
+     */
+    public function testExistingAttributeIgnoresForeignOptionIds(): void
+    {
+        $attribute = $this->createAttribute(self::STORED_ATTRIBUTE);
+        $this->givenPost([
+            'option' => [
+                'value' => [10 => ['Own'], 99 => ['Foreign'], 'option_0' => ['New']],
+                'order' => [10 => 1, 99 => 2, 'option_0' => 3],
+                'delete' => [10 => '', 99 => '1', 'option_0' => ''],
+            ],
+        ]);
+
+        $this->controller->execute();
+
+        $this->assertSame(
+            [
+                'value' => [10 => ['Own'], 'option_0' => ['New']],
+                'order' => [10 => 1, 'option_0' => 3],
+                'delete' => [10 => '', 'option_0' => ''],
+            ],
+            $attribute->getData('option')
+        );
+    }
+
+    /**
+     * A new attribute owns no option yet: every posted option id is dropped.
+     */
+    public function testNewAttributeIgnoresExistingOptionIds(): void
+    {
+        $attribute = $this->createAttribute(['entity_type_id' => self::ENTITY_TYPE_ID]);
+        $this->givenPost([
+            'attribute_code' => 'new_code',
+            'frontend_input' => 'select',
+            'option' => ['value' => [10 => ['Foreign'], 'option_0' => ['New']], 'delete' => [10 => '1']],
+        ]);
+
+        $this->controller->execute();
+
+        $this->assertSame(['value' => ['option_0' => ['New']], 'delete' => []], $attribute->getData('option'));
     }
 
     /**
@@ -234,6 +279,28 @@ class SaveTest extends TestCase
     }
 
     /**
+     * Attribute resource whose attribute owns the options 10 and 11.
+     *
+     * @return AttributeResource&Stub
+     */
+    private function createResource(): Stub
+    {
+        $select = $this->createStub(Select::class);
+        $select->method('from')->willReturnSelf();
+        $select->method('where')->willReturnSelf();
+
+        $connection = $this->createStub(AdapterInterface::class);
+        $connection->method('select')->willReturn($select);
+        $connection->method('fetchCol')->willReturn(['10', '11']);
+
+        $resource = $this->createStub(AttributeResource::class);
+        $resource->method('getConnection')->willReturn($connection);
+        $resource->method('getTable')->willReturnArgument(0);
+
+        return $resource;
+    }
+
+    /**
      * @param array<string, mixed> $data
      * @return Attribute&MockObject
      */
@@ -241,8 +308,9 @@ class SaveTest extends TestCase
     {
         $attribute = $this->getMockBuilder(Attribute::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['save', 'getDefaultValueByInput', 'getBackendTypeByInput'])
+            ->onlyMethods(['save', 'getDefaultValueByInput', 'getBackendTypeByInput', 'getResource'])
             ->getMock();
+        $attribute->method('getResource')->willReturn($this->createResource());
         $attribute->setIdFieldName('attribute_id');
         $attribute->setData($data);
         $attribute->method('getDefaultValueByInput')->willReturn('');
