@@ -171,7 +171,7 @@ class Eav
      * @param AttributeInterface $attribute Attribute.
      * @param EntityInterface $entity Entity.
      */
-    public function canDisplayUseDefault(AttributeInterface $attribute, EntityInterface $entity): mixed
+    public function canDisplayUseDefault(AttributeInterface $attribute, EntityInterface $entity)
     {
         $attributeCode = $attribute->getAttributeCode();
 
