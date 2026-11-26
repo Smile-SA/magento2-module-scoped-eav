@@ -9,7 +9,6 @@ use Magento\Catalog\Model\ResourceModel\Eav\Attribute as EavAttribute;
 use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory as EavAttributeFactory;
 use Magento\Eav\Api\Data\AttributeGroupInterface;
 use Magento\Framework\App\Request\DataPersistorInterface;
-use Magento\Framework\DataObject;
 use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Phrase;
@@ -19,7 +18,6 @@ use Magento\Ui\Component\Form\Element\Wysiwyg as WysiwygElement;
 use Magento\Ui\Component\Form\Field;
 use Magento\Ui\Component\Form\Fieldset;
 use Smile\ScopedEav\Api\Data\AttributeInterface;
-use Smile\ScopedEav\Api\Data\EntityInterface;
 use Smile\ScopedEav\Model\AbstractEntity;
 use Smile\ScopedEav\Model\Locator\LocatorInterface;
 use Smile\ScopedEav\Ui\DataProvider\Entity\Form\EavValidationRules;
@@ -165,7 +163,7 @@ class Eav extends AbstractModifier
             ]
         );
 
-        /** @var AttributeInterface&EavAttribute $attribute */
+        /** @var \Smile\ScopedEav\Model\Entity\Attribute $attribute */
         if ($attribute->getIsWysiwygEnabled()) {
             $containerMeta = $this->arrayManager->merge(
                 self::META_CONFIG_PATH,
@@ -462,7 +460,7 @@ class Eav extends AbstractModifier
      */
     private function getValue(AttributeInterface $attribute)
     {
-        /** @var EntityInterface&DataObject $entity */
+        /** @var \Smile\ScopedEav\Model\AbstractEntity $entity */
         $entity = $this->locator->getEntity();
         /** @var string $data */
         $data = $attribute->getAttributeCode();
@@ -497,7 +495,7 @@ class Eav extends AbstractModifier
      */
     private function customizeWysiwyg(AttributeInterface $attribute, array $meta): array
     {
-        /** @var AttributeInterface&EavAttribute $attribute */
+        /** @var \Smile\ScopedEav\Model\Entity\Attribute $attribute */
         if (!$attribute->getIsWysiwygEnabled()) {
             return $meta;
         }

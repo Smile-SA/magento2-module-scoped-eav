@@ -36,8 +36,9 @@ class Save extends Generic
      */
     public function getButtonData()
     {
-        // @phpstan-ignore method.notFound (isReadonly() comes from Catalog AbstractModel, which entities extend)
-        if ($this->getEntity()->isReadonly()) {
+        /** @var \Smile\ScopedEav\Model\AbstractEntity $entity */
+        $entity = $this->getEntity();
+        if ($entity->isReadonly()) {
             return [];
         }
 

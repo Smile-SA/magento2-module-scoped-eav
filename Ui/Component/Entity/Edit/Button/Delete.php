@@ -34,8 +34,9 @@ class Delete extends Generic
      */
     public function getButtonData()
     {
-        // @phpstan-ignore method.notFound (isReadonly() comes from Catalog AbstractModel, which entities extend)
-        if ($this->getEntity()->isReadonly() || !$this->getEntity()->getId()) {
+        /** @var \Smile\ScopedEav\Model\AbstractEntity $entity */
+        $entity = $this->getEntity();
+        if ($entity->isReadonly() || !$entity->getId()) {
             return [];
         }
 
