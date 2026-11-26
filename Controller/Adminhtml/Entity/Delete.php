@@ -8,8 +8,6 @@ use Exception;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Model\AbstractModel;
-use Smile\ScopedEav\Api\Data\EntityInterface;
 use Smile\ScopedEav\Controller\Adminhtml\AbstractEntity;
 
 /**
@@ -29,7 +27,7 @@ class Delete extends AbstractEntity implements HttpGetActionInterface
                 throw new LocalizedException(__('Invalid entity id. Should be numeric value greater than 0'));
             }
 
-            /** @var EntityInterface&AbstractModel $entity */
+            /** @var \Smile\ScopedEav\Model\AbstractEntity $entity */
             $entity = $this->getEntity();
             $entity->delete();
             $this->messageManager->addSuccessMessage(
