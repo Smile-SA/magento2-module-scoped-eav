@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Smile\ScopedEav\Ui\DataProvider\Entity\Form\Modifier\Helper;
 
 use Exception;
-use Magento\Catalog\Model\AbstractModel;
 use Magento\Catalog\Model\Attribute\ScopeOverriddenValue;
 use Magento\Eav\Api\AttributeGroupRepositoryInterface;
 use Magento\Eav\Api\AttributeRepositoryInterface;
@@ -40,7 +39,6 @@ class Eav
     /** @var AttributeInterface[] */
     private array $attributes = [];
 
-    /** @var array */
     private array $canDisplayUseDefault = [];
 
     /**
@@ -150,7 +148,7 @@ class Eav
         $interface = $this->dataViewModel->getEntityInterface($entity);
 
         try {
-            /** @var AbstractModel $entity */
+            /** @var \Smile\ScopedEav\Model\AbstractEntity $entity */
             $hasValue =
                 $this->scopeOverriddenValue->containsValue(
                     $interface,
@@ -172,7 +170,7 @@ class Eav
      * @param AttributeInterface $attribute Attribute.
      * @param EntityInterface $entity Entity.
      */
-    public function canDisplayUseDefault(AttributeInterface $attribute, EntityInterface $entity): mixed
+    public function canDisplayUseDefault(AttributeInterface $attribute, EntityInterface $entity)
     {
         $attributeCode = $attribute->getAttributeCode();
 

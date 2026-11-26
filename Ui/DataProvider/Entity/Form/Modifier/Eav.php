@@ -9,7 +9,6 @@ use Magento\Catalog\Model\ResourceModel\Eav\Attribute as EavAttribute;
 use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory as EavAttributeFactory;
 use Magento\Eav\Api\Data\AttributeGroupInterface;
 use Magento\Framework\App\Request\DataPersistorInterface;
-use Magento\Framework\DataObject;
 use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Phrase;
@@ -45,24 +44,12 @@ class Eav extends AbstractModifier
 
     private EavAttributeFactory $eavAttributeFactory;
 
-    /**
-     * @var array
-     */
     private array $bannedInputTypes;
 
-    /**
-     * @var array
-     */
     private array $attributesToEliminate;
 
-    /**
-     * @var array
-     */
     private array $attributesToDisable;
 
-    /**
-     * @var array
-     */
     private array $attributesCache = [];
 
     /**
@@ -161,7 +148,6 @@ class Eav extends AbstractModifier
      * Build attribute container.
      *
      * @param AttributeInterface $attribute Attribute.
-     * @return array
      */
     public function setupAttributeContainerMeta(AttributeInterface $attribute): array
     {
@@ -177,7 +163,7 @@ class Eav extends AbstractModifier
             ]
         );
 
-        /** @var EavAttribute $attribute */
+        /** @var \Smile\ScopedEav\Model\Entity\Attribute $attribute */
         if ($attribute->getIsWysiwygEnabled()) {
             $containerMeta = $this->arrayManager->merge(
                 self::META_CONFIG_PATH,
@@ -196,7 +182,6 @@ class Eav extends AbstractModifier
      * @param AttributeInterface $attribute Attibute.
      * @param string $groupCode Group code.
      * @param int $sortOrder Attribute sort order.
-     * @return array
      */
     public function addContainerChildren(
         array $attributeContainer,
@@ -223,7 +208,6 @@ class Eav extends AbstractModifier
      * @param AttributeInterface $attribute Attribute.
      * @param string $groupCode Attribute group code.
      * @param int $sortOrder Sort order.
-     * @return array
      */
     public function getContainerChildren(AttributeInterface $attribute, string $groupCode, int $sortOrder): array
     {
@@ -241,7 +225,6 @@ class Eav extends AbstractModifier
      * @param AttributeInterface $attribute Attribute.
      * @param string $groupCode Attribute group code.
      * @param int $sortOrder Sort order.
-     * @return array
      */
     public function setupAttributeMeta(AttributeInterface $attribute, string $groupCode, int $sortOrder): array
     {
@@ -390,7 +373,6 @@ class Eav extends AbstractModifier
      *
      * @param array  $attributes Attributes.
      * @param string $groupCode  Current group code.
-     * @return array
      */
     private function getAttributesMeta(array $attributes, string $groupCode): array
     {
@@ -454,7 +436,6 @@ class Eav extends AbstractModifier
      *
      * @param AttributeInterface $attribute Attribute.
      * @param array $meta Attribute meta.
-     * @return array
      */
     private function addUseDefaultValueCheckbox(AttributeInterface $attribute, array $meta): array
     {
@@ -479,7 +460,7 @@ class Eav extends AbstractModifier
      */
     private function getValue(AttributeInterface $attribute)
     {
-        /** @var DataObject $entity */
+        /** @var \Smile\ScopedEav\Model\AbstractEntity $entity */
         $entity = $this->locator->getEntity();
         /** @var string $data */
         $data = $attribute->getAttributeCode();
@@ -490,7 +471,6 @@ class Eav extends AbstractModifier
      * Resolve data persistence
      *
      * @param array $data Data.
-     * @return array
      */
     private function resolvePersistentData(array $data): array
     {
@@ -512,11 +492,10 @@ class Eav extends AbstractModifier
      *
      * @param AttributeInterface $attribute Attribute.
      * @param array $meta Meta data of data provider.
-     * @return array
      */
     private function customizeWysiwyg(AttributeInterface $attribute, array $meta): array
     {
-        /** @var EavAttribute $attribute */
+        /** @var \Smile\ScopedEav\Model\Entity\Attribute $attribute */
         if (!$attribute->getIsWysiwygEnabled()) {
             return $meta;
         }
@@ -539,7 +518,6 @@ class Eav extends AbstractModifier
      *
      * @param AttributeInterface $attribute Attribute.
      * @param array $meta Metadata of data provider.
-     * @return array
      */
     private function customizeCheckbox(AttributeInterface $attribute, array $meta): array
     {
@@ -559,7 +537,6 @@ class Eav extends AbstractModifier
      *
      * @param AttributeInterface $attribute Attribute.
      * @param array $meta current metadata of data provider.
-     * @return array
      */
     private function customizeImage(AttributeInterface $attribute, array $meta): array
     {
@@ -618,9 +595,6 @@ class Eav extends AbstractModifier
 
     /**
      * Convert options value to string.
-     *
-     * @param array $options
-     * @return array
      */
     private function convertOptionsValueToString(array $options): array
     {

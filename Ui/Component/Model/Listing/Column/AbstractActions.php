@@ -40,7 +40,6 @@ abstract class AbstractActions extends Column
      * Prepare action column content.
      *
      * @param array $dataSource Row data.
-     * @return array
      */
     public function prepareDataSource(array $dataSource): array
     {

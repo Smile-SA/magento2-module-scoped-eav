@@ -106,7 +106,6 @@ abstract class AbstractSet extends Action
         $attributeSet = $this->registry->registry('current_attribute_set');
 
         if ($attributeSet == null) {
-            /** @var int $entityTypeId */
             $entityTypeId = $this->getTypeId();
             $attributeSet = $this->attributeSetFactory->create()->setEntityTypeId($entityTypeId);
             $attributeSetId = $this->getRequest()->getParam('id');

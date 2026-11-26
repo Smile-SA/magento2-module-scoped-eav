@@ -14,8 +14,6 @@ class DefaultAttributes implements ProviderInterface
 {
     /**
      * List of default entity attributes.
-     *
-     * @return array
      */
     public function getDefaultAttributes(): array
     {

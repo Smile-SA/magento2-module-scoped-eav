@@ -11,9 +11,7 @@ use Magento\Eav\Model\Config;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\App\Request\Http;
-use Magento\Framework\DataObject;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Model\AbstractModel;
 use Magento\Store\Model\StoreManagerInterface;
 use Smile\ScopedEav\Api\Data\EntityInterface;
 use Smile\ScopedEav\Controller\Adminhtml\AbstractEntity;
@@ -65,7 +63,7 @@ class Save extends AbstractEntity implements HttpPostActionInterface
         $resultRedirect = $this->resultRedirectFactory->create();
 
         try {
-            /** @var AbstractModel $entity */
+            /** @var \Smile\ScopedEav\Model\AbstractEntity $entity */
             $entity = $this->getEntity();
             $entity->save();
 
@@ -116,7 +114,7 @@ class Save extends AbstractEntity implements HttpPostActionInterface
         $data = $request->getPostValue();
         $data = $this->imagePreprocessing($entity, $data);
 
-        /** @var DataObject $entity */
+        /** @var \Smile\ScopedEav\Model\AbstractEntity $entity */
         $entity->addData($data['entity']);
 
         $useDefaults = (array) $request->getPost('use_default', []);
@@ -141,7 +139,6 @@ class Save extends AbstractEntity implements HttpPostActionInterface
      *
      * @param EntityInterface $entity Current entity.
      * @param array $data Data.
-     * @return array
      * @throws LocalizedException
      */
     private function imagePreprocessing(EntityInterface $entity, array $data): array
