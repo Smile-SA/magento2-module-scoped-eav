@@ -93,4 +93,14 @@ class Attribute extends \Magento\Eav\Model\Attribute implements AttributeInterfa
 
         return parent::__sleep();
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getUsedInForms(): array
+    {
+        // Scoped EAV attributes are not used in forms, and their resource model cannot load them.
+        // Magento 2.4.7 and later calls this method to compute the cache tags of a saved attribute.
+        return [];
+    }
 }

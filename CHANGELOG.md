@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - `composer.json` now states it: `php ^8.1` and `magento/framework >=103.0.6` (previously `php ^7.4 || ^8.1` and any `magento/framework` version)
 - Magento 2.4.4 and 2.4.5 are supported by the 1.3.x line, from 1.3.11
 - CI: static analysis and `setup:di:compile` run on Mage-OS, without Magento credentials
+- Fix the fatal error `Call to undefined method ...\Entity\Attribute::getUsedInForms()` when an attribute is saved on Magento 2.4.7 and later with the full page cache enabled
 
 ## [1.3.10] - 2026-11-24
 [1.3.10]: https://github.com/Smile-SA/magento2-module-scoped-eav/compare/1.3.9...1.3.10
