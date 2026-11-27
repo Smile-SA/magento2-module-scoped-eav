@@ -16,7 +16,6 @@ class EavValidationRules
      *
      * @param AttributeInterface $attribute Attribute.
      * @param array $data Additional data.
-     * @return array
      */
     public function build(AttributeInterface $attribute, array $data): array
     {
@@ -51,7 +50,6 @@ class EavValidationRules
      *
      * @param string $class Frontend class.
      * @param array  $rules Validation rules.
-     * @return array
      */
     private function mapRules(string $class, array $rules): array
     {

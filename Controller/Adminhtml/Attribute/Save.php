@@ -79,7 +79,7 @@ class Save extends AbstractAttribute implements HttpPostActionInterface
             $attribute = $this->getAttribute();
             $attribute = $this->addPostData($attribute);
 
-            /** @var AbstractModel $attribute */
+            /** @var \Smile\ScopedEav\Model\Entity\Attribute $attribute */
             $attribute->save();
 
             $response = $this->resultRedirectFactory->create();
@@ -131,7 +131,7 @@ class Save extends AbstractAttribute implements HttpPostActionInterface
             unset($data[$field]);
         }
 
-        /** @var AbstractModel $attribute */
+        /** @var \Smile\ScopedEav\Model\Entity\Attribute $attribute */
         if (!$attribute->getId()) {
             $data['attribute_code']  = $this->getAttributeCode();
             $data['is_user_defined'] = true;
